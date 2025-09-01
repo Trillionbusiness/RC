@@ -67,31 +67,34 @@ const DropdownButton: React.FC<DropdownButtonProps> = ({ label, options, isLoadi
           aria-orientation="vertical"
           aria-labelledby="menu-button"
         >
-          {/* FIX: Refactored to use a ternary operator to ensure proper type narrowing for the DropdownOption union type. */}
+          {/* FIX: The original code used a ternary operator which can sometimes cause issues with TypeScript's type narrowing for complex union types.
+              This has been refactored to use an if/else block inside the map function, which is a more explicit and robust way to ensure the `option` type is correctly narrowed. */}
           <div className="py-1" role="none">
-            {options.map((option, index) =>
-              option.separator ? (
-                <div key={`sep-${index}`} className="border-t my-1 mx-2" style={{ borderColor: 'var(--border-color)' }} />
-              ) : (
-                <div key={option.label} className={`flex justify-between items-center px-2 py-1 text-sm group ${option.special ? 'bg-yellow-50 hover:bg-yellow-100' : ''}`}>
-                  <button
-                    onClick={() => handleOptionClick(option.onClick)}
-                    className={`w-full text-left block px-2 py-2 rounded-md transition-colors ${option.special ? 'font-bold text-yellow-900 hover:bg-yellow-100' : 'text-gray-700 hover:bg-gray-100'}`}
-                    role="menuitem"
-                  >
-                    {option.label}
-                  </button>
-                  {option.onPreview && (
+            {options.map((option, index) => {
+              if (option.separator) {
+                return <div key={`sep-${index}`} className="border-t my-1 mx-2" style={{ borderColor: 'var(--border-color)' }} />;
+              } else {
+                return (
+                  <div key={option.label} className={`flex justify-between items-center px-2 py-1 text-sm group ${option.special ? 'bg-yellow-50 hover:bg-yellow-100' : ''}`}>
                     <button
-                      onClick={() => handlePreviewClick(option.onPreview)}
-                      className="ml-2 px-2 py-1 text-xs font-bold rounded capitalize bg-gray-200 text-gray-600 hover:bg-gray-300 transition-colors"
+                      onClick={() => handleOptionClick(option.onClick)}
+                      className={`w-full text-left block px-2 py-2 rounded-md transition-colors ${option.special ? 'font-bold text-yellow-900 hover:bg-yellow-100' : 'text-gray-700 hover:bg-gray-100'}`}
+                      role="menuitem"
                     >
-                      Preview
+                      {option.label}
                     </button>
-                  )}
-                </div>
-              )
-            )}
+                    {option.onPreview && (
+                      <button
+                        onClick={() => handlePreviewClick(option.onPreview)}
+                        className="ml-2 px-2 py-1 text-xs font-bold rounded capitalize bg-gray-200 text-gray-600 hover:bg-gray-300 transition-colors"
+                      >
+                        Preview
+                      </button>
+                    )}
+                  </div>
+                );
+              }
+            })}
           </div>
         </div>
       )}
