@@ -1,6 +1,8 @@
 import { AppState } from '../types';
 
 const gymPlan: AppState = {
+  // FIX: Added missing userId property to conform to AppState type.
+  userId: null,
   businessData: {
     country: 'United States',
     currency: 'USD',
@@ -54,6 +56,8 @@ const gymPlan: AppState = {
 };
 
 const saasPlan: AppState = {
+  // FIX: Added missing userId property to conform to AppState type.
+  userId: null,
   businessData: {
     country: 'United States',
     currency: 'USD',

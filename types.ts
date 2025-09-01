@@ -1,4 +1,9 @@
 
+export interface User {
+  id: number;
+  username: string;
+}
+
 export interface BusinessData {
   country: string;
   currency: string;
@@ -249,12 +254,12 @@ export interface WeeklyDebrief {
 }
 
 export interface AppState {
+    userId: number | null;
     playbook: GeneratedPlaybook | null;
     businessData: BusinessData | null;
     kpiEntries: KpiEntry[];
     weeklyDebriefs: WeeklyDebrief[];
 }
-
 
 export interface PreviewConfig {
   type: string;
