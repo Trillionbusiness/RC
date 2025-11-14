@@ -23,7 +23,6 @@ const FullPlaybookHtml: React.FC<FullPlaybookHtmlProps> = ({ playbook }) => {
       onDownloadAllAssets={emptyFunc}
       generatingAssetBundleFor={null}
       pdfProgress={0}
-      // FIX: Add missing props required by the updated FullPlaybook component.
       onDownloadZip={emptyFunc}
       isZipping={false}
       zipProgress={0}

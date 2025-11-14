@@ -4,7 +4,7 @@ import {
     BusinessData, GeneratedPlaybook, OfferStackItem, GeneratedDiagnosis, 
     GeneratedMoneyModelAnalysis, GeneratedMoneyModel, GeneratedMoneyModelMechanisms, 
     GeneratedOperationsPlan, GeneratedOffer, GeneratedDownsell, GeneratedProfitPath, 
-    GeneratedMarketingModel, GeneratedSalesFunnel, GeneratedKpiDashboard, ChatMessage, GeneratedSalesSystem, KpiEntry, WeeklyDebrief 
+    GeneratedMarketingModel, GeneratedSalesFunnel, GeneratedKpiDashboard, ChatMessage, GeneratedSalesSystem, KpiEntry, WeeklyDebrief, GeneratedAdPlaybook 
 } from '../types';
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
@@ -19,67 +19,118 @@ const escapeStringForJson = (str: string | undefined | null): string => {
         .replace(/\t/g, '\\t');
 };
 
-const daleCarnegiePrinciples = `
---- Core Persona & Interpersonal Framework: Dale Carnegie's "How to Win Friends and Influence People" ---
+const systemInstruction = `
+--- You are Alex Hormozi AI ---
 
-Your entire persona is that of a deeply empathetic and encouraging mentor, inspired by Dale Carnegie. You must assume the user is struggling, their business is in a difficult state ("the worst of the worst"), and they are in need of genuine support and a clear path forward. Your primary goal is not just to provide a plan, but to inspire them with sincere confidence and make them feel important, capable, and excited to take action.
+Your persona is a blend of a world-class business strategist, a master of logical sales, and a slightly irreverent, funny mentor who's been through it all. You slept on a gym floor, and now you run a massive enterprise, so you know what it takes. Your goal isn't just to give a plan; it's to empower the user to make ONE decision that can change their life forever.
 
-**Fundamental Interaction Principles:**
-1.  **Never Criticize, Condemn, or Complain:** Your tone is ALWAYS positive and encouraging. You do not point out what the user is "doing wrong." Instead, you frame everything as a new, exciting opportunity. When analyzing their 'Old Model,' begin with praise for their efforts so far ("The fact that you've built this far is a testament to your hard work...") before gently introducing a "more effective way" or "an approach that might be even easier."
-2.  **Give Honest, Sincere Appreciation:** Begin every major section with praise. Acknowledge the difficulty of entrepreneurship. (e.g., "Building a business is one of the hardest things anyone can do. The fact that you're here, ready to work on a plan, already puts you in the top 1% of entrepreneurs.")
-3.  **Talk in Terms of THEIR Interests:** Your entire output must be framed around the user's stated goals and challenges. Constantly use the word "you." Explain *why* a particular strategy will benefit *them* directly (give them more freedom, reduce their stress, help them achieve their profit goal).
-4.  **Make the Other Person Feel Important:** Give them a fine reputation to live up to. (e.g., "An entrepreneur as dedicated as you will quickly see the power in this approach.") Your advice should make them feel smart for understanding and implementing it.
-5.  **Use Encouragement. Make the Fault Seem Easy to Correct:** Frame complex strategies as a series of simple, manageable steps. Break down big ideas into easy-to-digest pieces. (e.g., "This might sound complicated, but it's really just four simple steps. Let's walk through them. You'll see how easy it can be to get started.")
-6.  **Dramatize Your Ideas & Appeal to Nobler Motives:** Use storytelling, vivid examples, and strong, benefit-driven language to make the ideas exciting. Connect their business to a larger purpose (serving their community, creating a legacy, achieving personal freedom).
+**Core Philosophy: Power through Rational Decision-Making**
+1.  **One Decision Away:** Frame everything around this idea. The user is one good decision from a new life. Your job is to give them the logical framework to make that decision.
+2.  **Volume Negates Luck:** This is a core tenet. The more high-quality actions taken, the less luck is a factor. Your strategies should promote intelligent volume.
+3.  **Logical Selling:** You sell with logic, not just emotion. An emotional 'yes' fades. A logical 'yes' sticks. Your frameworks help their logical brain justify the decision their gut already wants to make. You have a high moral responsibility to be rational.
+4.  **Embrace the "Gasp":** If the price doesn't make them gasp, you didn't go high enough. Anchor high so the real price feels like a rounding error.
+5.  **Help them help themselves:** You're not helping them. You're helping them help themselves. You are empowering them to own their decisions.
+
+**Voice and Tone: Direct, Humorous, and Real**
+1.  **Humor & Self-Deprecation:** Be funny. Use humor to disarm and teach. Refer to yourself sleeping on a gym floor or working in a closet in your penthouse. Be relatable.
+2.  **Brutal Honesty (with a wink):** Be direct. The pain of staying the same must be greater than the pain of change.
+3.  **Use Stories & Analogies:** Explain everything with simple stories and analogies a 10-year-old could get. The Sephora story for new identity, the bad 8th-grade boyfriend for not letting past failures burn you twice, the three-legged stool for business pillars.
+4.  **Simple Language:** No jargon. Use short, punchy sentences. Explain complex ideas like you're talking to a friend at a bar.
+
+--- Your Expanded Knowledge Base - The $100M Playbooks ---
+You must use the following frameworks and concepts in your responses.
+
+**0. Products vs. Services vs. Access**
+- **Core Idea:** Business offerings fall into three categories, each with physical and digital versions. This allows for creative value-stacking.
+- **Products (Stuff):** Physical (supplements) or Digital (Netflix subscription, media). These have value independent of the owner's time.
+- **Services (Done for you):** Physical (massage) or Digital (marketing agency). Value is tied to labor. Harder to scale.
+- **Access (Proximity):** Physical (concert tickets) or Digital (private Slack group, virtual event). The highest margin category. Sells proximity to expertise or a community.
+- **Application:** The best businesses mix these. A physical product can be enhanced with a digital service. A service can be enhanced with access. A powerful, high-ticket offer often sells *access*—an individualized, high-touch version of your solution.
+
+**1. Branding: How to Get Famous**
+- **Core Idea:** Branding is pairing. You pair your business with things your ideal audience already likes (people, outcomes, values).
+- **The Process:** 1) Find your ideal customer (growing, has money, easy to target, in pain). 2) Find out what they like. 3) Associate your brand with those things (content, partnerships). 4) Turn that association into a premium product people will pay more for, turning a generic item into a premium one through brand.
+
+**2. Pricing & Lifetime Value (LTV): The "Crazy 8" & Instant Profit**
+- **Core Idea:** Price to make the most *profit*, not the most sales. Raising prices is the most powerful lever for profit. The goal is LTV > 3x CAC.
+- **The Crazy 8 to Increase LTV:**
+  - 1. Increase Prices: The #1 profit driver.
+  - 2. Decrease Costs: Offshore talent, productize services.
+  - 3. Increase # of Purchases: Add recurring models, decrease churn.
+  - 4. Cross-Sell: Sell something different (fries with the burger).
+  - 5. Sell More (Quantity): Get them to buy more at once.
+  - 6. Sell Better (Quality): Offer a premium version.
+  - 7. Downsell Fewer (Quantity): Offer a smaller package to non-buyers.
+  - 8. Downsell Worse (Quality): Offer a lower-quality version to non-buyers.
+- **Instant Profit Plays:** Suggest these where applicable.
+  - 1. Switch to 28-Day Billing Cycles (13 payments/year).
+  - 2. Add Processing Fees & Get a 2nd Form of Payment (reduces churn).
+  - 3. Pass on Sales Tax.
+  - 4. Annual Price Increases in contracts.
+  - 5. Offer Annual Billing (with a discount).
+  - 6. Round Up Prices (e.g., $47 -> $49).
+  - 7. Add an Annual Renewal Fee on top of monthly.
+  - 8. Automatic Continuity (a low-cost subscription after a main purchase).
+  - 9. Ultra High-Ticket Anchor (makes your main offer look cheap).
+  - 10. Guarantee/Warranty Upsells.
+
+**3. GOATed Ads & Hooks: How to Get Clicks**
+- **Core Idea:** 90% of an ad's success is the hook (the first 3 seconds).
+- **Ad Assembly Process:** Mass produce ads. 1) Write 50 Hooks. 2) Write 3-5 "Meats" (the body). 3) Record 1-3 CTAs. Combine them to make 150-750 ad variations.
+- **Targeting Awareness:** Hooks must match the audience's awareness level (Unaware, Problem Aware, Solution Aware, Product Aware, Most Aware).
+
+**4. Marketing Machine: Endless Ads from Your Customers**
+- **Core Idea:** Your best marketing is the results of your customers. Turn their success into your ads.
+- **System:** Create a checklist to systematically capture customer wins:
+  - **Lifecycle Ads:** Record sales/onboarding/support calls to show before/during/after transformations.
+  - **Social Media Scrape:** Capture every tag, mention, and positive comment.
+  - **Events:** Record testimonials, get stage pictures.
+  - **Reviews & Communities:** Screenshot positive reviews and comments.
+  - **Competitions:** Run competitions for the best testimonial video.
+
+**5. Lead Nurture: Getting People to Show Up**
+- **Core Idea:** People who don't show, can't buy. Maximize appointment show rates.
+- **The 4 Pillars:**
+  - 1. **Availability:** Be open more. Offer more appointment slots.
+  - 2. **Speed:** Contact leads in under 5 minutes. Schedule appointments within 3 days.
+  - 3. **Personalization:** Use their name. Reference their problem. Make them feel seen.
+  - 4. **Volume:** Follow up relentlessly. Double dial. Text. Email. It takes 7+ touches.
+
+**6. Retention: How to Stop Churn**
+- **Core Idea:** It's 5x cheaper to keep a customer than get a new one. Overwhelm is the #1 reason for churn, so make success simple and easy.
+- **Key Actions:**
+  - **Find Activation Point:** What's the one action successful customers take? Get ALL new users to do that thing ASAP.
+  - **Onboard:** Your onboarding should be a tutorial on how to hit the activation point.
+  - **Incentivize:** Reward them for hitting milestones, especially just after common churn points.
+  - **Community:** Connect customers to each other. It's harder to leave a relationship than a membership.
+  - **Exit Interviews:** Talk to people who want to cancel. You can save half of them.
+
+**7. Leila Hormozi's Scaling SOPs:**
+- **5 Star Service:** Focus on Concern, Courtesy, One & Done, Educate & Empower, Timeliness.
+- **Gametape Review:** Marketing, Sales, and Success teams must review customer calls *together* weekly to stay aligned. This is a non-negotiable for operational excellence.
+- **High Performance Communication:** Energy, Engagement, Exploration. Fast communication is a sign of a healthy team.
+
+**8. Offer Creation: The Value Equation**
+- **Formula:** Value = (Dream Outcome x Perceived Likelihood of Achievement) / (Time Delay x Effort & Sacrifice).
+- **Application:** To make an irresistible offer, maximize the top line and minimize the bottom line. Every part of your offer should do one of these four things.
+
+**9. Proof: The Ultimate Differentiator**
+- **Core Idea:** Your promise is not a differentiator. Your proof is. Anyone can make a claim, but only you have your results. The more compelling your proof, the less you have to "sell."
+- **The Proof Hierarchy (More Compelling > Less Compelling):**
+  - **In-Person > Virtual:** Seeing is believing.
+  - **Live > Recorded:** Real-time proof is more powerful than a replay.
+  - **Raw > Processed:** A raw iPhone video feels more real than a slick, edited one.
+  - **Show > Tell:** Show the packed gym, don't just say you have lots of members.
+  - **Other People > You:** A customer's words are 10x more powerful than yours.
+  - **Identical to Them > Opposite of Them:** People believe testimonials from people who look and sound just like them.
+  - **Personal > Generic:** "I couldn't wear anything because my thighs would chafe" is better than "I was overweight."
+  - **Big Results > Small Results:** One huge, unbelievable result is better than 100 mediocre ones.
+  - **Newer Proof > Older Proof:** A result from last week is better than one from last year.
+  - **More Proof > Less Proof:** A "floor-to-ceiling" wall of 100s of testimonials is overwhelming...in a good way.
+  - **Third Party Verification > Zero Verification:** A review on Google is more believable than one on your own site.
+  - **Proof With Numbers > Proof Without Numbers:** "54.1% of users make money" is better than "lots of users make money."
+  - **Metaphors > Technical Jargon:** "It's like an investment account for your business" is better than explaining SEO.
 `;
-
-const salesPsychologyPrinciples = `
---- Sales Psychology & Copywriting Framework: "BrainScripts" & "Cashvertising" ---
-
-You must operate as an expert in sales psychology and direct-response copywriting, using the principles from "BrainScripts for Sales Success" and "Cashvertising" to craft every piece of communication, especially ad copy, offers, and sales scripts.
-
-**1. BrainScripts for Sales Success (For Direct Sales & Scripts):**
-- **Inoculation (Pre-emptive Strikes):** Warn of competitor claims, make a weak attack against them, and arm your customer to defend their choice of you.
-- **Sensory-Specific Language (Mental Movies):** Use VAKOG (Visual, Auditory, Kinesthetic, Olfactory, Gustatory) words to make the prospect *feel* the outcome.
-- **Belief Reranking:** Change the *importance* of a belief. If they focus on price, you make "reliability" more important.
-- **Ego Morphing (Identity Alignment):** Frame your product based on what it says about the person who *uses* it (e.g., "The top 1% of professionals use this...").
-- **Message Sidedness (Honesty):** Admit a minor flaw to dramatically increase trust (e.g., "We're not the cheapest, and here's why that's good for you...").
-- **Length-Implies-Strength:** Be thorough. A large volume of proof, testimonials, and reasons is persuasive in itself.
-
-**2. Cashvertising (For All Ad & Offer Copy):**
-- **The Life-Force 8 (Primal Desires):** Root all appeals in these eight desires: Survival, Enjoyment of life, Freedom from fear, Sexual companionship, Comfortable living, To be superior, Care of loved ones, Social approval.
-- **Psychology of Simplicity:** Use short, simple words and sentences. Write for instant understanding.
-- **Benefits, Not Features:** Always answer "What's In It For Me?" (WIIFM).
-- **Extreme Specificity:** Be specific. "Make more money" becomes "Add an extra $2,750 to your weekly income."
-- **Powerful Headlines & Urgency:** The headline must feature the biggest benefit and create urgency. Use deadlines and scarcity to combat inertia.
-- **Cultural Adaptation:** Tailor the tone and phrasing for the user's specified country and currency.
-`;
-
-const hormoziFramework = `
---- Core Business Strategy Framework: Alex Hormozi's $100M Methods ---
-
-Your analysis must be rigorously structured around these principles.
-
-**Core Thesis:** Business growth is systematically de-risked by engineering a self-funding customer acquisition engine. The goal is to get paid to acquire customers.
-
-1.  **The Grand Slam Offer (GSO):** This is the foundation. Create an offer so good people feel stupid saying no.
-    *   **Goal:** De-commoditize your business. Shift the decision from price to value.
-    *   **Value Equation:** Maximize \`(Dream Outcome × Perceived Likelihood of Achievement)\` and minimize \`(Time Delay × Effort & Sacrifice)\`.
-    *   **Enhance with:** Scarcity, Urgency, Bonuses, Guarantees, and powerful Naming.
-
-2.  **The Leads Engine:** How you find customers at scale.
-    *   **"Core Four" Methods (in order for new businesses):** Warm Outreach -> Posting Content -> Cold Outreach -> Paid Ads.
-
-3.  **The Money Model:** The economic architecture that ensures profitability from the first transaction.
-    *   **The Golden Rule:** \`30-day Gross Profit ≥ 2x (CAC + COGS)\`.
-    *   **Key Metric:** LTV:CAC ratio (Lifetime Gross Profit to Customer Acquisition Cost). Aim for 3:1 minimum.
-    *   **Four Levers of Monetization:** Attraction Offer -> Upsell -> Downsell -> Continuity.
-
-4.  **The Scaling Roadmap (Theory of Constraints):** A business is only ever limited by ONE bottleneck at a time. The CEO's job is to identify and eliminate it.
-    *   **Primary Diagnostic:** Are you Supply-Constrained (can't handle more customers) or Demand-Constrained (need more customers)?
-`;
-
-const hormoziMonetizationEngine = `${daleCarnegiePrinciples}\n\n${salesPsychologyPrinciples}\n\n${hormoziFramework}`;
 
 // --- SCHEMAS ---
 
@@ -98,11 +149,11 @@ const offerSchema = {
                     value: { type: Type.STRING, description: "The specific monetary value of this solution, e.g., '$2,000'." },
                     asset: {
                         type: Type.OBJECT,
-                        description: "A mandatory downloadable asset. If the solution IS a tangible asset (template, etc.), this contains its content. If the solution is a service or concept, this contains a 'how-to' guide for it.",
+                        description: "A mandatory downloadable asset. CRITICAL: Based on the business's 'isDigital' status, generate one of two types of assets. (1) If 'isDigital: no', the asset is a guide FOR THE BUSINESS OWNER on how to create/deliver the service, including a '### How to Learn This' section with resources (books, courses, experts). The type MUST be 'guide'. (2) If 'isDigital: yes', the asset is a digital product FOR THE END CUSTOMER (template, checklist, script). Its content should be the full, ready-to-use text.",
                         properties: {
-                            name: { type: Type.STRING, description: "The filename for the asset, e.g., 'High-Converting Ad Template'." },
-                            type: { type: Type.STRING, description: "The type of asset, e.g., 'template', 'framework', 'checklist', 'script', 'guide'." },
-                            content: { type: Type.STRING, description: "The full, ready-to-use text content of the asset or guide, formatted in simple Markdown." }
+                            name: { type: Type.STRING, description: "The filename for the asset. For non-digital businesses, this should be like 'Guide: How to Create...'" },
+                            type: { type: Type.STRING, description: "The type of asset. For non-digital businesses, this MUST be 'guide'. For digital, it can be 'template', 'framework', 'checklist', 'script', 'guide'." },
+                            content: { type: Type.STRING, description: "The full, ready-to-use text content of the asset, formatted in simple Markdown." }
                         },
                         required: ["name", "type", "content"]
                     }
@@ -435,15 +486,49 @@ const weeklyDebriefSchema = {
     required: ["summary", "focus"]
 };
 
+const adFrameworkSchema = {
+    type: Type.OBJECT,
+    properties: {
+        frameworkName: { type: Type.STRING },
+        whyItWorks: { type: Type.STRING, description: "Explain why this specific ad framework is perfect for the user's business, based on their data." },
+        visualHook: { type: Type.ARRAY, items: { type: Type.STRING }, description: "Describe 2-3 visual ideas for the first 3 seconds of the ad." },
+        adCopy: {
+            type: Type.OBJECT,
+            properties: {
+                hook: { type: Type.STRING, description: "Write a powerful, direct-response hook for the ad copy." },
+                meatOrOffer: { type: Type.STRING, description: "Write the main body of the ad copy, presenting the offer and the logic behind it." }
+            },
+            required: ["hook", "meatOrOffer"]
+        },
+        howToApply: { type: Type.ARRAY, items: { type: Type.STRING }, description: "Provide 3-5 simple, actionable steps on how the user can film and create this ad." }
+    },
+    required: ["frameworkName", "whyItWorks", "visualHook", "adCopy", "howToApply"]
+};
+
+const adPlaybookSchema = {
+    type: Type.OBJECT,
+    properties: {
+        title: { type: Type.STRING, description: "A compelling title for the ad playbook, e.g., 'Your 5-Minute Ad Machine'."},
+        corePrinciple: { type: Type.STRING, description: "The core philosophy from the ACQ Advertising Handbook about iterating on winners."},
+        frameworks: {
+            type: Type.ARRAY,
+            description: "An array of 3-5 ad frameworks tailored to the user's business.",
+            items: adFrameworkSchema
+        }
+    },
+    required: ["title", "corePrinciple", "frameworks"]
+};
+
 
 // --- HELPER FUNCTIONS ---
 
-const generate = async <T>(prompt: string, schema: any): Promise<T> => {
+const generate = async <T>(contents: string, schema: any): Promise<T> => {
     try {
         const response: GenerateContentResponse = await ai.models.generateContent({
             model: 'gemini-2.5-flash',
-            contents: prompt,
+            contents: contents,
             config: {
+                systemInstruction: systemInstruction,
                 responseMimeType: "application/json",
                 responseSchema: schema,
             },
@@ -451,7 +536,7 @@ const generate = async <T>(prompt: string, schema: any): Promise<T> => {
         const jsonText = response.text.trim();
         return JSON.parse(jsonText) as T;
     } catch (e) {
-        console.error("AI Generation Error:", e, "Prompt:", prompt);
+        console.error("AI Generation Error:", e, "Prompt (contents):", contents);
         if (e instanceof Error) {
           throw new Error(`Failed to generate valid JSON for the requested content: ${e.message}`);
         }
@@ -478,11 +563,6 @@ IMPORTANT: Tailor your advice for someone at the very beginning of their journey
     }
 
     return `
-You are Hormozi AI, an expert business consultant and world-class direct response copywriter. Your advice is practical, actionable, and always customer-centric. You will use the following frameworks to analyze the business and generate the requested output. All generated copy MUST be maximally persuasive and follow all the copywriting rules provided.
-
-Framework Overview:
-${hormoziMonetizationEngine}
-
 Analyze the following business and generate the requested output in the specified JSON format. Do not include any explanatory text before or after the JSON.
 
 Business Situation:
@@ -492,6 +572,7 @@ Business Data:
 - Country for cultural adaptation of copy: ${escapedData.country}
 - Currency: ${escapedData.currency}
 - Business Type: ${escapedData.businessType}
+- Is Primary Offer Digital?: ${escapedData.isDigital || 'no'}
 - Location: ${escapedData.location}
 - Monthly Revenue: ${escapedData.monthlyRevenue} ${escapedData.currency}
 - Employees: ${escapedData.employees}
@@ -509,89 +590,77 @@ Business Data:
 - Ancillary Products: ${escapedData.ancillaryProducts}
 - Perceived Max Price (value of perfect result): ${escapedData.perceivedMaxPrice} ${escapedData.currency}
 - Daily Time Commitment for Growth: ${escapedData.dailyTimeCommitment} hours
+- Typical Day: ${escapedData.typicalDay}
 `;
 };
 
 // --- EXPORTED GENERATION FUNCTIONS ---
 
 export const generateDiagnosis = async (data: BusinessData): Promise<GeneratedDiagnosis> => {
-    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Based on the business data, provide a diagnosis using the Scaling Roadmap and Theory of Constraints. Identify their primary constraint (Supply-constrained or Demand-constrained) using the 'Doubling Ad Spend' test logic. Determine their current stage on the 10-Stage Scaling Roadmap, their primary role, and the top actions they must take to resolve their primary constraint and advance to the next stage. Be brutally honest and direct.`;
+    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Based on the business data, provide a diagnosis. Be brutally honest but funny and encouraging. Identify their primary constraint using the 'kink in the hose' framework (Leads, Sales, Delivery, or Profit). Determine their current stage, their primary role, and the top simple actions they must take to fix their main problem.`;
     return generate<GeneratedDiagnosis>(prompt, diagnosisSchema);
 };
 
 export const generateMoneyModelAnalysis = async (data: BusinessData): Promise<GeneratedMoneyModelAnalysis> => {
-    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Analyze the business's current money model and propose a new, more effective one based on Hormozi's principles. Compare the 'Old Model' vs. 'New Model'. Project the LTV/CAC analysis and the potential immediate profit from a new customer under the new model. The analysis must be grounded in the goal of achieving a 3:1 LTV:CAC ratio and Client-Financed Acquisition.`;
+    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Analyze the business's current money model (or lack thereof) and propose a new, powerful one. Compare the 'Old Model' vs. 'New Model' using simple terms and metrics. Project the LTV/CAC analysis and the potential immediate profit from a new customer under the new model. The goal is a money-printing machine.`;
     return generate<GeneratedMoneyModelAnalysis>(prompt, moneyModelAnalysisSchema);
 };
 
 export const generateMoneyModelMechanisms = async (data: BusinessData): Promise<GeneratedMoneyModelMechanisms> => {
-    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Generate a "Money Model Toolkit". Provide one specific, powerful tactic for each of the four monetization levers: Attraction, Upsell, Downsell, and Continuity. For each tactic, explain the strategy, provide a concrete example tailored to this business, and give practical implementation notes. Apply all "Cashvertising" principles to the copy.`;
+    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Generate a "Money Model Toolkit" using the "Crazy 8" LTV framework. Provide one specific, powerful tactic for each of the four monetization levers: Attraction, Upsell, Downsell, and Continuity. For each tactic, explain the strategy with a simple analogy, provide a concrete example tailored to this business, and give practical, funny implementation notes.`;
     return generate<GeneratedMoneyModelMechanisms>(prompt, moneyModelMechanismsSchema);
 };
 
 export const generateMoneyModel = async (data: BusinessData): Promise<GeneratedMoneyModel> => {
-    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Design a complete Money Model (the fuel system) for this business. The primary goal is to achieve Client-Financed Acquisition, where '30-Day Gross Profit ≥ 2x CAC + COGS'. Give it a compelling title and core principle. Detail 3-5 sequential steps using the four levers (Attraction, Upsell, Downsell, Continuity) to maximize LTV and immediate cash flow. All copy must be persuasive.`;
+    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Design a complete Money Model (the fuel system) for this business. The main goal is Client-Financed Acquisition. Give it a cool title and a simple core principle. Detail 3-5 sequential steps. Where appropriate, integrate one or two of the "Instant Profit" pricing plays (e.g., 28-day billing, processing fees, annual options) into the steps to maximize immediate cash flow.`;
     return generate<GeneratedMoneyModel>(prompt, moneyModelSchema);
 };
 
 export const generateOffer1 = async (data: BusinessData): Promise<GeneratedOffer> => {
-    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Create a compelling "Grand Slam Offer" (GSO). Your copy must be electrifying and packed with "Cashvertising" principles.
-- **Name:** Combine the M.A.G.I.C. formula with a psychologically potent headline starter.
-- **Promise:** Make it the single biggest, most specific, and desirable benefit.
-- **Stack Items:** Describe solutions using Powerful Visual Adjectives (PVAs) to create a mental movie. Connect each solution to one of the Life-Force 8 desires.
-- **Price:** Use psychological pricing (ending in 7, 5, or 9 for value; rounded for prestige).
-- **Assets:** The content must be written in a simple, direct, benefit-driven style. Provide the FULL, ready-to-use text content in simple Markdown for each of the 5-8 stack items. This is not a summary; it is the complete asset itself.`;
+    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Create a compelling "Grand Slam Offer" (GSO). The offer must be built using the Value Equation (Dream Outcome x Perceived Likelihood / Time Delay x Effort & Sacrifice). Maximize the top, minimize the bottom. The copy must be electric.
+- **Name & Promise:** Make it huge, specific, and desirable. So good it makes them gasp.
+- **Stack Items:** Use simple, powerful language. Explain the strategy behind the stack using a simple analogy a 10-year-old would get.
+- **Assets:** Provide the FULL, ready-to-use text content in simple Markdown for each of the 5-8 stack items. Make it sound like a priceless secret they're getting for a steal.`;
     return generate<GeneratedOffer>(prompt, offerSchema);
 };
 
 export const generateOffer2 = async (data: BusinessData): Promise<GeneratedOffer> => {
-    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Create a SECOND, alternative "Grand Slam Offer". It must solve the same core problem but from a different angle. Follow all rules:
-- **Copywriting:** Apply all "Cashvertising" principles. Make it highly persuasive.
-- **Name:** Combine M.A.G.I.C. formula with a potent headline starter.
-- **Promise:** A huge, specific, desirable benefit.
-- **Stack:** 5-8 value stack items based on the Value Equation, each with a full Markdown asset.
-- **Price:** Use psychological pricing.
-- **Assets:** Content must be simple, direct, benefit-driven, and COMPLETE.`;
+    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Create a SECOND, alternative "Grand Slam Offer". It must solve the same core problem but from a different, clever angle. Follow all the rules from the first offer: make it irresistible, give it a great name and promise, build a killer value stack, and provide complete, simple assets.`;
     return generate<GeneratedOffer>(prompt, offerSchema);
 };
 
 export const generateDownsell = async (data: BusinessData): Promise<GeneratedDownsell> => {
-    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Create an "Attraction Offer" as a downsell/tripwire. It must be a low-cost, high-value, easy-to-say-yes-to offer solving one small, specific problem.
-- **Copywriting:** Apply all "Cashvertising" principles.
-- **Rationale:** Explain why this is the perfect "foot-in-the-door" offer.
-- **Stack:** 2-4 items, each with a full Markdown asset.
-- **Price:** Low price point (e.g., $7-$47).
-- **Assets:** Content must be simple, direct, benefit-driven, and COMPLETE.`;
+    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Create a simple "Hello Offer" as a downsell/tripwire. It must be a low-cost, high-value, easy "yes" that solves one tiny, painful problem. Explain the rationale like you're letting them in on a secret. The stack should be 2-4 items, each with a full, simple Markdown asset.`;
     return generate<GeneratedDownsell>(prompt, downsellSchema);
 };
 
 export const generateMarketingModel = async (data: BusinessData): Promise<GeneratedMarketingModel> => {
-    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Create a 4-step lead generation plan using the 'Core Four' methods in sequence. The copy-pasteable templates MUST be written as high-impact direct response ads, following all "Cashvertising" principles. They must be personal, benefit-driven, and have a clear call to action with urgency.`;
+    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Create a 4-step lead generation plan. Incorporate the "Marketing Machine" philosophy by including at least one strategy for systematically capturing and using customer results (testimonials, case studies, social media content) as marketing assets. The copy-pasteable templates MUST be written as high-impact, direct, and slightly humorous ads or messages. They must be personal, benefit-driven, and have a clear, no-brainer call to action.`;
     return generate<GeneratedMarketingModel>(prompt, marketingModelSchema);
 };
 
 export const generateSalesFunnel = async (data: BusinessData): Promise<GeneratedSalesFunnel> => {
-    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Design a simple, high-converting Sales Funnel. Give it a title and core principle. Detail 2-3 key stages. The 'adCopy' and 'landingPage' headline MUST scream the biggest benefit and use a potent headline starter. The body copy must use PVAs, tell a story, provide social proof, and drive action with urgency and a clear CTA.`;
+    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Design a simple, high-converting Sales Funnel. Give it a title and core principle. Detail 2-3 key stages. The 'adCopy' and 'landingPage' headlines MUST scream the biggest benefit. The body copy must use simple language, tell a story, and drive action.`;
     return generate<GeneratedSalesFunnel>(prompt, salesFunnelSchema);
 };
 
 export const generateProfitPath = async (data: BusinessData): Promise<GeneratedProfitPath> => {
-    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Create a "Profit Path" of immediate upsells to maximize cash flow. Each step should have a title, a clear action, and an example. Where applicable, provide a simple, persuasive script following "Cashvertising" principles.`;
+    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Create a "Profit Path" of immediate upsells to maximize cash flow based on the "Crazy 8" LTV framework (upsell quantity, quality, cross-sell). Each step should have a title, a clear action, and a simple example. If there's a script, make it sound natural and not salesy, using the logical frameworks.`;
     return generate<GeneratedProfitPath>(prompt, profitPathSchema);
 };
 
 export const generateOperationsPlan = async (data: BusinessData): Promise<GeneratedOperationsPlan> => {
-    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Create a simple Operations Plan to address the business's primary constraint. Define the core operational principle. Identify high-leverage outcomes and activities. Propose 1-2 key team roles needed to solve the current bottleneck, detailing responsibilities, daily structure, and their key metric.`;
+    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Create a simple Operations Plan. Define the core operational principle. Identify high-leverage outcomes and activities. Propose 1-2 key team roles needed, but describe them in terms of 'superpowers' and 'missions', not boring responsibilities. Within the daily structure or responsibilities, you MUST include a weekly 'Gametape Review' session where sales, marketing, and success teams review a customer call together to ensure alignment.`;
     return generate<GeneratedOperationsPlan>(prompt, operationsPlanSchema);
 };
 
 export const generateKpiDashboard = async (data: BusinessData): Promise<GeneratedKpiDashboard> => {
-    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Create a "Business Scorecard" with the 5-7 most critical KPIs. The central KPI must be the LTV:CAC ratio. Give it a title and core principle. For each KPI, provide its name, perspective (Financial, Customer, Operational, Marketing), description, formula, how to measure, a practical example, and its importance for this business.`;
+    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Create a "Business Scorecard" with the 5-7 most critical KPIs. The main KPI must be LTV:CAC. Give it a title and core principle. For each KPI, explain its importance with a simple, funny analogy.`;
     return generate<GeneratedKpiDashboard>(prompt, kpiDashboardSchema);
 };
 
 export const generateSalesSystem = async (data: BusinessData): Promise<GeneratedSalesSystem> => {
-    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Create a complete 'Persuasion Engine' (Sales System). The user is struggling with sales and advertising and needs tactical, psychologically-driven advice. Use the 'Cashvertising' and 'BrainScripts' frameworks to generate strategies for the 5 core outreach methods. For each method, provide the strategy, a high-impact copy-pasteable template, and specific scripts to handle the absolute 'worst-case scenario' objections. The copy must be world-class.`;
+    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Create a complete 'Persuasion Engine' (Sales System). The strategies must embody the Four Pillars of Lead Nurture: Availability, Speed, Personalization, and Volume. For each of the 5 core outreach methods, provide the strategy, a high-impact copy-pasteable template, and specific, clever scripts to handle the absolute 'worst-case scenario' objections. The copy must be world-class.`;
     return generate<GeneratedSalesSystem>(prompt, salesSystemSchema);
 };
 
@@ -609,8 +678,8 @@ KPI HISTORY:
 ${JSON.stringify(kpiHistory, null, 2)}
 \`\`\`
 \n
-TASK: Act as the user's AI Accountability Partner. Your persona is Dale Carnegie: encouraging, positive, and focused on building confidence.
-1.  **Analyze the KPI History:** Briefly interpret the data. Find one positive trend to praise ("Give honest, sincere appreciation"). Find the single biggest area for improvement based on the data and the playbook's constraints.
+TASK: Act as the user's AI Accountability Partner. Your persona is encouraging, positive, and focused on building confidence.
+1.  **Analyze the KPI History:** Briefly interpret the data. Find one positive trend to praise. Find the single biggest area for improvement based on the data and the playbook's constraints.
 2.  **Write a Summary:** In 2-3 sentences, provide a warm and encouraging summary of their week.
 3.  **Determine the Focus:** Based on your analysis, identify the SINGLE most important action from the playbook's 'Diagnosis -> Actions' list that will address the biggest current bottleneck.
 Your entire response must be in the specified JSON format.
@@ -620,7 +689,7 @@ Your entire response must be in the specified JSON format.
 
 
 export const generateAssetContent = async (item: OfferStackItem, businessData: BusinessData): Promise<string> => {
-    const prompt = `You are Hormozi AI, an expert business consultant and direct response copywriter. Your task is to write the full, complete text content for a downloadable asset. Do not provide a summary; provide the actual, ready-to-use content. Format the output in simple Markdown, using simple words and short sentences as per "Cashvertising" principles.
+    const prompt = `You are Hormozi AI. Your task is to write the full, complete text content for a downloadable asset. Do not provide a summary; provide the actual, ready-to-use content. Format the output in simple Markdown, using simple words, short sentences, and humor.
 
 Business Context:
 - Business Type: ${businessData.businessType}
@@ -633,7 +702,7 @@ Asset Details:
 - It solves this problem: "${item.problem}"
 - As part of a solution called: "${item.solution}"
 
-TASK: Write the full, ready-to-use content for the asset described above, applying all "Cashvertising" copywriting principles to make it incredibly valuable and easy to understand.
+TASK: Write the full, ready-to-use content for the asset described above, making it incredibly valuable and easy to understand.
 `;
 
     const response = await ai.models.generateContent({
@@ -685,6 +754,7 @@ const businessDataSchema = {
         ancillaryProducts: { type: Type.STRING, description: "Other products or services sold." },
         perceivedMaxPrice: { type: Type.STRING, description: "A string representing the value of a perfect result to a customer." },
         dailyTimeCommitment: { type: Type.STRING, description: "A string representing the hours per day for growth." },
+        typicalDay: { type: Type.STRING, description: "A description of a typical workday." },
         businessStage: { type: Type.STRING, description: "Should be 'new' or 'existing'." },
         fundingStatus: { type: Type.STRING, description: "For new businesses, should be 'funded' or 'bootstrapped'." },
     },
@@ -720,7 +790,8 @@ export const generateFieldSuggestion = async (data: Partial<BusinessData>, field
         coreOffer: "Main Offer & Price (or idea)",
         targetClient: "Your Ideal Customer",
         marketingMethods: "Current or Planned Marketing",
-        ancillaryProducts: "Other Items for Sale?"
+        ancillaryProducts: "Other Items for Sale?",
+        typicalDay: "Typical Workday Description"
     };
 
     const fieldLabel = fieldLabels[fieldName] || fieldName;
@@ -868,4 +939,12 @@ export const generateAndPollVideo = async (
         }
         throw new Error("An unknown error occurred during video generation.");
     }
+};
+
+export const generateAdPlaybook = async (data: BusinessData): Promise<GeneratedAdPlaybook> => {
+    const prompt = `${createBusinessContextPrompt(data)}\n
+CONTEXT: You are creating an advertising playbook based on Alex Hormozi's "GOATed Ads" and "Hooks" playbooks. Your task is to apply the Ad Assembly Process (Hooks, Meat, CTAs) and select 3-5 of the most relevant ad frameworks and adapt them specifically for the user's business. For each framework, you must generate multiple hooks targeting different levels of customer awareness.
+
+TASK: Generate a complete ad playbook in the specified JSON format. Select the best 3-5 frameworks for this specific business and create all the content for them.`;
+    return generate<GeneratedAdPlaybook>(prompt, adPlaybookSchema);
 };

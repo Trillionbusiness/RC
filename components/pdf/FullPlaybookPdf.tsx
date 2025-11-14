@@ -1,71 +1,61 @@
 import React from 'react';
-import { 
-    GeneratedPlaybook, GeneratedDiagnosis, GeneratedOffer, GeneratedDownsell, GeneratedMarketingModel
+import {
+    GeneratedPlaybook,
+    GeneratedDiagnosis,
+    BusinessData,
 } from '../../types';
 
-// --- STYLING HELPER COMPONENTS ---
+// Import all the PDF components
+import BlueprintToOneMillionPdf from './BlueprintToOneMillionPdf';
+import ConceptsGuidePdf from './ConceptsGuidePdf';
+import KpiDashboardPdf from './KpiDashboardPdf';
+import OfferPresentationPdf from './OfferPresentationPdf';
+import MoneyModelsGuidePdf from './MoneyModelsGuidePdf';
+import CfaModelPdf from './CfaModelPdf';
+import LandingPagePdf from './LandingPagePdf';
+import DownsellPamphletPdf from './DownsellPamphletPdf';
+import TripwireFollowupPdf from './TripwireFollowupPdf';
+import AdFrameworksGuidePdf from './AdFrameworksGuidePdf';
+import AdKaleidoscopeGuidePdf from './AdKaleidoscopeGuidePdf';
+import ProofChecklistPdf from './ProofChecklistPdf';
+import SalesMindsetGuidePdf from './SalesMindsetGuidePdf';
+import HuntModePlaybookPdf from './HuntModePlaybookPdf';
+import KillModePlaybookPdf from './KillModePlaybookPdf';
+import ObjectionHandlingCheatsheetPdf from './ObjectionHandlingCheatsheetPdf';
+import CompleteScriptsPdf from './CompleteScriptsPdf';
+import ValueStackAssetsPdf from './ValueStackAssetsPdf';
+
+// --- Reusable PDF Components ---
 const Page: React.FC<{children: React.ReactNode, className?: string}> = ({children, className}) => (
-    <div className={`p-12 bg-white font-sans text-gray-800 break-after-page relative overflow-hidden ${className}`} style={{ fontFamily: 'Inter, sans-serif', width: '800px', minHeight: '1131px' }}>
-        <div style={{
-            position: 'absolute',
-            top: '-60px',
-            left: '-60px',
-            width: '200px',
-            height: '200px',
-            backgroundColor: 'rgba(20, 114, 115, 0.8)', // dark teal
-            clipPath: 'polygon(0 0, 100% 0, 0 100%)'
-        }}></div>
-         <div style={{
-            position: 'absolute',
-            top: '-80px',
-            left: '40px',
-            width: '200px',
-            height: '200px',
-            backgroundColor: 'rgba(130, 213, 227, 0.7)', // light blue
-            clipPath: 'polygon(0 0, 100% 0, 0 100%)'
-        }}></div>
-        <div style={{
-            position: 'absolute',
-            bottom: '-60px',
-            right: '-60px',
-            width: '250px',
-            height: '250px',
-            backgroundColor: 'rgba(20, 114, 115, 0.8)',
-            clipPath: 'polygon(100% 0, 100% 100%, 0 100%)'
-        }}></div>
-        <div style={{
-            position: 'absolute',
-            bottom: '-80px',
-            right: '40px',
-            width: '250px',
-            height: '250px',
-            backgroundColor: 'rgba(130, 213, 227, 0.7)',
-            clipPath: 'polygon(100% 0, 100% 100%, 0 100%)'
-        }}></div>
+    <div className={`p-16 bg-[#FEFBF6] font-sans text-gray-800 break-after-page relative ${className}`} style={{ fontFamily: 'Inter, sans-serif', width: '800px', minHeight: '1131px', border: '8px solid #3A3A3A' }}>
         <div className="relative z-10">
             {children}
         </div>
+        <div className="absolute bottom-6 right-6 text-xs text-gray-400 font-bold">Trillion Business AI</div>
     </div>
 );
 
 const SectionTitlePage: React.FC<{ number: number; title: string; subtitle: string }> = ({ number, title, subtitle }) => (
     <Page className="flex flex-col justify-center items-center text-center">
-        <div className="w-24 h-24 bg-[#147273] rounded-full flex items-center justify-center text-5xl font-black text-white shadow-lg">{number}</div>
-        <h1 className="text-5xl font-black tracking-tighter text-gray-900 mt-8">{title}</h1>
-        <p className="text-xl text-gray-600 mt-4 max-w-2xl">{subtitle}</p>
+        <div className="w-28 h-28 bg-[#FFC700] rounded-full flex items-center justify-center text-6xl font-black text-gray-900 shadow-lg" style={{ fontFamily: "'Patrick Hand', cursive" }}>{number}</div>
+        <h1 className="text-6xl font-black tracking-tighter text-gray-900 mt-8" style={{ fontFamily: "'Patrick Hand', cursive" }}>{title}</h1>
+        <p className="text-2xl text-gray-600 mt-4 max-w-2xl">{subtitle}</p>
+        <p className="mt-8 text-4xl">👇</p>
     </Page>
 );
 
 const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
     <div className="mb-10 break-inside-avoid">
-        <h2 className="text-3xl font-bold text-[#147273] border-b-4 border-[#82D5E3] pb-3 mb-6">{title}</h2>
+        <h2 className="text-5xl font-black text-[#147273] pb-3 mb-6" style={{ fontFamily: "'Patrick Hand', cursive" }}>{title}</h2>
         <div className="space-y-4">{children}</div>
     </div>
 );
 
 const SubSection: React.FC<{ title: string; children: React.ReactNode; className?: string, icon?: string }> = ({ title, children, className, icon = '🔹' }) => (
-    <div className={`mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200 break-inside-avoid shadow-sm ${className || ''}`}>
-        <h3 className="text-xl font-bold text-gray-700 mb-2 flex items-center"><span className="text-lg mr-2">{icon}</span>{title}</h3>
+    <div className={`mt-6 p-6 bg-white rounded-lg border-2 border-gray-200 break-inside-avoid shadow-sm ${className || ''}`}>
+        <h3 className="text-2xl font-bold text-gray-700 mb-2 flex items-center" style={{ fontFamily: "'Patrick Hand', cursive" }}>
+            <span className="text-lg mr-2">{icon}</span>{title}
+        </h3>
         {children}
     </div>
 );
@@ -80,133 +70,94 @@ const OL: React.FC<{ items: React.ReactNode[] }> = ({ items }) => (
     </ol>
 );
 
-// --- PDF SECTION COMPONENTS ---
-
 const DiagnosisSection: React.FC<{ diagnosis: GeneratedDiagnosis }> = ({ diagnosis }) => (
-    <Section title="Your Diagnosis">
-        <P>To get where you want to go, you must first know where you are. This is the honest truth about your business right now.</P>
+    <Section title="Your Diagnosis (The GPS)">
+        <P>To get where you're going, you need to know where you are. Think of this as your business's check-up. No sugarcoating, just the simple truth so we can get you growing.</P>
         <div className="grid grid-cols-2 gap-6">
             <SubSection title="Your Current Stage" icon="📍">
                 <P className="font-bold text-2xl text-[#147273]">{diagnosis.currentStage}</P>
             </SubSection>
-            <SubSection title="Your Primary Role" icon="👨‍💼">
+            <SubSection title="Your Main Job Right Now" icon="👨‍🚀">
                 <P className="font-bold text-2xl text-gray-800">{diagnosis.yourRole}</P>
             </SubSection>
         </div>
-        <SubSection title="The Constraints (What's Holding You Back)" icon="🚧">
-             <P>These are the bottlenecks. Solving these is the key to unlocking growth.</P>
+        <SubSection title="What's Holding You Back (The Baddies)" icon="🚧">
+             <P>These are the only things you need to worry about. Fixing these is how you win.</P>
              <OL items={diagnosis.constraints.map(c => <span className="font-semibold text-red-700">"{c}"</span>)} />
         </SubSection>
-        <SubSection title="Your Action Plan (The Path Forward)" icon="🚀">
-             <P>This is your simple, focused plan. Ignore everything else and do these things.</P>
+        <SubSection title="Your Simple Action Plan (The Treasure Map)" icon="🗺️">
+             <P>This is it. Your simple, focused plan. Ignore everything else and just do these things. That's how you get rich.</P>
             <OL items={diagnosis.actions.map(a => <span className="font-semibold text-green-700">{a}</span>)} />
         </SubSection>
     </Section>
 );
 
-const OfferCard: React.FC<{ offer: GeneratedOffer, title: string, color: 'teal' | 'blue' }> = ({ offer, title, color }) => (
-    <div className={`p-6 bg-white rounded-lg border-2 break-inside-avoid flex flex-col shadow-lg ${color === 'teal' ? 'border-[#147273]' : 'border-[#82D5E3]'}`}>
-        <h3 className={`text-2xl font-bold ${color === 'teal' ? 'text-[#147273]' : 'text-blue-800'}`}>{title}</h3>
-        <h4 className="text-xl font-bold text-gray-800 mt-2">{offer.name}</h4>
-        <P className="italic text-lg">"{offer.promise}"</P>
+// --- MAIN COMPONENT ---
+interface FullPlaybookPdfProps {
+    playbook: GeneratedPlaybook;
+    businessData: BusinessData;
+}
 
-        <div className="my-4 flex-grow">
-            <p className="font-bold text-gray-800 text-base">You Get:</p>
-            <div className="space-y-2 mt-2">
-            {offer.stack.map((item, i) => (
-                <div key={i} className="flex items-start">
-                    <span className="text-green-500 font-bold mr-2">✓</span>
-                    <P className="text-sm font-semibold">{item.solution}</P>
-                </div>
-            ))}
-            </div>
-        </div>
-
-        <div className="mt-auto pt-4 border-t-2 border-dashed border-gray-300">
-            <div className="text-right my-2">
-                <P className="text-sm line-through text-red-500">Value: {offer.totalValue}</P>
-                <P className={`text-4xl font-black ${color === 'teal' ? 'text-[#147273]' : 'text-blue-600'}`}>{offer.price}</P>
-            </div>
-            <div className={`p-3 bg-gray-100 rounded-md`}>
-                <P className={`italic text-sm text-center text-gray-700`}>"{offer.guarantee}"</P>
-            </div>
-        </div>
-    </div>
-);
-
-const OffersSection: React.FC<{ offer1: GeneratedOffer; offer2: GeneratedOffer; downsell: GeneratedDownsell }> = ({ offer1, offer2, downsell }) => (
-    <Section title="Your Irresistible Offers">
-        <P>An offer so good, people feel stupid saying no. Here are two "Grand Slam" options, plus a smaller "Hello" offer to attract new customers.</P>
-        <div className="grid grid-cols-2 gap-6 mt-4">
-            <OfferCard offer={offer1} title="Grand Slam Offer 1" color="teal" />
-            <OfferCard offer={offer2} title="Grand Slam Offer 2" color="teal"/>
-        </div>
-        <div className="mt-6 break-inside-avoid">
-             <h3 className="text-xl font-bold text-gray-800">Your "Hello" Offer:</h3>
-             <P className="italic">{downsell.rationale}</P>
-             <div className="mt-2">
-                <OfferCard offer={downsell.offer} title={downsell.offer.name} color="blue" />
-             </div>
-        </div>
-    </Section>
-);
-
-const MarketingModelSection: React.FC<{ model: GeneratedMarketingModel }> = ({ model }) => (
-    <Section title="How to Find Your Customers">
-        <P>You have an amazing offer. Now it's time to show it to the right people. Here are four proven ways to do that, in order.</P>
-        <div className="space-y-6 mt-4">
-        {model.steps.map((step, i) => (
-            <div key={i} className="p-6 bg-gray-50 rounded-lg border-l-8 border-[#82D5E3] break-inside-avoid shadow-sm">
-                <h4 className="text-2xl font-bold text-gray-800">{i+1}. {step.method}</h4>
-                <SubSection title="Strategy" icon="🎯" className="bg-white mt-3">
-                    <P>{step.strategy}</P>
-                </SubSection>
-                {step.template && (
-                    <SubSection title="Copy-Paste Template" icon="📝" className="bg-white mt-3">
-                        <pre className="text-sm bg-gray-100 p-3 border border-gray-200 rounded whitespace-pre-wrap font-sans">{step.template}</pre>
-                    </SubSection>
-                )}
-            </div>
-        ))}
-        </div>
-    </Section>
-);
-
-const FullPlaybookPdf: React.FC<{ playbook: GeneratedPlaybook }> = ({ playbook }) => {
+const FullPlaybookPdf: React.FC<FullPlaybookPdfProps> = ({ playbook, businessData }) => {
   return (
     <>
+        {/* COVER PAGE */}
         <Page className="flex flex-col justify-center items-start text-left">
-             <div className="w-20 h-20 bg-black rounded-full flex items-center justify-center text-sm font-bold text-white mb-4">YOUR LOGO</div>
-             <p className="font-semibold text-gray-800">Trillion Business</p>
-             <p className="text-sm text-gray-500">trillionbusiness.ai</p>
+             <div className="w-24 h-24 bg-black rounded-full flex items-center justify-center text-xl font-bold text-white mb-4" style={{ fontFamily: "'Patrick Hand', cursive" }}>YOUR LOGO</div>
+             <p className="font-semibold text-gray-800 text-lg">Trillion Business AI</p>
              <div className="flex-grow"></div>
-             <h1 className="text-7xl font-black tracking-tight text-[#147273]">BUSINESS PLAN</h1>
-             <h2 className="text-6xl font-black tracking-tight text-gray-900">LAYOUT</h2>
+             <h1 className="text-8xl font-black tracking-tight text-[#147273]" style={{ fontFamily: "'Patrick Hand', cursive" }}>THE COMPLETE</h1>
+             <h2 className="text-7xl font-black tracking-tight text-gray-900" style={{ fontFamily: "'Patrick Hand', cursive" }}>BUSINESS PLAYBOOK</h2>
              <div className="flex-grow"></div>
              <div className="mt-12 pt-6">
-                <p className="font-semibold text-gray-600">Prepared by</p>
-                <p className="font-bold text-xl text-gray-900">Trillion Business AI</p>
+                <p className="font-semibold text-gray-600">Made with ❤️ for {businessData.businessType}</p>
+                <p className="font-bold text-2xl text-gray-900">Trillion Business AI</p>
              </div>
         </Page>
         
-        {playbook.diagnosis && <>
-            <SectionTitlePage number={1} title="Diagnosis & Roadmap" subtitle="Your current location and the path to your destination." />
-            <Page><DiagnosisSection diagnosis={playbook.diagnosis} /></Page>
-        </>}
-       
-        {playbook.offer1 && playbook.offer2 && playbook.downsell && <>
-             <SectionTitlePage number={2} title="The Grand Slam Offer" subtitle="The irresistible deal that makes people feel stupid saying no." />
-             <Page><OffersSection offer1={playbook.offer1} offer2={playbook.offer2} downsell={playbook.downsell} /></Page>
-        </>}
-       
-        {playbook.marketingModel && <>
-            <SectionTitlePage number={3} title="The Leads Engine" subtitle="The machine that finds your ideal customers." />
-            <Page><MarketingModelSection model={playbook.marketingModel} /></Page>
-        </>}
-       
+        {/* PART 1: STRATEGY & MINDSET */}
+        <SectionTitlePage number={1} title="Strategy & Mindset" subtitle="The concepts and blueprint for your success." />
+        <ConceptsGuidePdf playbook={playbook} businessData={businessData} />
+        <BlueprintToOneMillionPdf playbook={playbook} businessData={businessData} />
+
+        {/* PART 2: DIAGNOSIS & ROADMAP */}
+        <SectionTitlePage number={2} title="Diagnosis & Roadmap" subtitle="Your current location and the path to your destination." />
+        <Page><DiagnosisSection diagnosis={playbook.diagnosis} /></Page>
+        <KpiDashboardPdf kpiDashboard={playbook.kpiDashboard} />
+
+        {/* PART 3: YOUR IRRESISTIBLE OFFERS */}
+        <SectionTitlePage number={3} title="Your Irresistible Offers" subtitle="The foundation of your business: deals so good people feel stupid saying no." />
+        <OfferPresentationPdf playbook={playbook} />
+
+        {/* PART 4: THE MONEY MODEL */}
+        <SectionTitlePage number={4} title="The Money Model" subtitle="The economic engine that funds your growth." />
+        <MoneyModelsGuidePdf />
+        <CfaModelPdf moneyModel={playbook.moneyModel} />
+
+        {/* PART 5: MARKETING & SALES ENGINE */}
+        <SectionTitlePage number={5} title="Marketing & Sales Engine" subtitle="Your machine for finding customers and closing deals." />
+        <LandingPagePdf playbook={playbook} businessData={businessData} />
+        <DownsellPamphletPdf downsell={playbook.downsell} />
+        <TripwireFollowupPdf downsell={playbook.downsell} gso={playbook.offer1} />
+        {playbook.adPlaybook && <AdFrameworksGuidePdf adPlaybook={playbook.adPlaybook} />}
+        <AdKaleidoscopeGuidePdf />
+        <ProofChecklistPdf />
+        <SalesMindsetGuidePdf />
+        <HuntModePlaybookPdf />
+        <KillModePlaybookPdf />
+        <ObjectionHandlingCheatsheetPdf />
+        <CompleteScriptsPdf />
+
+        {/* PART 6: YOUR ASSET LIBRARY */}
+        <SectionTitlePage number={6} title="Your Asset Library" subtitle="All the copy-paste templates, guides, and scripts for your offers." />
+        <ValueStackAssetsPdf offer={playbook.offer1} />
+        <ValueStackAssetsPdf offer={playbook.offer2} />
+        <ValueStackAssetsPdf offer={playbook.downsell.offer} />
+        
+        {/* CONCLUDING PAGE */}
         <Page className="flex flex-col justify-center items-center text-center bg-[#147273] text-white">
-            <h2 className="text-4xl font-bold text-white">The Plan Works If You Do.</h2>
-            <p className="text-xl mt-4">You have the roadmap. Now it's time to take the first step.</p>
+            <h2 className="text-6xl font-black text-white" style={{ fontFamily: "'Patrick Hand', cursive" }}>The Plan Works If You Do.</h2>
+            <p className="text-2xl mt-4">You have the map. Time to take the first step.</p>
         </Page>
     </>
   );

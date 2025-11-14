@@ -1,8 +1,7 @@
+
 import { AppState } from '../types';
 
 const gymPlan: AppState = {
-  // FIX: Added missing userId property to conform to AppState type.
-  userId: null,
   businessData: {
     country: 'United States',
     currency: 'USD',
@@ -25,6 +24,7 @@ const gymPlan: AppState = {
     perceivedMaxPrice: '5000',
     dailyTimeCommitment: '8',
     businessStage: 'existing',
+    typicalDay: 'Morning: Open gym, train first clients. Mid-day: Paperwork, social media posts. Afternoon: Train more clients, clean up. Evening: Close up, plan for tomorrow. Feel like I\'m always busy but not growing fast enough.',
   },
   playbook: {
     // This would be a full, pre-generated playbook object.
@@ -49,15 +49,13 @@ const gymPlan: AppState = {
       price: "$599"
     },
     // ... other playbook sections would be fully populated here ...
-    offer2: {} as any, downsell: {} as any, kpiDashboard: {} as any, marketingModel: {} as any, moneyModel: {} as any, moneyModelAnalysis: {} as any, moneyModelMechanisms: {} as any, operationsPlan: {} as any, profitPath: {} as any, salesFunnel: {} as any, salesSystem: {} as any,
+    offer2: {} as any, downsell: {} as any, kpiDashboard: {} as any, marketingModel: {} as any, moneyModel: {} as any, moneyModelAnalysis: {} as any, moneyModelMechanisms: {} as any, operationsPlan: {} as any, profitPath: {} as any, salesFunnel: {} as any, salesSystem: {} as any, adPlaybook: {} as any,
   },
   kpiEntries: [],
   weeklyDebriefs: [],
 };
 
 const saasPlan: AppState = {
-  // FIX: Added missing userId property to conform to AppState type.
-  userId: null,
   businessData: {
     country: 'United States',
     currency: 'USD',
@@ -80,6 +78,7 @@ const saasPlan: AppState = {
     perceivedMaxPrice: '20000',
     dailyTimeCommitment: '8',
     businessStage: 'existing',
+    typicalDay: 'Stand-up meeting with dev team. Analyzing ad spend and conversion metrics. Responding to high-level customer support tickets. Product roadmap planning. I spend most of my time on the product and ads, but our LTV isn\'t improving.',
   },
   playbook: {
     diagnosis: {
@@ -102,7 +101,7 @@ const saasPlan: AppState = {
       price: "$4,997"
     },
     // ... other playbook sections ...
-    offer2: {} as any, downsell: {} as any, kpiDashboard: {} as any, marketingModel: {} as any, moneyModel: {} as any, moneyModelAnalysis: {} as any, moneyModelMechanisms: {} as any, operationsPlan: {} as any, profitPath: {} as any, salesFunnel: {} as any, salesSystem: {} as any,
+    offer2: {} as any, downsell: {} as any, kpiDashboard: {} as any, marketingModel: {} as any, moneyModel: {} as any, moneyModelAnalysis: {} as any, moneyModelMechanisms: {} as any, operationsPlan: {} as any, profitPath: {} as any, salesFunnel: {} as any, salesSystem: {} as any, adPlaybook: {} as any,
   },
   kpiEntries: [],
   weeklyDebriefs: [],

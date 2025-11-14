@@ -1,9 +1,4 @@
 
-export interface User {
-  id: number;
-  username: string;
-}
-
 export interface BusinessData {
   country: string;
   currency: string;
@@ -25,9 +20,11 @@ export interface BusinessData {
   ancillaryProducts: string;
   perceivedMaxPrice: string;
   dailyTimeCommitment: string;
+  typicalDay: string;
   businessStage?: 'new' | 'existing';
   fundingStatus?: 'funded' | 'bootstrapped';
   category?: string;
+  isDigital?: 'yes' | 'no';
 }
 
 export interface GeneratedDiagnosis {
@@ -226,6 +223,23 @@ export interface GeneratedSalesSystem {
     strategies: SalesStrategy[];
 }
 
+export interface AdFramework {
+    frameworkName: string;
+    whyItWorks: string;
+    visualHook: string[];
+    adCopy: {
+        hook: string;
+        meatOrOffer: string;
+    };
+    howToApply: string[];
+}
+
+export interface GeneratedAdPlaybook {
+    title: string;
+    corePrinciple: string;
+    frameworks: AdFramework[];
+}
+
 export interface GeneratedPlaybook {
   diagnosis: GeneratedDiagnosis;
   moneyModelAnalysis: GeneratedMoneyModelAnalysis;
@@ -240,6 +254,7 @@ export interface GeneratedPlaybook {
   salesFunnel: GeneratedSalesFunnel;
   kpiDashboard: GeneratedKpiDashboard;
   salesSystem: GeneratedSalesSystem;
+  adPlaybook: GeneratedAdPlaybook;
 }
 
 export interface KpiEntry {
@@ -254,7 +269,6 @@ export interface WeeklyDebrief {
 }
 
 export interface AppState {
-    userId: number | null;
     playbook: GeneratedPlaybook | null;
     businessData: BusinessData | null;
     kpiEntries: KpiEntry[];

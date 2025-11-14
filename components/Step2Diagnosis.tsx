@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { GeneratedDiagnosis } from '../types';
 import Card from './common/Card';

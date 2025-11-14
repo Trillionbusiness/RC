@@ -1,39 +1,41 @@
+
 import React from 'react';
 import { GeneratedMoneyModel, MoneyModelStep } from '../../types';
 
 // --- Reusable PDF Components ---
-const Title: React.FC<{ children: React.ReactNode }> = ({ children }) => <h1 className="text-4xl font-black text-gray-900 tracking-tight">{children}</h1>;
-const Subtitle: React.FC<{ children: React.ReactNode }> = ({ children }) => <p className="text-lg text-gray-600 mt-2">{children}</p>;
-const SectionTitle: React.FC<{ children: React.ReactNode }> = ({ children }) => <h2 className="text-3xl font-bold text-gray-800 border-b-4 border-yellow-400 pb-3 mb-6 mt-10 break-after-avoid">{children}</h2>;
+const Title: React.FC<{ children: React.ReactNode }> = ({ children }) => <h1 className="text-6xl font-black text-gray-900 tracking-tight" style={{ fontFamily: "'Patrick Hand', cursive" }}>{children}</h1>;
+const Subtitle: React.FC<{ children: React.ReactNode }> = ({ children }) => <p className="text-2xl text-gray-600 mt-2">{children}</p>;
+const SectionTitle: React.FC<{ children: React.ReactNode }> = ({ children }) => <h2 className="text-5xl font-black text-gray-800 pb-3 mb-6 mt-10 break-after-avoid" style={{ fontFamily: "'Patrick Hand', cursive" }}>{children}</h2>;
 const P: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => <p className={`text-base text-gray-700 leading-relaxed my-3 ${className}`}>{children}</p>;
-const HighlightBox: React.FC<{ children: React.ReactNode, title?: string, color?: 'yellow' | 'blue' }> = ({ children, title, color = 'yellow' }) => {
+
+const DoodledBox: React.FC<{ children: React.ReactNode, title?: string, color?: 'yellow' | 'blue' }> = ({ children, title, color = 'yellow' }) => {
     const bgColor = color === 'yellow' ? 'bg-yellow-50' : 'bg-blue-50';
     const borderColor = color === 'yellow' ? 'border-yellow-300' : 'border-blue-300';
     const titleColor = color === 'yellow' ? 'text-yellow-800' : 'text-blue-800';
     return (
-        <div className={`p-6 rounded-lg border-2 ${borderColor} ${bgColor} my-6 break-inside-avoid shadow-md`}>
-            {title && <h3 className={`text-xl font-bold ${titleColor} mb-2 flex items-center`}><span className="text-2xl mr-2">💡</span>{title}</h3>}
+        <div className={`p-6 rounded-lg border-4 ${borderColor} ${bgColor} my-6 break-inside-avoid shadow-md`}>
+            {title && <h3 className={`text-3xl font-bold ${titleColor} mb-2 flex items-center`} style={{ fontFamily: "'Patrick Hand', cursive" }}><span className="text-2xl mr-2">💡</span>{title}</h3>}
             {children}
         </div>
     );
 };
 const StepIcon: React.FC<{ number: number | string }> = ({ number }) => (
-    <div className="flex-shrink-0 bg-yellow-400 text-gray-900 font-black w-12 h-12 rounded-full flex items-center justify-center text-2xl shadow-lg">{number}</div>
+    <div className="flex-shrink-0 bg-yellow-400 text-gray-900 font-black w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-lg" style={{ fontFamily: "'Patrick Hand', cursive" }}>{number}</div>
 );
 
 // --- PDF Content Sections ---
 const TitleSection: React.FC<{ model: GeneratedMoneyModel }> = ({ model }) => (
-    <header className="text-center mb-12 pb-6 border-b-8 border-yellow-400">
+    <header className="text-center mb-12">
         <p className="text-yellow-500 font-bold uppercase tracking-widest">Your Guide To</p>
         <Title>{model.title}</Title>
-        <Subtitle>A step-by-step visual plan to get new customers and have them pay for your growth.</Subtitle>
+        <Subtitle>A super-simple map to get new customers and have them pay for your growth.</Subtitle>
     </header>
 );
 
 const FunnelDiagramSection: React.FC<{ steps: MoneyModelStep[] }> = ({ steps }) => (
     <div className="break-inside-avoid">
-        <SectionTitle>Your Money Funnel at a Glance</SectionTitle>
-        <P>This is the journey a customer takes through your offers. Each step is designed to increase value for them and profit for you, creating a self-funding system.</P>
+        <SectionTitle>Your Money Funnel 🗺️</SectionTitle>
+        <P>This is the journey a customer takes. Each step makes them happier and makes you more money. It's a win-win!</P>
         <div className="space-y-4 mt-6">
             {steps.sort((a,b) => a.stepNumber - b.stepNumber).map((step, index) => (
                 <div key={index} className="flex flex-col items-center">
@@ -60,7 +62,7 @@ const StepDetailSection: React.FC<{ step: MoneyModelStep }> = ({ step }) => (
             <StepIcon number={step.stepNumber} />
             <div className="ml-4">
                 <p className="text-sm font-bold text-gray-500 uppercase">Step {step.stepNumber}</p>
-                <h2 className="text-3xl font-bold text-gray-800">{step.title}</h2>
+                <h2 className="text-4xl font-bold text-gray-800" style={{ fontFamily: "'Patrick Hand', cursive" }}>{step.title}</h2>
             </div>
         </div>
         
@@ -80,26 +82,17 @@ const StepDetailSection: React.FC<{ step: MoneyModelStep }> = ({ step }) => (
                 <P className="text-sm whitespace-pre-wrap font-mono">{step.details}</P>
             </div>
         </div>
-
-        <div className="mt-6 p-4 border border-red-200 bg-red-50 rounded-lg break-inside-avoid">
-            <h4 className="font-bold text-red-800 flex items-center"><span className="text-xl mr-2">⚠️</span>Common Mistakes to Avoid</h4>
-            <ul className="list-disc list-inside text-sm text-red-700 mt-2">
-                <li>Trying to sell the next step before you've delivered amazing value on this one.</li>
-                <li>Making the offer too complicated. It should be a simple, clear "yes".</li>
-                <li>Not having a clear follow-up plan for what happens after they buy.</li>
-            </ul>
-        </div>
     </div>
 );
 
 const SummarySection: React.FC<{ model: GeneratedMoneyModel }> = ({ model }) => (
     <div className="break-before-page pt-10">
-        <SectionTitle>Putting It All Together</SectionTitle>
+        <SectionTitle>Putting It All Together ✅</SectionTitle>
         <P>{model.summary}</P>
-        <HighlightBox title="Why This System is So Powerful">
-            <P>By following this model, you create a predictable engine for growth. You're no longer guessing where your next customer will come from. You have a clear path that takes a stranger, turns them into a customer, and uses the money they give you to find the next one. This is how businesses scale without needing outside investment.</P>
-        </HighlightBox>
-        <P>Your next step is to build out the offers for each step of this model. Focus on making each one so good that it's an easy "yes" for your ideal customer.</P>
+        <DoodledBox title="Why This System is a Cheat Code">
+            <P>You're not guessing anymore. You now have a predictable money machine. You take a stranger, turn them into a happy customer, and use the money they just gave you to find the next one. This is how you grow without begging investors for cash.</P>
+        </DoodledBox>
+        <P>Your next job is to build the offers for each step. Make each one so good it's an easy "yes". You got this.</P>
     </div>
 );
 
@@ -109,11 +102,11 @@ interface CfaModelPdfProps {
 
 const CfaModelPdf: React.FC<CfaModelPdfProps> = ({ moneyModel }) => {
   return (
-    <div className="p-12 bg-white font-sans text-gray-900">
+    <div className="p-12 bg-[#FEFBF6] font-sans text-gray-900" style={{border: '8px solid #3A3A3A'}}>
       <TitleSection model={moneyModel} />
       <main>
-        <div className="text-center p-6 bg-yellow-50 rounded-lg border-2 border-yellow-200 break-inside-avoid my-6">
-            <h3 className="text-2xl font-bold text-yellow-800">The Core Principle</h3>
+        <div className="text-center p-6 bg-yellow-50 rounded-lg border-4 border-yellow-200 break-inside-avoid my-6">
+            <h3 className="text-3xl font-bold text-yellow-800" style={{ fontFamily: "'Patrick Hand', cursive" }}>The Big Idea</h3>
             <P className="italic text-xl">"{moneyModel.corePrinciple}"</P>
         </div>
         <FunnelDiagramSection steps={moneyModel.steps} />

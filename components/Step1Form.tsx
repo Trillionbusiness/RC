@@ -62,7 +62,6 @@ const InputField: React.FC<{
                 onChange={onChange}
                 placeholder={placeholder}
                 className={`w-full bg-gray-100 border border-gray-300 rounded-md py-2 px-3 focus:ring-2 transition ${onAutofill ? 'pr-10' : ''}`}
-                // FIX: Cast style object to React.CSSProperties to allow custom CSS properties for Tailwind ring color.
                 style={{ backgroundColor: 'var(--bg-muted)', borderColor: 'var(--border-color)', color: 'var(--text-dark)', '--tw-ring-color': 'var(--primary-color)'} as React.CSSProperties}
                 required={required}
             />
@@ -72,6 +71,57 @@ const InputField: React.FC<{
                     onClick={onAutofill}
                     disabled={isAutofilling}
                     className="absolute inset-y-0 right-0 flex items-center px-3 hover:text-yellow-300 disabled:opacity-50 disabled:cursor-wait"
+                    style={{color: 'var(--primary-color)'}}
+                    aria-label={`Get AI suggestion for ${label}`}
+                    title={`Get AI suggestion for ${label}`}
+                >
+                    {isAutofilling ? (
+                        <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 3.25a.75.75 0 01.75.75v1.25h1.25a.75.75 0 010 1.5H10.75v1.25a.75.75 0 01-1.5 0V6.75H8a.75.75 0 010-1.5h1.25V3.999a.75.75 0 01.75-.75zM10 16.75a.75.75 0 01-.75-.75v-1.25H8a.75.75 0 010-1.5h1.25v-1.25a.75.75 0 011.5 0v1.25h1.25a.75.75 0 010 1.5H10.75v1.25a.75.75 0 01-.75.75zM3.25 10a.75.75 0 01.75-.75h1.25V8a.75.75 0 011.5 0v1.25h1.25a.75.75 0 010 1.5H6.75v1.25a.75.75 0 01-1.5 0V10.75H4a.75.75 0 01-.75-.75zM16.75 10a.75.75 0 01-.75.75h-1.25v1.25a.75.75 0 01-1.5 0V10.75h-1.25a.75.75 0 010-1.5h1.25V8a.75.75 0 011.5 0v1.25h1.25a.75.75 0 01.75.75z" clipRule="evenodd" />
+                        </svg>
+                    )}
+                </button>
+            )}
+        </div>
+    </div>
+);
+
+const TextareaField: React.FC<{
+    id: string,
+    label: string,
+    value: string,
+    onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void,
+    placeholder: string,
+    required?: boolean,
+    rows?: number,
+    onAutofill?: () => void,
+    isAutofilling?: boolean
+}> = ({ id, label, value, onChange, placeholder, required = true, rows = 3, onAutofill, isAutofilling }) => (
+    <div>
+        <label htmlFor={id} className="block text-sm font-medium mb-1" style={{color: 'var(--text-light)'}}>{label}</label>
+        <div className="relative">
+            <textarea
+                id={id}
+                name={id}
+                value={value}
+                onChange={onChange}
+                placeholder={placeholder}
+                required={required}
+                rows={rows}
+                className={`w-full bg-gray-100 border border-gray-300 rounded-md py-2 px-3 focus:ring-2 transition ${onAutofill ? 'pr-10' : ''}`}
+                style={{ backgroundColor: 'var(--bg-muted)', borderColor: 'var(--border-color)', color: 'var(--text-dark)', '--tw-ring-color': 'var(--primary-color)'} as React.CSSProperties}
+            />
+            {onAutofill && (
+                <button
+                    type="button"
+                    onClick={onAutofill}
+                    disabled={isAutofilling}
+                    className="absolute top-2 right-0 flex items-center px-3 hover:text-yellow-300 disabled:opacity-50 disabled:cursor-wait"
                     style={{color: 'var(--primary-color)'}}
                     aria-label={`Get AI suggestion for ${label}`}
                     title={`Get AI suggestion for ${label}`}
@@ -103,7 +153,6 @@ const SelectField: React.FC<{ id: string, label: string, value: string, onChange
             onChange={onChange}
             required
             className="w-full bg-gray-100 border border-gray-300 rounded-md py-2 px-3 focus:ring-2 transition"
-            // FIX: Cast style object to React.CSSProperties to allow custom CSS properties for Tailwind ring color.
             style={{ backgroundColor: 'var(--bg-muted)', borderColor: 'var(--border-color)', color: 'var(--text-dark)', '--tw-ring-color': 'var(--primary-color)'} as React.CSSProperties}
         >
             {children}
@@ -125,7 +174,6 @@ const RadioGroupField: React.FC<{ id: string, label: string, value: string, onCh
                         onChange={onChange}
                         required
                         className="h-4 w-4 bg-gray-100 border-gray-300 focus:ring-offset-gray-50"
-                        // FIX: Cast style object to React.CSSProperties to allow custom CSS properties for Tailwind ring color.
                         style={{color: 'var(--primary-color)', '--tw-ring-color': 'var(--primary-color)'} as React.CSSProperties}
                     />
                     <span>{option.label}</span>
@@ -161,8 +209,10 @@ const Step1Form: React.FC<Step1FormProps> = ({ onSubmit }) => {
     ancillaryProducts: '',
     perceivedMaxPrice: '',
     dailyTimeCommitment: '',
+    typicalDay: '',
     businessStage: 'existing',
     fundingStatus: undefined,
+    isDigital: 'no',
   });
 
   const [selectedCategory, setSelectedCategory] = useState("All Categories");
@@ -173,7 +223,7 @@ const Step1Form: React.FC<Step1FormProps> = ({ onSubmit }) => {
   const [isAutofilling, setIsAutofilling] = useState(false);
   const [autofillError, setAutofillError] = useState<string | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => {
         const newState = { ...prev, [name]: value };
@@ -212,7 +262,7 @@ const Step1Form: React.FC<Step1FormProps> = ({ onSubmit }) => {
         country: '', currency: '', businessType: '', location: '', monthlyRevenue: '', employees: '', marketingMethods: '',
         biggestChallenge: '', coreOffer: '', targetClient: '', offerTimeline: 'one_time', hasSalesTeam: 'no',
         monthlyAdSpend: '0', profitGoal: '', hasCertifications: 'no', hasTestimonials: 'no', physicalCapacity: '',
-        ancillaryProducts: '', perceivedMaxPrice: '', dailyTimeCommitment: '', businessStage: 'existing', fundingStatus: undefined,
+        ancillaryProducts: '', perceivedMaxPrice: '', dailyTimeCommitment: '', businessStage: 'existing', fundingStatus: undefined, typicalDay: '', isDigital: 'no',
         ...example,
     };
 
@@ -266,7 +316,6 @@ const Step1Form: React.FC<Step1FormProps> = ({ onSubmit }) => {
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 className="bg-gray-100 border border-gray-300 rounded-md py-2 px-3 text-sm focus:ring-2"
-                // FIX: Cast style object to React.CSSProperties to allow custom CSS properties for Tailwind ring color.
                 style={{ backgroundColor: 'var(--bg-muted)', borderColor: 'var(--border-color)', color: 'var(--text-dark)', '--tw-ring-color': 'var(--primary-color)'} as React.CSSProperties}
             >
                 {businessCategories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
@@ -302,7 +351,6 @@ const Step1Form: React.FC<Step1FormProps> = ({ onSubmit }) => {
                     onChange={(e) => setAutofillUrl(e.target.value)}
                     placeholder="https://example.com"
                     className="w-full bg-white border border-gray-300 rounded-md py-2 px-3 focus:ring-2 transition"
-                    // FIX: Cast style object to React.CSSProperties to allow custom CSS properties for Tailwind ring color.
                     style={{backgroundColor: 'var(--bg-light)', borderColor: 'var(--border-color)', color: 'var(--text-dark)', '--tw-ring-color': 'var(--primary-color)'} as React.CSSProperties}
                 />
             </div>
@@ -315,7 +363,6 @@ const Step1Form: React.FC<Step1FormProps> = ({ onSubmit }) => {
                     onChange={(e) => setAutofillDescription(e.target.value)}
                     placeholder="e.g., 'We're a new SaaS company building a project management tool for small agencies. We're bootstrapping and want to find our first 10 customers.'"
                     className="w-full bg-white border border-gray-300 rounded-md py-2 px-3 focus:ring-2 transition"
-                    // FIX: Cast style object to React.CSSProperties to allow custom CSS properties for Tailwind ring color.
                     style={{backgroundColor: 'var(--bg-light)', borderColor: 'var(--border-color)', color: 'var(--text-dark)', '--tw-ring-color': 'var(--primary-color)'} as React.CSSProperties}
                 />
             </div>
@@ -373,8 +420,18 @@ const Step1Form: React.FC<Step1FormProps> = ({ onSubmit }) => {
         </div>
         
         <FormSectionHeader>Your Business</FormSectionHeader>
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-6 items-start">
             <InputField id="businessType" label="Business Type or Idea" value={formData.businessType} onChange={handleChange} placeholder="e.g., SaaS, Coaching, Agency" onAutofill={() => handleGenerateField('businessType')} isAutofilling={generatingField === 'businessType'} />
+            <RadioGroupField
+                id="isDigital"
+                label="Is your primary offer digital?"
+                value={formData.isDigital || 'no'}
+                onChange={handleChange}
+                options={[
+                    { label: 'Yes (SaaS, Courses, etc.)', value: 'yes' },
+                    { label: 'No (Gym, Landscaping, etc.)', value: 'no' }
+                ]}
+            />
             <InputField id="location" label="City & State/Province" value={formData.location} onChange={handleChange} placeholder="e.g., Austin, Texas" />
              <SelectField id="country" label="Country" value={formData.country} onChange={handleChange}>
                 <option value="" disabled>Select Country</option>
@@ -388,10 +445,8 @@ const Step1Form: React.FC<Step1FormProps> = ({ onSubmit }) => {
             <InputField id="monthlyRevenue" label="Current Monthly Revenue (use 0 for new ideas)" value={formData.monthlyRevenue} onChange={handleChange} placeholder="e.g., 50000" type="text" />
         </div>
 
-        <FormSectionHeader>Your Offer</FormSectionHeader>
+        <FormSectionHeader>Your Offer & Operations</FormSectionHeader>
         <div className="grid md:grid-cols-2 gap-6">
-            <InputField id="marketingMethods" label="Current or Planned Marketing" value={formData.marketingMethods} onChange={handleChange} placeholder="e.g., Social Media, Referrals" onAutofill={() => handleGenerateField('marketingMethods')} isAutofilling={generatingField === 'marketingMethods'} />
-            <InputField id="biggestChallenge" label="Biggest Challenge or Question" value={formData.biggestChallenge} onChange={handleChange} placeholder="What holds you back?" onAutofill={() => handleGenerateField('biggestChallenge')} isAutofilling={generatingField === 'biggestChallenge'} />
             <InputField id="coreOffer" label="Main Offer & Price (or idea)" value={formData.coreOffer} onChange={handleChange} placeholder="e.g., 12-Week Program for 2000" onAutofill={() => handleGenerateField('coreOffer')} isAutofilling={generatingField === 'coreOffer'} />
             <SelectField id="offerTimeline" label="Offer Timeline" value={formData.offerTimeline} onChange={handleChange}>
                 <option value="" disabled>Select Timeline</option>
@@ -400,9 +455,20 @@ const Step1Form: React.FC<Step1FormProps> = ({ onSubmit }) => {
                 <option value="half_yearly">Per Half-Year</option>
                 <option value="one_time">One-Time Package</option>
             </SelectField>
-            <div className="md:col-span-2">
-                <InputField id="targetClient" label="Your Ideal Customer" value={formData.targetClient} onChange={handleChange} placeholder="Describe your ideal customer" onAutofill={() => handleGenerateField('targetClient')} isAutofilling={generatingField === 'targetClient'}/>
-            </div>
+        </div>
+        <div className="space-y-6 mt-6">
+            <InputField id="marketingMethods" label="Current or Planned Marketing" value={formData.marketingMethods} onChange={handleChange} placeholder="e.g., Social Media, Referrals" onAutofill={() => handleGenerateField('marketingMethods')} isAutofilling={generatingField === 'marketingMethods'} />
+            <InputField id="biggestChallenge" label="Biggest Challenge or Question" value={formData.biggestChallenge} onChange={handleChange} placeholder="What holds you back?" onAutofill={() => handleGenerateField('biggestChallenge')} isAutofilling={generatingField === 'biggestChallenge'} />
+            <TextareaField
+                id="typicalDay"
+                label="Describe your typical workday. What do you actually do all day?"
+                value={formData.typicalDay}
+                onChange={handleChange}
+                placeholder="e.g., '8am: check emails. 9am: team meeting. 10am-1pm: client work. 1-2pm: lunch. 2-5pm: more client work, trying to find time for marketing.'"
+                onAutofill={() => handleGenerateField('typicalDay')}
+                isAutofilling={generatingField === 'typicalDay'}
+            />
+            <InputField id="targetClient" label="Your Ideal Customer" value={formData.targetClient} onChange={handleChange} placeholder="Describe your ideal customer" onAutofill={() => handleGenerateField('targetClient')} isAutofilling={generatingField === 'targetClient'}/>
         </div>
 
         <FormSectionHeader>Your Tools & Goals</FormSectionHeader>
@@ -426,7 +492,6 @@ const Step1Form: React.FC<Step1FormProps> = ({ onSubmit }) => {
             <button 
                 type="submit" 
                 className="w-full text-white font-bold py-3 px-4 rounded-lg hover:opacity-90 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2"
-                // FIX: Cast style object to React.CSSProperties to allow custom CSS properties for Tailwind ring color.
                 style={{backgroundColor: 'var(--primary-color)', '--tw-ring-color': 'var(--primary-color)', '--tw-ring-offset-color': 'var(--bg-light)'} as React.CSSProperties}
             >
                 Make My Plan!

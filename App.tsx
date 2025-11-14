@@ -1,13 +1,13 @@
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import JSZip from 'jszip';
-import { BusinessData, GeneratedPlaybook, OfferStackItem, GeneratedOffer, PreviewConfig, AppState, KpiEntry, WeeklyDebrief, User } from './types';
+import { BusinessData, GeneratedPlaybook, OfferStackItem, GeneratedOffer, PreviewConfig, AppState, KpiEntry, WeeklyDebrief } from './types';
 import { 
     generateDiagnosis, generateMoneyModelAnalysis, generateMoneyModel, 
     generateMoneyModelMechanisms, generateOperationsPlan, generateOffer1, 
     generateOffer2, generateDownsell, generateProfitPath, 
     generateMarketingModel, generateSalesFunnel, generateKpiDashboard,
-    generateSalesSystem, generateWeeklyDebrief
+    generateSalesSystem, generateWeeklyDebrief, generateAdPlaybook
 } from './services/hormoziAiService';
 import Step1Form from './components/Step1Form';
 import ProgressBar from './components/common/ProgressBar';
@@ -25,131 +25,8 @@ declare global {
   }
 }
 
-const AuthScreen: React.FC<{
-  onAuthSuccess: (user: User) => void;
-}> = ({ onAuthSuccess }) => {
-  const [mode, setMode] = useState<'login' | 'signup'>('login');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setIsSubmitting(true);
-    const trimmedUsername = username.trim().toLowerCase();
-    if (!trimmedUsername || !password) {
-      setError('Username and password cannot be empty.');
-      setIsSubmitting(false);
-      return;
-    }
-
-    const endpoint = mode === 'login' ? '/api/auth/login' : '/api/auth/signup';
-
-    try {
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: trimmedUsername, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'An error occurred.');
-      }
-      
-      if (mode === 'signup') {
-         // After successful signup, automatically log in
-        const loginResponse = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: trimmedUsername, password }),
-        });
-        const loginData = await loginResponse.json();
-        if (!loginResponse.ok) throw new Error(loginData.message || 'Login failed after signup.');
-        onAuthSuccess(loginData.user);
-      } else {
-        onAuthSuccess(data.user);
-      }
-
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unknown error occurred.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  return (
-    <div className="max-w-md mx-auto bg-white p-8 rounded-xl shadow-lg border border-gray-200">
-      <h1 className="text-3xl font-bold text-center" style={{color: 'var(--primary-color)'}}>Trillion Business Plan</h1>
-      <p className="text-center text-gray-500 mt-2">Welcome! Please sign in or create an account.</p>
-      
-      <div className="mt-6 flex border border-gray-300 rounded-lg p-1">
-        <button 
-          onClick={() => setMode('login')}
-          className={`w-1/2 py-2 rounded-md font-semibold transition-colors ${mode === 'login' ? 'text-white' : 'text-gray-600'}`}
-          style={{backgroundColor: mode === 'login' ? 'var(--primary-color)' : 'transparent'}}
-        >
-          Login
-        </button>
-        <button 
-          onClick={() => setMode('signup')}
-          className={`w-1/2 py-2 rounded-md font-semibold transition-colors ${mode === 'signup' ? 'text-white' : 'text-gray-600'}`}
-          style={{backgroundColor: mode === 'signup' ? 'var(--primary-color)' : 'transparent'}}
-        >
-          Sign Up
-        </button>
-      </div>
-
-      <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-        <div>
-          <label htmlFor="username" className="sr-only">Username</label>
-          <input
-            id="username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Enter your username"
-            className="w-full bg-gray-100 border border-gray-300 rounded-md py-3 px-4 focus:ring-2"
-            style={{'--tw-ring-color': 'var(--primary-color)'} as React.CSSProperties}
-            autoFocus
-          />
-        </div>
-         <div>
-          <label htmlFor="password"className="sr-only">Password</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
-            className="w-full bg-gray-100 border border-gray-300 rounded-md py-3 px-4 focus:ring-2"
-            style={{'--tw-ring-color': 'var(--primary-color)'} as React.CSSProperties}
-          />
-        </div>
-        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full text-white font-bold py-3 px-4 rounded-lg hover:opacity-90 transition-all duration-300 flex items-center justify-center disabled:opacity-50"
-          style={{backgroundColor: 'var(--primary-color)'}}
-        >
-          {isSubmitting ? 'Processing...' : (mode === 'login' ? 'Login' : 'Create Account')}
-        </button>
-      </form>
-    </div>
-  );
-};
-
-
 const App: React.FC = () => {
-    const [currentUser, setCurrentUser] = useState<User | null>(null);
-    const [isAuthLoading, setIsAuthLoading] = useState(true);
-
     const [appState, setAppState] = useState<AppState>({
-        userId: null,
         playbook: null,
         businessData: null,
         kpiEntries: [],
@@ -180,80 +57,9 @@ const App: React.FC = () => {
     const pdfSingleRenderRef = useRef<HTMLDivElement>(null);
     const pdfZipRenderRef = useRef<HTMLDivElement>(null);
     
-    // Check for active session on initial load
-    useEffect(() => {
-        const checkSession = async () => {
-            try {
-                const response = await fetch('/api/auth/me');
-                if (response.ok) {
-                    const { user } = await response.json();
-                    handleAuthSuccess(user);
-                }
-            } catch (err) {
-                console.error("No active session", err);
-            } finally {
-                setIsAuthLoading(false);
-            }
-        };
-        checkSession();
-    }, []);
-
-    // Save app state to backend (debounced)
-    const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-    useEffect(() => {
-        if (appState.userId && (appState.playbook || appState.businessData)) {
-            if (saveTimeoutRef.current) {
-                clearTimeout(saveTimeoutRef.current);
-            }
-            saveTimeoutRef.current = setTimeout(async () => {
-                try {
-                    await fetch('/api/plan', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(appState)
-                    });
-                } catch (err) {
-                    console.error("Failed to save plan:", err);
-                    setError("Could not save your progress. Please check your connection.");
-                }
-            }, 1000); // Debounce save by 1 second
-        }
-    }, [appState]);
-
-    const handleAuthSuccess = async (user: User) => {
-        setCurrentUser(user);
-        setIsAuthLoading(true);
-        try {
-            const response = await fetch('/api/plan');
-            if (response.ok) {
-                const loadedState = await response.json();
-                if (loadedState && loadedState.playbook) {
-                    setAppState(loadedState);
-                } else {
-                    setAppState({ userId: user.id, playbook: null, businessData: null, kpiEntries: [], weeklyDebriefs: [] });
-                }
-            } else {
-                // No plan saved yet, start fresh
-                setAppState({ userId: user.id, playbook: null, businessData: null, kpiEntries: [], weeklyDebriefs: [] });
-            }
-        } catch (err) {
-            console.error("Failed to load plan:", err);
-            setError("Could not load your plan. Starting fresh.");
-            setAppState({ userId: user.id, playbook: null, businessData: null, kpiEntries: [], weeklyDebriefs: [] });
-        } finally {
-            setIsAuthLoading(false);
-        }
-    };
-
-    const handleLogout = async () => {
-        await fetch('/api/auth/logout', { method: 'POST' });
-        setCurrentUser(null);
-        setAppState({ userId: null, playbook: null, businessData: null, kpiEntries: [], weeklyDebriefs: [] });
-    };
-
     const handleStartNewPlan = () => {
-        if (window.confirm("Are you sure you want to start a new plan? Your current saved plan will be overwritten.")) {
-            setAppState(prev => ({ ...prev, playbook: null, businessData: null, kpiEntries: [], weeklyDebriefs: [] }));
+        if (window.confirm("Are you sure you want to start a new plan? Your current progress will be lost.")) {
+            setAppState({ playbook: null, businessData: null, kpiEntries: [], weeklyDebriefs: [] });
         }
     };
 
@@ -261,15 +67,14 @@ const App: React.FC = () => {
         setIsLoading(true);
         setError(null);
 
-        setAppState(prev => ({
-            ...prev,
+        setAppState({
             playbook: null,
             businessData: data,
             kpiEntries: [],
             weeklyDebriefs: [],
-        }));
+        });
     
-        const totalSteps = 13;
+        const totalSteps = 14;
         let completedSteps = 0;
 
         const updateProgress = (taskName: string) => {
@@ -329,6 +134,10 @@ const App: React.FC = () => {
           const salesSystem = await generateSalesSystem(data);
           await delay(1500);
           
+          updateProgress('Creating your Custom Ad Playbook...');
+          const adPlaybook = await generateAdPlaybook(data);
+          await delay(1500);
+
           updateProgress('Finalizing your KPI dashboard...');
           const kpiDashboard = await generateKpiDashboard(data);
 
@@ -346,6 +155,7 @@ const App: React.FC = () => {
             salesFunnel,
             kpiDashboard,
             salesSystem,
+            adPlaybook,
           };
 
           setAppState(prev => ({...prev, playbook: newPlaybook}));
@@ -428,7 +238,7 @@ const App: React.FC = () => {
                         } else if (pdfConfig.type === 'asset-bundle' && pdfConfig.assetBundle) {
                             fileName = `${pdfConfig.assetBundle.name}_Asset_Bundle.pdf`;
                         } else {
-                            fileName = `${pdfConfig.type.replace('-', '_')}.pdf`;
+                            fileName = `${pdfConfig.type.replace(/-/g, '_')}.pdf`;
                         }
                         await generateSinglePdf(element, fileName);
                     } catch(e) {
@@ -540,24 +350,6 @@ const App: React.FC = () => {
         }
     };
 
-    if (isAuthLoading) {
-      return (
-        <div className="min-h-screen flex items-center justify-center">
-            <div className="text-center">
-                <p className="text-lg font-semibold" style={{color: 'var(--primary-color)'}}>Loading Your Business Plan...</p>
-            </div>
-        </div>
-      );
-    }
-
-    if (!currentUser) {
-        return (
-          <div className="min-h-screen py-10 px-4">
-            <AuthScreen onAuthSuccess={handleAuthSuccess} />
-          </div>
-        );
-    }
-
     if (!appState.playbook) {
         return (
           <div className="min-h-screen py-10 px-4">
@@ -578,15 +370,6 @@ const App: React.FC = () => {
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
                   <h1 className="text-2xl font-bold" style={{color: 'var(--primary-color)'}}>Trillion Business Plan</h1>
                   <div className="flex items-center gap-2 flex-wrap justify-center">
-                      <div className="text-sm text-gray-600">
-                        Welcome, <span className="font-bold capitalize">{currentUser.username}</span>
-                      </div>
-                       <button
-                        onClick={handleLogout}
-                        className="px-3 py-1 bg-gray-200 text-gray-700 font-semibold rounded-md hover:bg-gray-300 transition-colors text-xs"
-                      >
-                        Logout
-                      </button>
                       <button
                         onClick={handleStartNewPlan}
                         className="px-4 py-2 bg-gray-200 font-semibold rounded-md hover:bg-gray-300 transition-colors text-sm"
@@ -598,11 +381,24 @@ const App: React.FC = () => {
                           label="Download Options" 
                           isLoading={isGeneratingPdf || isZipping}
                           progress={isZipping ? zipProgress : pdfProgress}
-                          options={[
+                           options={[
+                              { label: 'One-Year Blueprint (PDF)', onClick: () => handleDownloadPdf('one-year-blueprint'), onPreview: () => handlePreviewPdf({type: 'one-year-blueprint'}) },
+                              { separator: true },
                               { label: 'Full Playbook (PDF)', onClick: () => handleDownloadPdf('full'), onPreview: () => handlePreviewPdf({type: 'full'}) },
+                              { label: 'Money Models Guide (PDF)', onClick: () => handleDownloadPdf('money-models-guide'), onPreview: () => handlePreviewPdf({type: 'money-models-guide'}) },
+                              { label: 'Core Concepts Guide (PDF)', onClick: () => handleDownloadPdf('concepts-guide'), onPreview: () => handlePreviewPdf({type: 'concepts-guide'}) },
+                              { label: 'Ad Frameworks Guide (PDF)', onClick: () => handleDownloadPdf('ad-frameworks-guide'), onPreview: () => handlePreviewPdf({type: 'ad-frameworks-guide'}) },
+                              { label: 'Ad Remixing Guide (PDF)', onClick: () => handleDownloadPdf('ad-kaleidoscope-guide'), onPreview: () => handlePreviewPdf({type: 'ad-kaleidoscope-guide'}) },
+                              { label: 'Proof Checklist (PDF)', onClick: () => handleDownloadPdf('proof-checklist'), onPreview: () => handlePreviewPdf({type: 'proof-checklist'}) },
                               { label: 'Business Scorecard (KPIs)', onClick: () => handleDownloadPdf('kpi-dashboard'), onPreview: () => handlePreviewPdf({type: 'kpi-dashboard'}) },
                               { label: 'Offer Presentation Slides', onClick: () => handleDownloadPdf('offer-presentation'), onPreview: () => handlePreviewPdf({type: 'offer-presentation'}) },
-                              { label: 'Money Model Plan', onClick: () => handleDownloadPdf('cfa-model'), onPreview: () => handlePreviewPdf({type: 'cfa-model'}) },
+                              { label: 'Landing Page Mockup (PDF)', onClick: () => handleDownloadPdf('landing-page'), onPreview: () => handlePreviewPdf({type: 'landing-page'}) },
+                              { separator: true },
+                              { label: 'Sales Mindset Guide (PDF)', onClick: () => handleDownloadPdf('sales-mindset-guide'), onPreview: () => handlePreviewPdf({type: 'sales-mindset-guide'}) },
+                              { label: 'Hunt Mode Playbook (PDF)', onClick: () => handleDownloadPdf('hunt-mode-playbook'), onPreview: () => handlePreviewPdf({type: 'hunt-mode-playbook'}) },
+                              { label: 'Kill Mode Playbook (PDF)', onClick: () => handleDownloadPdf('kill-mode-playbook'), onPreview: () => handlePreviewPdf({type: 'kill-mode-playbook'}) },
+                              { label: 'Objection Handling Guide (PDF)', onClick: () => handleDownloadPdf('objection-handling-guide'), onPreview: () => handlePreviewPdf({type: 'objection-handling-guide'}) },
+                              { label: 'Complete Sales Scripts (PDF)', onClick: () => handleDownloadPdf('complete-scripts'), onPreview: () => handlePreviewPdf({type: 'complete-scripts'}) },
                               { separator: true },
                               { label: 'Offline Interactive Plan (HTML)', onClick: handleDownloadOfflineApp, onPreview: null },
                               { separator: true },
