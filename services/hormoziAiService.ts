@@ -4,7 +4,9 @@ import {
     BusinessData, GeneratedPlaybook, OfferStackItem, GeneratedDiagnosis, 
     GeneratedMoneyModelAnalysis, GeneratedMoneyModel, GeneratedMoneyModelMechanisms, 
     GeneratedOperationsPlan, GeneratedOffer, GeneratedDownsell, GeneratedProfitPath, 
-    GeneratedMarketingModel, GeneratedSalesFunnel, GeneratedKpiDashboard, ChatMessage, GeneratedSalesSystem, KpiEntry, WeeklyDebrief, GeneratedAdPlaybook 
+    GeneratedMarketingModel, GeneratedSalesFunnel, GeneratedKpiDashboard, ChatMessage, 
+    GeneratedSalesSystem, KpiEntry, WeeklyDebrief, GeneratedAdPlaybook, GeneratedMarketIndicatorAnalysis,
+    GeneratedProductImprovementPlan
 } from '../types';
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
@@ -40,96 +42,58 @@ Your persona is a blend of a world-class business strategist, a master of logica
 --- Your Expanded Knowledge Base - The $100M Playbooks ---
 You must use the following frameworks and concepts in your responses.
 
-**0. Products vs. Services vs. Access**
-- **Core Idea:** Business offerings fall into three categories, each with physical and digital versions. This allows for creative value-stacking.
-- **Products (Stuff):** Physical (supplements) or Digital (Netflix subscription, media). These have value independent of the owner's time.
-- **Services (Done for you):** Physical (massage) or Digital (marketing agency). Value is tied to labor. Harder to scale.
-- **Access (Proximity):** Physical (concert tickets) or Digital (private Slack group, virtual event). The highest margin category. Sells proximity to expertise or a community.
-- **Application:** The best businesses mix these. A physical product can be enhanced with a digital service. A service can be enhanced with access. A powerful, high-ticket offer often sells *access*—an individualized, high-touch version of your solution.
+**1. Finding a Hungry Crowd: The 4 Market Indicators**
+- The market is the single most important variable. A great product in a bad market will fail. A mediocre product in a starving market will sell out.
+- **1. Massive Pain:** The customer doesn't just *want* your solution, they *must have* it. It solves a desperate, urgent problem that keeps them up at night.
+- **2. Purchasing Power:** The customer can actually afford your solution without it being a major financial hardship. (Example: Don't sell resume-fixing services to unemployed people who have no money).
+- **3. Easy to Target:** You can find these customers easily and affordably in a specific place. (Example: 'Nurses' are easy to target on LinkedIn. 'Psychedelic Aztecs in Croatia' are not).
+- **4. Growing Market:** The entire market is expanding. This gives you a natural tailwind that makes growth easier. Selling to a shrinking market (like newspapers) is like swimming upstream.
 
-**1. Branding: How to Get Famous**
-- **Core Idea:** Branding is pairing. You pair your business with things your ideal audience already likes (people, outcomes, values).
-- **The Process:** 1) Find your ideal customer (growing, has money, easy to target, in pain). 2) Find out what they like. 3) Associate your brand with those things (content, partnerships). 4) Turn that association into a premium product people will pay more for, turning a generic item into a premium one through brand.
+**2. The Four Core Money Models & Offer Creation**
+- **Value Equation:** Value = (Dream Outcome x Perceived Likelihood of Achievement) / (Time Delay x Effort & Sacrifice). Every offer must maximize the top and minimize the bottom.
+- **Attraction Offers (Get Customers):** These are front-end, often free or low-cost, designed to acquire a customer profitably.
+    - *Win Your Money Back:* Customer pays, and gets a refund if they achieve a specific, action-based result (e.g., "Lose 20lbs in 6 weeks").
+    - *Giveaways:* Offer a huge "Grand Prize" to generate leads, then offer a discount/smaller prize to all non-winners.
+    - *Decoy Offer:* Advertise a basic/free offer to attract leads, then present a vastly superior premium offer side-by-side to make the premium option a no-brainer.
+    - *Buy X Get Y Free:* Frame discounts as free items (e.g., "Buy 1 Get 2 Free" is better than "3 for the price of 1").
+    - *Pay Less Now or Pay More Later:* A free trial that requires a credit card, which bills later. The "Pay Now" option is a discounted price with extra bonuses.
+- **Upsell Offers (Get More Cash, Faster):** Offer these immediately after the initial purchase.
+    - *Classic "Fries with that" Upsell:* Sell a logical, complementary item (e.g., buy a bike, offer a helmet).
+    - *Menu Upsell:* Give customers a menu of options, tell them what they *don't* need (unselling) to build trust, then prescribe what they *do* need.
+    - *Anchor Upsell:* Present the hyper-premium, expensive option first. When they balk, the main offer seems like a fantastic deal.
+    - *Rollover Upsell:* Credit a customer's past purchase towards a new, more expensive one.
+- **Downsell Offers (Save the 'No'):** When a customer says no to an offer, provide an alternative.
+    - *Payment Plans:* Offer to split the cost over time. The product and total price remain the same.
+    - *Trial with Penalty:* A free trial, but they get charged a "penalty" if they don't complete certain actions (e.g., attend onboarding calls). This ensures engagement.
+    - *Feature Downsell:* Lower the price by removing a feature (e.g., "Okay, you can have it for less, but without the 1-on-1 coaching").
+- **Continuity Offers (Keep Them Paying):** The key to long-term recurring revenue.
+    - *Continuity Bonus:* Give a high-value bonus for free if they sign up for a subscription today.
+    - *Continuity Discount:* Offer a period of free service if they commit to a longer-term contract (e.g., "First 3 months free on an annual plan").
+    - *Waived Fee:* Charge a large setup fee for month-to-month service, but waive the fee entirely if they commit to a year.
 
-**2. Pricing & Lifetime Value (LTV): The "Crazy 8" & Instant Profit**
-- **Core Idea:** Price to make the most *profit*, not the most sales. Raising prices is the most powerful lever for profit. The goal is LTV > 3x CAC.
-- **The Crazy 8 to Increase LTV:**
-  - 1. Increase Prices: The #1 profit driver.
-  - 2. Decrease Costs: Offshore talent, productize services.
-  - 3. Increase # of Purchases: Add recurring models, decrease churn.
-  - 4. Cross-Sell: Sell something different (fries with the burger).
-  - 5. Sell More (Quantity): Get them to buy more at once.
-  - 6. Sell Better (Quality): Offer a premium version.
-  - 7. Downsell Fewer (Quantity): Offer a smaller package to non-buyers.
-  - 8. Downsell Worse (Quality): Offer a lower-quality version to non-buyers.
-- **Instant Profit Plays:** Suggest these where applicable.
-  - 1. Switch to 28-Day Billing Cycles (13 payments/year).
-  - 2. Add Processing Fees & Get a 2nd Form of Payment (reduces churn).
-  - 3. Pass on Sales Tax.
-  - 4. Annual Price Increases in contracts.
-  - 5. Offer Annual Billing (with a discount).
-  - 6. Round Up Prices (e.g., $47 -> $49).
-  - 7. Add an Annual Renewal Fee on top of monthly.
-  - 8. Automatic Continuity (a low-cost subscription after a main purchase).
-  - 9. Ultra High-Ticket Anchor (makes your main offer look cheap).
-  - 10. Guarantee/Warranty Upsells.
+**3. GOATed Ads & The Ad Kaleidoscope**
+- **Core Idea:** 90% of an ad's success is the hook (first 3 seconds). Find one winning ad, then multiply it.
+- **Ad Kaleidoscope - Remixing (Post-Production):** Easy tweaks to a winning ad video.
+    - New Speed (1.1x), New Filters (B&W), New Background/Border, New Fonts/Captions, New Headline, New Format (square vs vertical).
+- **Ad Kaleidoscope - Remaking (Re-Recording):** Re-shoot the winning script with minor changes.
+    - New Clone (just re-film it), New Props, New Examples (change a number), New Setting, New Talent (someone else reads the script).
+- **Ad Frameworks:**
+    - *Personal Testimonial/Origin Story:* Tell a "rags to riches" story, building mystery and overcoming objections.
+    - *Prop Comedy:* Use a physical object to create a pattern interrupt and demonstrate value (e.g., Dollar Shave Club).
+    - *Emotional Avatar Testimonial:* A customer tells their emotional story, focusing on the pain before and the dream outcome after.
+    - *Show, Don't Tell:* Use raw, behind-the-scenes footage with no narration to prove your claims (e.g., a packed gym, a full calendar).
+    - *Long-Term Result:* Contrast small, short-term results with massive, long-term transformations to attract higher-quality buyers.
 
-**3. GOATed Ads & Hooks: How to Get Clicks**
-- **Core Idea:** 90% of an ad's success is the hook (the first 3 seconds).
-- **Ad Assembly Process:** Mass produce ads. 1) Write 50 Hooks. 2) Write 3-5 "Meats" (the body). 3) Record 1-3 CTAs. Combine them to make 150-750 ad variations.
-- **Targeting Awareness:** Hooks must match the audience's awareness level (Unaware, Problem Aware, Solution Aware, Product Aware, Most Aware).
-
-**4. Marketing Machine: Endless Ads from Your Customers**
-- **Core Idea:** Your best marketing is the results of your customers. Turn their success into your ads.
-- **System:** Create a checklist to systematically capture customer wins:
-  - **Lifecycle Ads:** Record sales/onboarding/support calls to show before/during/after transformations.
-  - **Social Media Scrape:** Capture every tag, mention, and positive comment.
-  - **Events:** Record testimonials, get stage pictures.
-  - **Reviews & Communities:** Screenshot positive reviews and comments.
-  - **Competitions:** Run competitions for the best testimonial video.
-
-**5. Lead Nurture: Getting People to Show Up**
-- **Core Idea:** People who don't show, can't buy. Maximize appointment show rates.
-- **The 4 Pillars:**
-  - 1. **Availability:** Be open more. Offer more appointment slots.
-  - 2. **Speed:** Contact leads in under 5 minutes. Schedule appointments within 3 days.
-  - 3. **Personalization:** Use their name. Reference their problem. Make them feel seen.
-  - 4. **Volume:** Follow up relentlessly. Double dial. Text. Email. It takes 7+ touches.
-
-**6. Retention: How to Stop Churn**
-- **Core Idea:** It's 5x cheaper to keep a customer than get a new one. Overwhelm is the #1 reason for churn, so make success simple and easy.
-- **Key Actions:**
-  - **Find Activation Point:** What's the one action successful customers take? Get ALL new users to do that thing ASAP.
-  - **Onboard:** Your onboarding should be a tutorial on how to hit the activation point.
-  - **Incentivize:** Reward them for hitting milestones, especially just after common churn points.
-  - **Community:** Connect customers to each other. It's harder to leave a relationship than a membership.
-  - **Exit Interviews:** Talk to people who want to cancel. You can save half of them.
-
-**7. Leila Hormozi's Scaling SOPs:**
-- **5 Star Service:** Focus on Concern, Courtesy, One & Done, Educate & Empower, Timeliness.
-- **Gametape Review:** Marketing, Sales, and Success teams must review customer calls *together* weekly to stay aligned. This is a non-negotiable for operational excellence.
-- **High Performance Communication:** Energy, Engagement, Exploration. Fast communication is a sign of a healthy team.
-
-**8. Offer Creation: The Value Equation**
-- **Formula:** Value = (Dream Outcome x Perceived Likelihood of Achievement) / (Time Delay x Effort & Sacrifice).
-- **Application:** To make an irresistible offer, maximize the top line and minimize the bottom line. Every part of your offer should do one of these four things.
-
-**9. Proof: The Ultimate Differentiator**
-- **Core Idea:** Your promise is not a differentiator. Your proof is. Anyone can make a claim, but only you have your results. The more compelling your proof, the less you have to "sell."
-- **The Proof Hierarchy (More Compelling > Less Compelling):**
-  - **In-Person > Virtual:** Seeing is believing.
-  - **Live > Recorded:** Real-time proof is more powerful than a replay.
-  - **Raw > Processed:** A raw iPhone video feels more real than a slick, edited one.
-  - **Show > Tell:** Show the packed gym, don't just say you have lots of members.
-  - **Other People > You:** A customer's words are 10x more powerful than yours.
-  - **Identical to Them > Opposite of Them:** People believe testimonials from people who look and sound just like them.
-  - **Personal > Generic:** "I couldn't wear anything because my thighs would chafe" is better than "I was overweight."
-  - **Big Results > Small Results:** One huge, unbelievable result is better than 100 mediocre ones.
-  - **Newer Proof > Older Proof:** A result from last week is better than one from last year.
-  - **More Proof > Less Proof:** A "floor-to-ceiling" wall of 100s of testimonials is overwhelming...in a good way.
-  - **Third Party Verification > Zero Verification:** A review on Google is more believable than one on your own site.
-  - **Proof With Numbers > Proof Without Numbers:** "54.1% of users make money" is better than "lots of users make money."
-  - **Metaphors > Technical Jargon:** "It's like an investment account for your business" is better than explaining SEO.
+**4. Sales & Closing: The ACQ Handbooks**
+- **Mindset:** Volume negates luck. Don't be cute, be direct. Breathe the script until it's natural. The goal is to get a "yes" or a "no", not a "maybe".
+- **Hunt vs. Kill Mode:** *Hunt Mode* is everything you do to get prospects on the phone. *Kill Mode* is everything you do on the phone to close the sale.
+- **The 9 Kill Skills:** Breathe Script, Tone, Intro, Discovery, Offer, Objections, Looping, BAMFAM (Book-A-Meeting-From-A-Meeting), Referrals.
+- **The 5 Core Objections:** Time, Money, Decision-Maker, Preference, Stall.
+- **Objection Looping:** The core framework for handling any objection.
+    - 1. **Acknowledge/Agree:** "Totally get it. And..." (NEVER use "but").
+    - 2. **Address:** Reframe their concern as a reason to buy now.
+    - 3. **Ask Again:** Immediately ask for the sale.
+- **Proof Hierarchy:** Your proof is your differentiator. A raw customer testimonial is more powerful than you talking. A specific number is better than a vague claim. (e.g., Show > Tell, Other People > You, With Numbers > Without Numbers).
 `;
 
 // --- SCHEMAS ---
@@ -149,10 +113,10 @@ const offerSchema = {
                     value: { type: Type.STRING, description: "The specific monetary value of this solution, e.g., '$2,000'." },
                     asset: {
                         type: Type.OBJECT,
-                        description: "A mandatory downloadable asset. CRITICAL: Based on the business's 'isDigital' status, generate one of two types of assets. (1) If 'isDigital: no', the asset is a guide FOR THE BUSINESS OWNER on how to create/deliver the service, including a '### How to Learn This' section with resources (books, courses, experts). The type MUST be 'guide'. (2) If 'isDigital: yes', the asset is a digital product FOR THE END CUSTOMER (template, checklist, script). Its content should be the full, ready-to-use text.",
+                        description: "A mandatory downloadable asset. CRITICAL: The asset must always be a valuable digital product (template, framework, checklist, script, guide, blueprint) intended FOR THE END CUSTOMER. It should serve as a powerful lead magnet or a core component of the value stack. The content should be the full, ready-to-use text for that digital product. In rare cases where creating the full asset content is too complex (e.g., a 50-page ebook), you may instead generate a detailed 'Blueprint Guide' FOR THE BUSINESS OWNER on exactly how to create this high-value asset, including chapter outlines, key talking points, and resource suggestions. If you do this, the asset name MUST start with 'Blueprint Guide:'.",
                         properties: {
-                            name: { type: Type.STRING, description: "The filename for the asset. For non-digital businesses, this should be like 'Guide: How to Create...'" },
-                            type: { type: Type.STRING, description: "The type of asset. For non-digital businesses, this MUST be 'guide'. For digital, it can be 'template', 'framework', 'checklist', 'script', 'guide'." },
+                            name: { type: Type.STRING, description: "The filename for the asset. If generating a guide for the business owner on how to create the asset, the name must start with 'Blueprint Guide:'." },
+                            type: { type: Type.STRING, description: "The type of asset: 'template', 'framework', 'checklist', 'script', 'guide'." },
                             content: { type: Type.STRING, description: "The full, ready-to-use text content of the asset, formatted in simple Markdown." }
                         },
                         required: ["name", "type", "content"]
@@ -178,6 +142,77 @@ const diagnosisSchema = {
         actions: { type: Type.ARRAY, items: { type: Type.STRING } }
     },
     required: ["currentStage", "yourRole", "constraints", "actions"]
+};
+
+const marketIndicatorAnalysisSchema = {
+    type: Type.OBJECT,
+    properties: {
+        title: { type: Type.STRING, description: "A compelling title, e.g., 'Your Market Hunger Score'." },
+        corePrinciple: { type: Type.STRING, description: "The core idea, e.g., 'It's better to have a mediocre hot dog stand in front of a starving crowd than the best hot dogs in a desert.'" },
+        overallScore: { type: Type.INTEGER, description: "The average score of all indicators, from 1 to 10." },
+        summary: { type: Type.STRING, description: "A brutally honest but encouraging summary of the market's strength." },
+        indicators: {
+            type: Type.ARRAY,
+            description: "An array of exactly 4 indicators, one for each type.",
+            items: {
+                type: Type.OBJECT,
+                properties: {
+                    indicatorName: { type: Type.STRING, description: "'Massive Pain', 'Purchasing Power', 'Easy to Target', or 'Growing Market'." },
+                    score: { type: Type.INTEGER, description: "A score from 1 to 10 evaluating this indicator for the user's market." },
+                    analysis: { type: Type.STRING, description: "A concise analysis explaining the score." },
+                    suggestion: { type: Type.STRING, description: "A single, actionable suggestion to improve this score." }
+                },
+                required: ["indicatorName", "score", "analysis", "suggestion"]
+            }
+        },
+        pivotSuggestion: { type: Type.STRING, description: "If the overall score is low (e.g., below 6), provide a specific, alternative target market idea that would score higher. Otherwise, leave as an empty string." }
+    },
+    required: ["title", "corePrinciple", "overallScore", "summary", "indicators", "pivotSuggestion"]
+};
+
+const productImprovementPlanSchema = {
+    type: Type.OBJECT,
+    properties: {
+        title: { type: Type.STRING, description: "A compelling title, e.g., 'Your Product Value Multiplier Blueprint'." },
+        corePrinciple: { type: Type.STRING, description: "The core Hormozi principle about product quality being paramount." },
+        problemAnalysis: { type: Type.STRING, description: "A brutally honest analysis of why the user's current offer is not valuable enough, linking it to their biggest challenge." },
+        improvementLevers: {
+            type: Type.ARRAY,
+            description: "An array of exactly 4 levers, one for each component of the Value Equation.",
+            items: {
+                type: Type.OBJECT,
+                properties: {
+                    leverName: { type: Type.STRING, description: "'Dream Outcome', 'Likelihood of Achievement', 'Time Delay', or 'Effort & Sacrifice'." },
+                    strategy: { type: Type.STRING, description: "A high-level strategy for improving this lever for the user's specific business." },
+                    tactics: { type: Type.ARRAY, items: { type: Type.STRING }, description: "2-3 concrete, actionable tactics to implement the strategy." }
+                },
+                required: ["leverName", "strategy", "tactics"]
+            }
+        },
+        valueStackTransformation: {
+            type: Type.OBJECT,
+            properties: {
+                summary: { type: Type.STRING, description: "A summary of how these changes transform the offer's value." },
+                comparisons: {
+                    type: Type.ARRAY,
+                    items: {
+                        type: Type.OBJECT,
+                        properties: {
+                            itemName: { type: Type.STRING, description: "The name of the feature or component being improved." },
+                            before: { type: Type.STRING, description: "What it was before." },
+                            after: { type: Type.STRING, description: "What it becomes after the improvement." },
+                            valueIncrease: { type: Type.STRING, description: "The estimated increase in perceived value, e.g., '+$1,000'." }
+                        },
+                        required: ["itemName", "before", "after", "valueIncrease"]
+                    }
+                },
+                newValue: { type: Type.STRING, description: "The new total perceived value of the transformed offer." }
+            },
+            required: ["summary", "comparisons", "newValue"]
+        },
+        summary: { type: Type.STRING, description: "A concluding, motivational summary about focusing on delivering insane value." }
+    },
+    required: ["title", "corePrinciple", "problemAnalysis", "improvementLevers", "valueStackTransformation", "summary"]
 };
 
 const modelComparisonSchema = {
@@ -601,13 +636,23 @@ export const generateDiagnosis = async (data: BusinessData): Promise<GeneratedDi
     return generate<GeneratedDiagnosis>(prompt, diagnosisSchema);
 };
 
+export const generateMarketIndicatorAnalysis = async (data: BusinessData): Promise<GeneratedMarketIndicatorAnalysis> => {
+    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Critically analyze the user's business and target market against the '4 Market Indicators' framework. Be brutally honest. For each indicator, provide a score from 1-10 (1=terrible, 10=perfect), a concise analysis justifying the score, and one actionable suggestion for improvement. If the overall market is weak (average score below 6), provide a specific, creative pivot suggestion to a stronger market.`;
+    return generate<GeneratedMarketIndicatorAnalysis>(prompt, marketIndicatorAnalysisSchema);
+};
+
+export const generateProductImprovementPlan = async (data: BusinessData): Promise<GeneratedProductImprovementPlan> => {
+    const prompt = `${createBusinessContextPrompt(data)}\nTASK: The user's current product/offer needs to be transformed from a 'nice-to-have' into a 'must-have painkiller'. Your job is to create a Product Improvement Blueprint. Analyze their core offer and biggest challenge, then use the Value Equation (Dream Outcome, Likelihood of Achievement, Time Delay, Effort & Sacrifice) as a framework to devise concrete, tactical improvements. Generate a 'Before & After' value stack comparison to quantify the transformation. Make it brutally honest and incredibly actionable.`;
+    return generate<GeneratedProductImprovementPlan>(prompt, productImprovementPlanSchema);
+};
+
 export const generateMoneyModelAnalysis = async (data: BusinessData): Promise<GeneratedMoneyModelAnalysis> => {
     const prompt = `${createBusinessContextPrompt(data)}\nTASK: Analyze the business's current money model (or lack thereof) and propose a new, powerful one. Compare the 'Old Model' vs. 'New Model' using simple terms and metrics. Project the LTV/CAC analysis and the potential immediate profit from a new customer under the new model. The goal is a money-printing machine.`;
     return generate<GeneratedMoneyModelAnalysis>(prompt, moneyModelAnalysisSchema);
 };
 
 export const generateMoneyModelMechanisms = async (data: BusinessData): Promise<GeneratedMoneyModelMechanisms> => {
-    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Generate a "Money Model Toolkit" using the "Crazy 8" LTV framework. Provide one specific, powerful tactic for each of the four monetization levers: Attraction, Upsell, Downsell, and Continuity. For each tactic, explain the strategy with a simple analogy, provide a concrete example tailored to this business, and give practical, funny implementation notes.`;
+    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Generate a "Money Model Toolkit" using the core four money models. Provide one specific, powerful tactic for each of the four monetization levers: Attraction, Upsell, Downsell, and Continuity. For each tactic, explain the strategy with a simple analogy, provide a concrete example tailored to this business, and give practical, funny implementation notes.`;
     return generate<GeneratedMoneyModelMechanisms>(prompt, moneyModelMechanismsSchema);
 };
 
@@ -650,7 +695,7 @@ export const generateProfitPath = async (data: BusinessData): Promise<GeneratedP
 };
 
 export const generateOperationsPlan = async (data: BusinessData): Promise<GeneratedOperationsPlan> => {
-    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Create a simple Operations Plan. Define the core operational principle. Identify high-leverage outcomes and activities. Propose 1-2 key team roles needed, but describe them in terms of 'superpowers' and 'missions', not boring responsibilities. Within the daily structure or responsibilities, you MUST include a weekly 'Gametape Review' session where sales, marketing, and success teams review a customer call together to ensure alignment.`;
+    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Create a simple Operations Plan. Define the core operational principle. Identify high-leverage outcomes and activities. Propose 1-2 key team roles needed, but describe them in terms of 'superpowers' and 'missions', not boring responsibilities. Within the daily structure or responsibilities, you MUST include a weekly 'Gametape Review' session where sales, marketing, and success teams review a customer call together to ensure alignment, as per Leila Hormozi's SOPs.`;
     return generate<GeneratedOperationsPlan>(prompt, operationsPlanSchema);
 };
 
@@ -660,7 +705,7 @@ export const generateKpiDashboard = async (data: BusinessData): Promise<Generate
 };
 
 export const generateSalesSystem = async (data: BusinessData): Promise<GeneratedSalesSystem> => {
-    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Create a complete 'Persuasion Engine' (Sales System). The strategies must embody the Four Pillars of Lead Nurture: Availability, Speed, Personalization, and Volume. For each of the 5 core outreach methods, provide the strategy, a high-impact copy-pasteable template, and specific, clever scripts to handle the absolute 'worst-case scenario' objections. The copy must be world-class.`;
+    const prompt = `${createBusinessContextPrompt(data)}\nTASK: Create a complete 'Persuasion Engine' (Sales System) based on the ACQ Closer Handbook. The strategies must embody the Four Pillars of Lead Nurture. For each of the 5 core outreach methods, provide the strategy, a high-impact copy-pasteable template, and specific, clever scripts to handle 'worst-case scenario' objections using the Objection Looping framework. The copy must be world-class.`;
     return generate<GeneratedSalesSystem>(prompt, salesSystemSchema);
 };
 

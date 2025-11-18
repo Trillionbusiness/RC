@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
     GeneratedPlaybook,
@@ -6,7 +7,7 @@ import {
 } from '../../types';
 
 // Import all the PDF components
-import BlueprintToOneMillionPdf from './BlueprintToOneMillionPdf';
+import OneYearBlueprintPdf from './OneYearBlueprintPdf';
 import ConceptsGuidePdf from './ConceptsGuidePdf';
 import KpiDashboardPdf from './KpiDashboardPdf';
 import OfferPresentationPdf from './OfferPresentationPdf';
@@ -118,7 +119,7 @@ const FullPlaybookPdf: React.FC<FullPlaybookPdfProps> = ({ playbook, businessDat
         {/* PART 1: STRATEGY & MINDSET */}
         <SectionTitlePage number={1} title="Strategy & Mindset" subtitle="The concepts and blueprint for your success." />
         <ConceptsGuidePdf playbook={playbook} businessData={businessData} />
-        <BlueprintToOneMillionPdf playbook={playbook} businessData={businessData} />
+        <OneYearBlueprintPdf playbook={playbook} businessData={businessData} />
 
         {/* PART 2: DIAGNOSIS & ROADMAP */}
         <SectionTitlePage number={2} title="Diagnosis & Roadmap" subtitle="Your current location and the path to your destination." />

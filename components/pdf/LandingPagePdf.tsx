@@ -16,6 +16,11 @@ const DoodledPlaceholder: React.FC<{ text: string, className?: string }> = ({ te
         <p className="text-gray-500 font-semibold text-lg" style={{ fontFamily: "'Patrick Hand', cursive" }}>{text}</p>
     </div>
 );
+const Annotation: React.FC<{ children: React.ReactNode, className?: string }> = ({ children, className }) => (
+    <div className={`absolute p-2 bg-yellow-200 text-yellow-900 text-xs font-bold rounded-lg shadow-lg border border-yellow-400 ${className}`} style={{ fontFamily: "'Patrick Hand', cursive" }}>
+        {children}
+    </div>
+);
 
 interface LandingPagePdfProps {
     playbook: GeneratedPlaybook;
@@ -41,13 +46,20 @@ const LandingPagePdf: React.FC<LandingPagePdfProps> = ({ playbook, businessData 
                 </div>
 
                 {/* Page Content */}
-                <div className="p-10">
+                <div className="p-10 relative">
                     {/* Header */}
-                    <header className="text-center">
+                    <header className="text-center relative">
+                        <Annotation className="-top-4 left-4 -rotate-12">Target your ideal customer by name!</Annotation>
                         <p className="text-sm font-bold uppercase tracking-wider text-yellow-500">A special message for {businessData.targetClient}</p>
+                        
+                        <Annotation className="-top-8 right-12 rotate-6">Promise the dream outcome.</Annotation>
                         <h1 className="text-5xl font-black text-gray-900 tracking-tight mt-2" style={{ fontFamily: "'Patrick Hand', cursive" }}>{offer.promise}</h1>
+                        
+                        <Annotation className="top-28 right-0 rotate-12">State the pain you're solving.</Annotation>
                         <P className="text-lg mt-3 max-w-3xl mx-auto">Stop being annoyed by <span className="font-semibold text-red-600">{playbook.diagnosis.constraints[0]}</span> and FINALLY get the result you actually want.</P>
-                        <div className="mt-6">
+
+                        <div className="mt-6 relative">
+                            <Annotation className="-left-4 top-1/2 -translate-y-1/2 -rotate-12">Show, don't tell!</Annotation>
                             <DoodledPlaceholder text="< Your awesome video or picture goes here! >" className="h-64" />
                         </div>
                         <div className="mt-6 p-4 bg-green-500 text-white font-bold text-2xl rounded-lg shadow-lg cursor-pointer transform hover:scale-105 transition-transform">
@@ -58,7 +70,8 @@ const LandingPagePdf: React.FC<LandingPagePdfProps> = ({ playbook, businessData 
 
                     {/* Problem Section */}
                     <SectionTitle>Does This Sound Like You? 😫</SectionTitle>
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-cols-3 gap-4 relative">
+                        <Annotation className="-top-4 right-1/2 translate-x-1/2 rotate-3">Twist the knife. Remind them of their pain.</Annotation>
                         {playbook.diagnosis.constraints.map((c, i) => (
                              <div key={i} className="p-4 bg-red-50 border-t-4 border-red-400 rounded-b-lg">
                                 <p className="font-semibold text-red-800 text-center">"{c}"</p>
@@ -76,7 +89,8 @@ const LandingPagePdf: React.FC<LandingPagePdfProps> = ({ playbook, businessData 
                              <CheckListItem>{offer.stack[1]?.solution || "Get help from people who actually care."}</CheckListItem>
                              <CheckListItem>{offer.stack[2]?.solution || "Stop guessing with our proven plans."}</CheckListItem>
                         </div>
-                        <div className="w-1/3">
+                        <div className="w-1/3 relative">
+                             <Annotation className="-top-4 -right-4 rotate-12">Show the product!</Annotation>
                             <DoodledPlaceholder text="< Picture of your awesome stuff >" className="h-48"/>
                         </div>
                     </div>
@@ -104,7 +118,6 @@ const LandingPagePdf: React.FC<LandingPagePdfProps> = ({ playbook, businessData 
                         <h3 className="text-3xl font-bold text-gray-800" style={{ fontFamily: "'Patrick Hand', cursive" }}>Our "You Can't Lose" Guarantee</h3>
                         <P className="italic text-lg mt-2">"{offer.guarantee}"</P>
                     </div>
-
                 </div>
             </div>
         </div>

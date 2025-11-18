@@ -13,23 +13,31 @@ const UL: React.FC<{ items: React.ReactNode[] }> = ({ items }) => (
     </ul>
 );
 
-const FrameworkCard: React.FC<{ framework: AdFramework }> = ({ framework }) => (
+const FrameworkCard: React.FC<{ framework: AdFramework, index: number }> = ({ framework, index }) => (
     <div className="p-8 bg-white rounded-lg border-4 border-gray-200 shadow-lg break-before-page pt-10">
-        <h3 className="text-5xl font-black text-gray-800" style={{ fontFamily: "'Patrick Hand', cursive" }}>{framework.frameworkName}</h3>
+        <h3 className="text-5xl font-black text-gray-800 flex items-center" style={{ fontFamily: "'Patrick Hand', cursive" }}>
+             <span className="flex-shrink-0 bg-gray-800 text-white font-black w-16 h-16 rounded-full flex items-center justify-center text-3xl mr-4 shadow-lg">{index + 1}</span>
+            {framework.frameworkName}
+        </h3>
         
         <div className="mt-6 p-4 bg-yellow-50 border-l-8 border-yellow-400 rounded-r-lg">
-            <h4 className="font-bold text-lg text-yellow-800">🤔 Why This Will Work For You:</h4>
+            <h4 className="font-bold text-lg text-yellow-800">🤔 Why This Play Works For You:</h4>
             <P className="text-sm">{framework.whyItWorks}</P>
         </div>
 
         <div className="grid grid-cols-2 gap-6 mt-6">
             <div className="p-4 bg-blue-50 rounded-lg">
-                <h4 className="font-bold text-lg text-blue-800">👀 Visual Hook (First 3 Seconds)</h4>
-                <UL items={framework.visualHook} />
+                <h4 className="font-bold text-lg text-blue-800">👀 Visual Storyboard (First 3 Seconds)</h4>
+                {framework.visualHook.map((hook, i) => (
+                    <div key={i} className="mt-2 p-2 border-2 border-dashed border-blue-200 bg-white rounded flex items-start">
+                        <span className="font-bold text-blue-400 text-sm mr-2">{i+1}.</span>
+                        <p className="text-sm text-gray-600">{hook}</p>
+                    </div>
+                ))}
             </div>
              <div className="p-4 bg-green-50 rounded-lg">
-                <h4 className="font-bold text-lg text-green-800">📝 How To Make This Ad</h4>
-                <ol className="list-decimal list-inside space-y-1 text-sm">
+                <h4 className="font-bold text-lg text-green-800">📝 How To Film This Ad</h4>
+                <ol className="list-decimal list-inside space-y-1 text-sm text-gray-600">
                     {framework.howToApply.map((step, i) => <li key={i}>{step}</li>)}
                 </ol>
             </div>
@@ -64,7 +72,7 @@ const AdFrameworksGuidePdf: React.FC<AdFrameworksGuidePdfProps> = ({ adPlaybook 
         </div>
 
         {adPlaybook.frameworks.map((framework, index) => (
-            <FrameworkCard key={index} framework={framework} />
+            <FrameworkCard key={index} framework={framework} index={index} />
         ))}
       </main>
     </div>

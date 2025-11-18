@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 // FIX: Import PreviewConfig from types.ts to resolve circular dependency with App.tsx.
 import { GeneratedOffer, OfferStackItem, PreviewConfig } from '../types';

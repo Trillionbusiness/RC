@@ -14,6 +14,8 @@ import SalesFunnel from './components/SalesFunnel';
 import KpiDashboard from './components/KpiDashboard';
 import SalesSystem from './components/SalesSystem';
 import PurchasePlan from './components/PurchasePlan';
+import MarketIndicatorAnalysis from './components/MarketIndicatorAnalysis';
+import ProductImprovementPlan from './components/ProductImprovementPlan';
 
 interface FullPlaybookProps {
     playbook: GeneratedPlaybook;
@@ -37,6 +39,7 @@ interface FullPlaybookProps {
 }
 
 interface PlaybookStepProps {
+    id: string;
     number: number;
     title: string;
     subtitle: string;
@@ -46,9 +49,9 @@ interface PlaybookStepProps {
     isStatic?: boolean;
 }
 
-const PlaybookStep: React.FC<PlaybookStepProps> = ({ number, title, subtitle, children, isOpen, onToggle, isStatic }) => {
+const PlaybookStep: React.FC<PlaybookStepProps> = ({ id, number, title, subtitle, children, isOpen, onToggle, isStatic }) => {
     const headerContent = (
-        <div className="relative pl-12 md:pl-16">
+        <div id={id} className="relative pl-12 md:pl-16">
              <div className="absolute left-0 top-0 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 text-gray-900 font-black text-2xl rounded-full" style={{backgroundColor: 'var(--accent-color)'}}>
                 {number}
             </div>
@@ -85,7 +88,6 @@ const PlaybookStep: React.FC<PlaybookStepProps> = ({ number, title, subtitle, ch
     );
 };
 
-
 const FullPlaybook: React.FC<FullPlaybookProps> = ({ 
     playbook, 
     onDownloadAsset, 
@@ -115,12 +117,15 @@ const FullPlaybook: React.FC<FullPlaybookProps> = ({
   
   const allSteps = [
     { 
+      id: 'step-1-diagnosis',
       number: 1, 
       title: 'Diagnosis & Roadmap (The GPS)', 
       subtitle: 'Your current location and the path to your destination.', 
       component: (
         <div className="space-y-8">
           <Step2Diagnosis diagnosis={playbook.diagnosis} />
+          <MarketIndicatorAnalysis analysis={playbook.marketIndicatorAnalysis} />
+          <ProductImprovementPlan plan={playbook.productImprovementPlan} />
           <OperationsPlan operationsPlan={playbook.operationsPlan} />
           <KpiDashboard 
             kpiDashboard={playbook.kpiDashboard}
@@ -134,6 +139,7 @@ const FullPlaybook: React.FC<FullPlaybookProps> = ({
       ) 
     },
     { 
+      id: 'step-2-offers',
       number: 2, 
       title: 'The Grand Slam Offer (The Foundation)', 
       subtitle: 'The irresistible deal that makes people feel stupid saying no.', 
@@ -145,6 +151,7 @@ const FullPlaybook: React.FC<FullPlaybookProps> = ({
       ) 
     },
     { 
+      id: 'step-3-leads',
       number: 3, 
       title: 'The Leads Engine', 
       subtitle: 'The machine that finds your ideal customers.', 
@@ -157,6 +164,7 @@ const FullPlaybook: React.FC<FullPlaybookProps> = ({
       ) 
     },
     { 
+      id: 'step-4-money',
       number: 4, 
       title: 'The Money Model (The Fuel System)', 
       subtitle: 'The economic engine that funds your growth.', 
@@ -176,6 +184,7 @@ const FullPlaybook: React.FC<FullPlaybookProps> = ({
       {allSteps.map(step => (
         <PlaybookStep 
           key={step.number}
+          id={step.id}
           number={step.number}
           title={step.title}
           subtitle={step.subtitle}

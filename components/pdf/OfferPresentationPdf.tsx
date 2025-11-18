@@ -3,13 +3,13 @@ import React from 'react';
 import { GeneratedPlaybook, GeneratedOffer } from '../../types';
 
 // --- Reusable PDF Page Wrapper ---
-const PdfSlide: React.FC<{ children: React.ReactNode; pageNumber: number; totalPages: number; }> = ({ children, pageNumber, totalPages }) => (
+const PdfSlide: React.FC<{ children: React.ReactNode; pageNumber: number; totalPages: number; themeColor?: string }> = ({ children, pageNumber, totalPages, themeColor = '#147273' }) => (
     <div className="bg-[#FEFBF6] font-sans relative" style={{ width: '800px', height: '1131px', display: 'flex', flexDirection: 'column', pageBreakAfter: 'always', border: '8px solid #3A3A3A' }}>
         <div className="flex-grow p-16 flex flex-col relative z-10">
             {children}
         </div>
-        <footer className={`p-4 text-xs text-gray-500 flex justify-between items-center bg-gray-50 relative z-10 border-t border-gray-200`}>
-            <span>Trillion Business / Your Growth Plan</span>
+        <footer className={`p-4 text-xs flex justify-between items-center bg-gray-50 relative z-10 border-t`} style={{color: themeColor, borderColor: themeColor}}>
+            <span className="font-bold">Trillion Business / Your Growth Plan</span>
             <span>Page {pageNumber} of {totalPages}</span>
         </footer>
     </div>

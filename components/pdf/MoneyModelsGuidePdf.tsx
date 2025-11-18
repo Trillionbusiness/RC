@@ -7,17 +7,28 @@ const Subtitle: React.FC<{ children: React.ReactNode }> = ({ children }) => <p c
 const SectionTitle: React.FC<{ children: React.ReactNode }> = ({ children }) => <h2 className="text-5xl font-black text-gray-800 pb-3 mb-6 mt-10 break-after-avoid" style={{ fontFamily: "'Patrick Hand', cursive" }}>{children}</h2>;
 const P: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => <p className={`text-base text-gray-700 leading-relaxed my-3 ${className || ''}`}>{children}</p>;
 
-const Step: React.FC<{ number: string, title: string, children: React.ReactNode }> = ({ number, title, children }) => (
-    <div className="mt-8 p-6 bg-white rounded-lg border-2 border-gray-200 shadow-lg break-inside-avoid">
-        <h3 className="text-3xl font-bold text-gray-800 flex items-center" style={{ fontFamily: "'Patrick Hand', cursive" }}>
-            <span className="flex-shrink-0 bg-yellow-400 text-gray-900 font-black w-12 h-12 rounded-full flex items-center justify-center text-2xl mr-4">{number}</span>
-            {title}
-        </h3>
-        <div className="pl-16">
-            {children}
+const Step: React.FC<{ number: string, title: string, children: React.ReactNode, icon: string, color: 'gray' | 'blue' | 'yellow' }> = ({ number, title, children, icon, color }) => {
+    const colors = {
+        gray: { bg: 'bg-gray-100', border: 'border-gray-300', text: 'text-gray-800' },
+        blue: { bg: 'bg-blue-50', border: 'border-blue-300', text: 'text-blue-800' },
+        yellow: { bg: 'bg-yellow-50', border: 'border-yellow-400', text: 'text-yellow-800' }
+    }
+    const style = colors[color];
+    return (
+        <div className={`mt-8 p-6 ${style.bg} rounded-lg border-4 ${style.border} shadow-lg break-inside-avoid`}>
+            <h3 className={`text-3xl font-bold ${style.text} flex items-center`} style={{ fontFamily: "'Patrick Hand', cursive" }}>
+                <span className="flex-shrink-0 bg-white text-gray-900 font-black w-16 h-16 rounded-full flex items-center justify-center text-4xl mr-4 shadow-md">{icon}</span>
+                <div>
+                    <p className="text-sm font-semibold uppercase">Level {number}</p>
+                    {title}
+                </div>
+            </h3>
+            <div className="pl-20">
+                {children}
+            </div>
         </div>
-    </div>
-);
+    );
+}
 
 const MoneyModelsGuidePdf: React.FC = () => {
     return (
@@ -41,15 +52,15 @@ const MoneyModelsGuidePdf: React.FC = () => {
                 <SectionTitle>The 3 Levels of Making Money 🚀</SectionTitle>
                 <P>Think of it like a video game. You're trying to level up your money-making skills.</P>
                 
-                <Step number="1" title="Level 1: The 'At Least I'm Not Losing' Business">
+                <Step number="1" title="The 'At Least I'm Not Losing' Business" icon="😟" color="gray">
                     <P>This is where most businesses live. They make money from a customer... eventually. Maybe after a year. It's okay, but you can't grow fast this way.</P>
                 </Step>
                 
-                <Step number="2" title="Level 2: The 'Free Customers' Business">
+                <Step number="2" title="The 'Free Customers' Business" icon="🙂" color="blue">
                     <P>This is better. You make back the money you spent on ads within 30 days. Your customer acquisition is basically free! Now you can get as many customers as you want without going broke.</P>
                 </Step>
 
-                <Step number="3" title="Level 3: The 'Money Machine' Business (This is YOU)">
+                <Step number="3" title="The 'Money Machine' Business (This is YOU)" icon="😎" color="yellow">
                     <P>This is the cheat code. You spend $1 on ads and get $2 back in profit right away. Now you can outspend all your competitors and take over the world. This is our goal.</P>
                 </Step>
             </main>

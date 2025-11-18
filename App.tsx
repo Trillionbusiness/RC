@@ -7,7 +7,8 @@ import {
     generateMoneyModelMechanisms, generateOperationsPlan, generateOffer1, 
     generateOffer2, generateDownsell, generateProfitPath, 
     generateMarketingModel, generateSalesFunnel, generateKpiDashboard,
-    generateSalesSystem, generateWeeklyDebrief, generateAdPlaybook
+    generateSalesSystem, generateWeeklyDebrief, generateAdPlaybook,
+    generateMarketIndicatorAnalysis, generateProductImprovementPlan
 } from './services/hormoziAiService';
 import Step1Form from './components/Step1Form';
 import ProgressBar from './components/common/ProgressBar';
@@ -74,7 +75,7 @@ const App: React.FC = () => {
             weeklyDebriefs: [],
         });
     
-        const totalSteps = 14;
+        const totalSteps = 16;
         let completedSteps = 0;
 
         const updateProgress = (taskName: string) => {
@@ -88,6 +89,14 @@ const App: React.FC = () => {
         try {
           updateProgress('Diagnosing your business...');
           const diagnosis = await generateDiagnosis(data);
+          await delay(1500);
+
+          updateProgress('Analyzing your target market...');
+          const marketIndicatorAnalysis = await generateMarketIndicatorAnalysis(data);
+          await delay(1500);
+          
+          updateProgress('Upgrading your product value...');
+          const productImprovementPlan = await generateProductImprovementPlan(data);
           await delay(1500);
           
           updateProgress('Analyzing your money model...');
@@ -143,6 +152,8 @@ const App: React.FC = () => {
 
           const newPlaybook = {
             diagnosis,
+            marketIndicatorAnalysis,
+            productImprovementPlan,
             moneyModelAnalysis,
             moneyModel,
             moneyModelMechanisms,
@@ -184,7 +195,7 @@ const App: React.FC = () => {
             const { renderToStaticMarkup } = await import('react-dom/server');
             const staticHtml = renderToStaticMarkup(<FullPlaybookHtml playbook={appState.playbook} />);
             
-            const fullHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Trillion Business Plan - Offline Interactive Plan</title><script src="https://cdn.tailwindcss.com"></script><style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');:root {--bg-light: #ffffff; --bg-muted: #f8f9fa; --text-dark: #212121; --text-light: #5f5f5f;--border-color: #dee2e6; --primary-color: #147273; --accent-color: #82D5E3;}body { margin: 0; background-color: var(--bg-muted); color: var(--text-dark); font-family: 'Inter', sans-serif; }.playbook-step-content { transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out; }.strategy-content { transition: max-height 0.3s ease-in-out; }.strategy-toggle-icon { transition: transform 0.3s; }</style></head><body class="p-4 md:p-8"><div class="max-w-7xl mx-auto">${staticHtml}</div><script>document.addEventListener('DOMContentLoaded', () => {document.querySelectorAll('.playbook-step button').forEach(button => {button.addEventListener('click', () => {const content = button.nextElementSibling; const icon = button.querySelector('.playbook-step-toggle-icon'); if (content.style.maxHeight && content.style.maxHeight !== '0px') {content.style.maxHeight = '0px'; content.style.opacity = '0'; icon.style.transform = '';} else {content.style.maxHeight = content.scrollHeight + 'px'; content.style.opacity = '1'; icon.style.transform = 'rotate(180deg)';}});});document.querySelectorAll('.strategy-accordion button').forEach(button => {button.addEventListener('click', () => {const content = button.nextElementSibling; const icon = button.querySelector('.strategy-toggle-icon'); if (content.style.maxHeight && content.style.maxHeight !== '0px') {content.style.maxHeight = '0px'; icon.style.transform = '';} else {content.style.maxHeight = content.scrollHeight + 'px'; icon.style.transform = 'rotate(180deg)';}});});});<\/script></body></html>`;
+            const fullHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Trillion Business Plan - Offline Interactive Plan</title><script src="https://cdn.tailwindcss.com"></script><style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');:root {--bg-light: #ffffff; --bg-muted: #f8f9fa; --text-dark: #212121; --text-light: #5f5f5f;--border-color: #dee2e6; --primary-color: #147273; --accent-color: #82D5E3;}body { margin: 0; background-color: var(--bg-muted); color: var(--text-dark); font-family: 'Inter', sans-serif; }html {scroll-behavior: smooth;}.playbook-step-content { transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out; }.strategy-content { transition: max-height 0.3s ease-in-out; }.strategy-toggle-icon { transition: transform 0.3s; } @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .no-print { display: none !important; } .playbook-step-content { max-height: none !important; opacity: 1 !important; } }</style></head><body class="p-4 md:p-8"><div class="max-w-7xl mx-auto">${staticHtml}</div><script>document.addEventListener('DOMContentLoaded', () => {document.querySelectorAll('.playbook-step button').forEach(button => {button.addEventListener('click', () => {const content = button.nextElementSibling; const icon = button.querySelector('.playbook-step-toggle-icon'); if (content.style.maxHeight && content.style.maxHeight !== '0px') {content.style.maxHeight = '0px'; content.style.opacity = '0'; icon.style.transform = '';} else {content.style.maxHeight = content.scrollHeight + 'px'; content.style.opacity = '1'; icon.style.transform = 'rotate(180deg)';}});});document.querySelectorAll('.strategy-accordion button').forEach(button => {button.addEventListener('click', () => {const content = button.nextElementSibling; const icon = button.querySelector('.strategy-toggle-icon'); if (content.style.maxHeight && content.style.maxHeight !== '0px') {content.style.maxHeight = '0px'; icon.style.transform = '';} else {content.style.maxHeight = content.scrollHeight + 'px'; icon.style.transform = 'rotate(180deg)';}});});});<\/script></body></html>`;
 
             const blob = new Blob([fullHtml], { type: 'text/html' });
             const link = document.createElement('a');
@@ -368,7 +379,7 @@ const App: React.FC = () => {
         <div className="min-h-screen">
            <header className="bg-white shadow-sm sticky top-0 z-20">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-                  <h1 className="text-2xl font-bold" style={{color: 'var(--primary-color)'}}>Trillion Business Plan</h1>
+                  <h1 className="text-2xl font-bold" style={{color: 'var(--primary-color)'}}>Rohit Chavan rcrobust Business planner</h1>
                   <div className="flex items-center gap-2 flex-wrap justify-center">
                       <button
                         onClick={handleStartNewPlan}
@@ -383,8 +394,8 @@ const App: React.FC = () => {
                           progress={isZipping ? zipProgress : pdfProgress}
                            options={[
                               { label: 'One-Year Blueprint (PDF)', onClick: () => handleDownloadPdf('one-year-blueprint'), onPreview: () => handlePreviewPdf({type: 'one-year-blueprint'}) },
+                              { label: 'Product Value Blueprint (PDF)', onClick: () => handleDownloadPdf('product-value-blueprint'), onPreview: () => handlePreviewPdf({type: 'product-value-blueprint'}) },
                               { separator: true },
-                              { label: 'Full Playbook (PDF)', onClick: () => handleDownloadPdf('full'), onPreview: () => handlePreviewPdf({type: 'full'}) },
                               { label: 'Money Models Guide (PDF)', onClick: () => handleDownloadPdf('money-models-guide'), onPreview: () => handlePreviewPdf({type: 'money-models-guide'}) },
                               { label: 'Core Concepts Guide (PDF)', onClick: () => handleDownloadPdf('concepts-guide'), onPreview: () => handlePreviewPdf({type: 'concepts-guide'}) },
                               { label: 'Ad Frameworks Guide (PDF)', onClick: () => handleDownloadPdf('ad-frameworks-guide'), onPreview: () => handlePreviewPdf({type: 'ad-frameworks-guide'}) },

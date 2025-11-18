@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { GeneratedOffer, OfferStackItem } from '../../types';
 import MarkdownRenderer from '../common/MarkdownRenderer';

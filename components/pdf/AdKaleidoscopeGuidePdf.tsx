@@ -7,7 +7,7 @@ const Subtitle: React.FC<{ children: React.ReactNode }> = ({ children }) => <p c
 const SectionTitle: React.FC<{ children: React.ReactNode }> = ({ children }) => <h2 className="text-5xl font-black text-gray-800 pb-3 mb-6 mt-10 break-after-avoid" style={{ fontFamily: "'Patrick Hand', cursive" }}>{children}</h2>;
 const P: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => <p className={`text-base text-gray-700 leading-relaxed my-3 ${className || ''}`}>{children}</p>;
 const CheckListItem: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <div className="flex items-start mt-2">
+    <div className="flex items-start mt-2 p-2 bg-white border border-gray-200 rounded-md">
         <span className="text-xl text-green-500 mr-3">✅</span>
         <P className="flex-grow text-sm">{children}</P>
     </div>
@@ -15,23 +15,30 @@ const CheckListItem: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
 const AdKaleidoscopeDiagram: React.FC = () => (
     <div className="my-8 flex justify-center items-center">
-        <div className="relative w-80 h-80">
-            <svg viewBox="0 0 200 200" className="w-full h-full">
-                <circle cx="100" cy="100" r="95" fill="none" stroke="black" strokeWidth="2" />
-                <line x1="100" y1="5" x2="100" y2="195" stroke="black" strokeWidth="1.5" />
-                <line x1="5" y1="100" x2="195" y2="100" stroke="black" strokeWidth="1.5" />
-                <line x1="37" y1="37" x2="163" y2="163" stroke="black" strokeWidth="1.5" />
-                <line x1="37" y1="163" x2="163" y2="37" stroke="black" strokeWidth="1.5" />
+        <div className="relative w-96 h-96">
+             <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-48 h-48 bg-yellow-300 rounded-full animate-pulse opacity-50"></div>
+            </div>
+            <svg viewBox="0 0 200 200" className="w-full h-full relative z-10">
+                <circle cx="100" cy="100" r="95" fill="none" stroke="black" strokeWidth="2" strokeDasharray="5 5" />
+                <circle cx="100" cy="100" r="60" fill="white" stroke="black" strokeWidth="1.5" />
+                <text x="100" y="105" textAnchor="middle" className="font-bold text-xl" style={{ fontFamily: "'Patrick Hand', cursive" }}>1 WINNER</text>
+                
+                {/* Lines radiating out */}
+                {[0, 45, 90, 135, 180, 225, 270, 315].map(angle => (
+                     <line 
+                        key={angle}
+                        x1="100" y1="100" 
+                        x2={100 + 95 * Math.cos(angle * Math.PI / 180)} 
+                        y2={100 + 95 * Math.sin(angle * Math.PI / 180)} 
+                        stroke="black" strokeWidth="1" />
+                ))}
             </svg>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full font-bold text-lg" style={{ fontFamily: "'Patrick Hand', cursive" }}>
-                <span className="absolute top-[45px] left-1/2 -translate-x-1/2 -rotate-90">REMIX</span>
-                <span className="absolute top-1/2 right-[45px] -translate-y-1/2">HEADLINE</span>
-                <span className="absolute bottom-[45px] left-1/2 -translate-x-1/2 rotate-90">CLONE</span>
-                <span className="absolute top-1/2 left-[45px] -translate-y-1/2 -rotate-180">HOOK</span>
-                <span className="absolute top-[18px] left-1/2 -translate-x-1/2">FONT</span>
-                <span className="absolute bottom-[18px] left-1/2 -translate-x-1/2">FILTERS</span>
-                <span className="absolute top-[60px] right-[25px] rotate-45">VISUAL</span>
-                <span className="absolute bottom-[60px] left-[25px] -rotate-45">SCRIPT</span>
+            <div className="absolute inset-0 font-bold text-lg text-gray-700" style={{ fontFamily: "'Patrick Hand', cursive" }}>
+                <span className="absolute top-2 left-1/2 -translate-x-1/2">Remix</span>
+                <span className="absolute bottom-2 left-1/2 -translate-x-1/2">Remake</span>
+                <span className="absolute top-1/2 right-2 -translate-y-1/2 -rotate-90">Easy</span>
+                 <span className="absolute top-1/2 left-2 -translate-y-1/2 rotate-90">Hard</span>
             </div>
         </div>
     </div>

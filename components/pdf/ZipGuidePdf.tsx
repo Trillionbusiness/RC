@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BusinessData, GeneratedPlaybook } from '../../types';
 
@@ -14,7 +13,7 @@ const Step: React.FC<{ number: number, title: string, children: React.ReactNode,
             <div className="bg-yellow-400 text-gray-900 font-black w-20 h-20 rounded-full flex items-center justify-center text-4xl shadow-lg" style={{ fontFamily: "'Patrick Hand', cursive" }}>{number}</div>
         </div>
         <div>
-            <h3 className="font-bold text-3xl text-gray-800 flex items-center" style={{ fontFamily: "'Patrick Hand', cursive" }}>
+            <h3 className="text-3xl font-bold text-gray-800 flex items-center" style={{ fontFamily: "'Patrick Hand', cursive" }}>
                 <span className="text-4xl mr-3">{icon}</span>{title}
             </h3>
             <div className="text-gray-600 mt-2">{children}</div>

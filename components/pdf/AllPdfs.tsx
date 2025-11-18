@@ -1,6 +1,6 @@
+
 import React from 'react';
 import { GeneratedPlaybook, OfferStackItem, GeneratedOffer, BusinessData } from '../../types';
-import FullPlaybookPdf from './FullPlaybookPdf';
 import KpiDashboardPdf from './KpiDashboardPdf';
 import OfferPresentationPdf from './OfferPresentationPdf';
 import DownsellPamphletPdf from './DownsellPamphletPdf';
@@ -14,13 +14,14 @@ import ConceptsGuidePdf from './ConceptsGuidePdf';
 import MoneyModelsGuidePdf from './MoneyModelsGuidePdf';
 import AdFrameworksGuidePdf from './AdFrameworksGuidePdf';
 import AdKaleidoscopeGuidePdf from './AdKaleidoscopeGuidePdf';
+import ProofChecklistPdf from './ProofChecklistPdf';
 import SalesMindsetGuidePdf from './SalesMindsetGuidePdf';
 import HuntModePlaybookPdf from './HuntModePlaybookPdf';
 import KillModePlaybookPdf from './KillModePlaybookPdf';
 import ObjectionHandlingCheatsheetPdf from './ObjectionHandlingCheatsheetPdf';
 import CompleteScriptsPdf from './CompleteScriptsPdf';
-import ProofChecklistPdf from './ProofChecklistPdf';
-import BlueprintToOneMillionPdf from './BlueprintToOneMillionPdf';
+import OneYearBlueprintPdf from './OneYearBlueprintPdf';
+import ProductValueBlueprintPdf from './ProductValueBlueprintPdf';
 
 interface AllPdfsProps {
     playbook: GeneratedPlaybook;
@@ -36,11 +37,11 @@ const AllPdfs: React.FC<AllPdfsProps> = ({ playbook, businessData, type, assetBu
     if (type === 'all') {
         return (
             <div style={{ width: '800px', backgroundColor: 'white' }}>
-                <div data-pdf-output data-pdf-path="00_The_One_Year_Blueprint.pdf"><BlueprintToOneMillionPdf businessData={businessData} playbook={playbook} /></div>
+                <div data-pdf-output data-pdf-path="00_The_One_Year_Blueprint.pdf"><OneYearBlueprintPdf businessData={businessData} playbook={playbook} /></div>
                 <div data-pdf-output data-pdf-path="01_START_HERE_Guide.pdf"><ZipGuidePdf businessData={businessData} playbook={playbook} /></div>
                 
                 {/* 01 Core Plan */}
-                <div data-pdf-output data-pdf-path="02_Core_Plan/Full_Business_Playbook.pdf"><FullPlaybookPdf playbook={playbook} businessData={businessData} /></div>
+                <div data-pdf-output data-pdf-path="02_Core_Plan/Product_Value_Blueprint.pdf"><ProductValueBlueprintPdf plan={playbook.productImprovementPlan} /></div>
                 <div data-pdf-output data-pdf-path="02_Core_Plan/Business_Concepts_Guide.pdf"><ConceptsGuidePdf playbook={playbook} businessData={businessData} /></div>
                 <div data-pdf-output data-pdf-path="02_Core_Plan/Business_Scorecard_(KPIs).pdf"><KpiDashboardPdf kpiDashboard={playbook.kpiDashboard} /></div>
                 <div data-pdf-output data-pdf-path="02_Core_Plan/Offer_Presentation_Slides.pdf"><OfferPresentationPdf playbook={playbook} /></div>
@@ -102,8 +103,8 @@ const AllPdfs: React.FC<AllPdfsProps> = ({ playbook, businessData, type, assetBu
     }
 
     switch (type) {
-        case 'one-year-blueprint': return <BlueprintToOneMillionPdf businessData={businessData} playbook={playbook} />;
-        case 'full': return <FullPlaybookPdf playbook={playbook} businessData={businessData} />;
+        case 'one-year-blueprint': return <OneYearBlueprintPdf businessData={businessData} playbook={playbook} />;
+        case 'product-value-blueprint': return <ProductValueBlueprintPdf plan={playbook.productImprovementPlan} />;
         case 'money-models-guide': return <MoneyModelsGuidePdf />;
         case 'concepts-guide': return <ConceptsGuidePdf playbook={playbook} businessData={businessData} />;
         case 'ad-frameworks-guide': return playbook.adPlaybook ? <AdFrameworksGuidePdf adPlaybook={playbook.adPlaybook} /> : null;

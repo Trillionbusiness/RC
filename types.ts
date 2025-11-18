@@ -240,8 +240,52 @@ export interface GeneratedAdPlaybook {
     frameworks: AdFramework[];
 }
 
+export interface MarketIndicator {
+  indicatorName: 'Massive Pain' | 'Purchasing Power' | 'Easy to Target' | 'Growing Market';
+  score: number; // A score from 1 to 10.
+  analysis: string; // "Your target client has high purchasing power because..."
+  suggestion: string; // "To improve this, you could also target..."
+}
+
+export interface GeneratedMarketIndicatorAnalysis {
+  title: string;
+  corePrinciple: string;
+  overallScore: number; // Average score from 1 to 10.
+  summary: string; // Overall analysis
+  indicators: MarketIndicator[];
+  pivotSuggestion: string; // An optional new target market suggestion if the current one is weak.
+}
+
+export interface ProductImprovementLever {
+  leverName: 'Dream Outcome' | 'Likelihood of Achievement' | 'Time Delay' | 'Effort & Sacrifice';
+  strategy: string;
+  tactics: string[];
+}
+
+export interface ValueStackComparison {
+  itemName: string;
+  before: string;
+  after: string;
+  valueIncrease: string;
+}
+
+export interface GeneratedProductImprovementPlan {
+  title: string;
+  corePrinciple: string;
+  problemAnalysis: string;
+  improvementLevers: ProductImprovementLever[];
+  valueStackTransformation: {
+    summary: string;
+    comparisons: ValueStackComparison[];
+    newValue: string;
+  };
+  summary: string;
+}
+
 export interface GeneratedPlaybook {
   diagnosis: GeneratedDiagnosis;
+  marketIndicatorAnalysis: GeneratedMarketIndicatorAnalysis;
+  productImprovementPlan: GeneratedProductImprovementPlan;
   moneyModelAnalysis: GeneratedMoneyModelAnalysis;
   moneyModel: GeneratedMoneyModel;
   moneyModelMechanisms: GeneratedMoneyModelMechanisms;

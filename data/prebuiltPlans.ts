@@ -1,5 +1,100 @@
 
-import { AppState } from '../types';
+import { 
+    AppState, GeneratedOffer, GeneratedDownsell, GeneratedKpiDashboard, 
+    GeneratedMarketingModel, GeneratedMoneyModel, GeneratedMoneyModelAnalysis, 
+    GeneratedMoneyModelMechanisms, GeneratedOperationsPlan, GeneratedProfitPath, 
+    GeneratedSalesFunnel, GeneratedSalesSystem, GeneratedAdPlaybook, 
+    GeneratedProductImprovementPlan 
+} from '../types';
+
+const emptyOffer: GeneratedOffer = {
+    name: "Placeholder Offer",
+    promise: "This is a placeholder promise.",
+    stack: [],
+    strategyBehindStack: "Placeholder strategy.",
+    totalValue: "$0",
+    guarantee: "Placeholder guarantee.",
+    price: "$0"
+};
+
+const emptyDownsell: GeneratedDownsell = {
+    rationale: "Placeholder rationale.",
+    offer: emptyOffer
+};
+
+const emptyKpiDashboard: GeneratedKpiDashboard = {
+    title: "Placeholder KPI Dashboard",
+    corePrinciple: "Placeholder core principle.",
+    kpis: []
+};
+
+const emptyMarketingModel: GeneratedMarketingModel = {
+    steps: []
+};
+
+const emptyMoneyModel: GeneratedMoneyModel = {
+    title: "Placeholder Money Model",
+    corePrinciple: "Placeholder core principle.",
+    steps: [],
+    summary: "Placeholder summary."
+};
+
+const emptyMoneyModelAnalysis: GeneratedMoneyModelAnalysis = {
+    oldModel: { title: "", description: "", metrics: [] },
+    newModel: { title: "", description: "", metrics: [] },
+    ltvCacAnalysis: { automationLevel: "", targetRatio: "", explanation: "" },
+    projectedEconomics: { estimatedCAC: "", targetLTV: "", projectedRatio: "", immediateProfit: "", explanation: "" }
+};
+
+const emptyMoneyModelMechanisms: GeneratedMoneyModelMechanisms = {
+    title: "Placeholder Money Model Mechanisms",
+    corePrinciple: "Placeholder core principle.",
+    mechanisms: []
+};
+
+const emptyOperationsPlan: GeneratedOperationsPlan = {
+    title: "Placeholder Operations Plan",
+    corePrinciple: "Placeholder core principle.",
+    outcomesAndActivities: [],
+    bottleneckAnalysis: "Placeholder analysis.",
+    proposedRoles: []
+};
+
+const emptyProfitPath: GeneratedProfitPath = {
+    steps: []
+};
+
+const emptySalesFunnel: GeneratedSalesFunnel = {
+    title: "Placeholder Sales Funnel",
+    corePrinciple: "Placeholder core principle.",
+    stages: []
+};
+
+const emptySalesSystem: GeneratedSalesSystem = {
+    title: "Placeholder Sales System",
+    corePrinciple: "Placeholder core principle.",
+    strategies: []
+};
+
+const emptyAdPlaybook: GeneratedAdPlaybook = {
+    title: "Placeholder Ad Playbook",
+    corePrinciple: "Placeholder core principle.",
+    frameworks: []
+};
+
+const emptyProductImprovementPlan: GeneratedProductImprovementPlan = {
+  title: 'Placeholder Product Plan',
+  corePrinciple: 'Placeholder principle.',
+  problemAnalysis: 'Placeholder analysis.',
+  improvementLevers: [],
+  valueStackTransformation: {
+    summary: 'Placeholder summary.',
+    comparisons: [],
+    newValue: '$0'
+  },
+  summary: 'Placeholder summary.'
+};
+
 
 const gymPlan: AppState = {
   businessData: {
@@ -27,14 +122,26 @@ const gymPlan: AppState = {
     typicalDay: 'Morning: Open gym, train first clients. Mid-day: Paperwork, social media posts. Afternoon: Train more clients, clean up. Evening: Close up, plan for tomorrow. Feel like I\'m always busy but not growing fast enough.',
   },
   playbook: {
-    // This would be a full, pre-generated playbook object.
-    // For brevity, we'll use a simplified version.
     diagnosis: {
       currentStage: "Struggle Street",
       yourRole: "You're the head coach, lead salesperson, and chief marketer.",
       constraints: ["Lead generation is inconsistent and unpredictable.", "Your main offer is a commodity (just like every other gym)."],
       actions: ["Create a 'Grand Slam Offer' to stand out.", "Implement a simple, predictable lead generation system."]
     },
+    marketIndicatorAnalysis: {
+      title: "Your Market Hunger Score",
+      corePrinciple: "It's better to have a mediocre hot dog stand in front of a starving crowd than the best hot dogs in a desert.",
+      overallScore: 7,
+      summary: "Your local market is strong but competitive. You have clear purchasing power and targeting, but the market isn't rapidly expanding, meaning you have to fight for market share.",
+      indicators: [
+        { indicatorName: 'Massive Pain', score: 8, analysis: "People in Austin are highly motivated to stay fit, creating a strong demand.", suggestion: "Focus marketing on the 'pain' of being out of shape in a very active city." },
+        { indicatorName: 'Purchasing Power', score: 8, analysis: "Young professionals in Austin generally have disposable income for gym memberships.", suggestion: "Offer premium add-on services like personal training to capture more value." },
+        { indicatorName: 'Easy to Target', score: 9, analysis: "You can easily target this demographic with local SEO and geo-fenced social media ads.", suggestion: "Double down on 'gyms near me' and neighborhood-specific ad campaigns." },
+        { indicatorName: 'Growing Market', score: 4, analysis: "The fitness market is mature and saturated, not rapidly growing. Growth comes from taking customers from competitors.", suggestion: "Create a unique offer that other gyms can't match to steal market share." },
+      ],
+      pivotSuggestion: "",
+    },
+    productImprovementPlan: emptyProductImprovementPlan,
     offer1: {
       name: "The 6-Week Austin Fitness Transformation Challenge",
       promise: "Get in the best shape of your life in just 6 weeks, or your money back. Guaranteed.",
@@ -48,8 +155,18 @@ const gymPlan: AppState = {
       guarantee: "If you follow the plan for 6 weeks and don't see a noticeable transformation, we'll refund every penny. No questions asked.",
       price: "$599"
     },
-    // ... other playbook sections would be fully populated here ...
-    offer2: {} as any, downsell: {} as any, kpiDashboard: {} as any, marketingModel: {} as any, moneyModel: {} as any, moneyModelAnalysis: {} as any, moneyModelMechanisms: {} as any, operationsPlan: {} as any, profitPath: {} as any, salesFunnel: {} as any, salesSystem: {} as any, adPlaybook: {} as any,
+    offer2: emptyOffer, 
+    downsell: emptyDownsell, 
+    kpiDashboard: emptyKpiDashboard, 
+    marketingModel: emptyMarketingModel, 
+    moneyModel: emptyMoneyModel, 
+    moneyModelAnalysis: emptyMoneyModelAnalysis, 
+    moneyModelMechanisms: emptyMoneyModelMechanisms, 
+    operationsPlan: emptyOperationsPlan, 
+    profitPath: emptyProfitPath, 
+    salesFunnel: emptySalesFunnel, 
+    salesSystem: emptySalesSystem, 
+    adPlaybook: emptyAdPlaybook,
   },
   kpiEntries: [],
   weeklyDebriefs: [],
@@ -87,6 +204,20 @@ const saasPlan: AppState = {
       constraints: ["Your free trial isn't converting because users don't experience the 'aha!' moment.", "Your pricing is simple, but doesn't capture the full value you provide."],
       actions: ["Re-engineer your onboarding to force user success.", "Create a high-ticket 'Done-With-You' offer to increase immediate cashflow."]
     },
+    marketIndicatorAnalysis: {
+        title: "Your SaaS Market Hunger Score",
+        corePrinciple: "A great product in a bad market will fail. A mediocre product in a starving market will sell out.",
+        overallScore: 8,
+        summary: "Your market is excellent. Agencies have significant pain, the ability to pay, and are easy to target. The market is also growing as more businesses rely on agencies.",
+        indicators: [
+          { indicatorName: 'Massive Pain', score: 9, analysis: "Agencies constantly struggle with project management and client reporting. It's a huge operational headache.", suggestion: "Your messaging should focus on solving the pain of 'scope creep' and 'unhappy clients'." },
+          { indicatorName: 'Purchasing Power', score: 8, analysis: "Agencies are businesses that spend money on tools to make them more efficient. $99/mo is a small price to pay for efficiency.", suggestion: "Frame the price against the cost of one wasted hour from a project manager." },
+          { indicatorName: 'Easy to Target', score: 9, analysis: "Agencies can be easily targeted on LinkedIn, in marketing communities, and through content marketing for agency owners.", suggestion: "Create a lead magnet specifically titled 'The 5 PM Mistakes Killing Your Agency's Profit'." },
+          { indicatorName: 'Growing Market', score: 7, analysis: "The agency world is competitive but constantly growing as new platforms emerge.", suggestion: "Position your tool as the solution for the 'modern' agency to ride the growth wave." },
+        ],
+        pivotSuggestion: "",
+    },
+    productImprovementPlan: emptyProductImprovementPlan,
      offer1: {
       name: "The Agency OS: Full Suite + White-Glove Onboarding",
       promise: "We'll personally set up your entire agency's workflow in our system and train your team in 7 days.",
@@ -100,8 +231,18 @@ const saasPlan: AppState = {
       guarantee: "If your team isn't using the system daily by day 30, we'll work with you for free until they are.",
       price: "$4,997"
     },
-    // ... other playbook sections ...
-    offer2: {} as any, downsell: {} as any, kpiDashboard: {} as any, marketingModel: {} as any, moneyModel: {} as any, moneyModelAnalysis: {} as any, moneyModelMechanisms: {} as any, operationsPlan: {} as any, profitPath: {} as any, salesFunnel: {} as any, salesSystem: {} as any, adPlaybook: {} as any,
+    offer2: emptyOffer, 
+    downsell: emptyDownsell, 
+    kpiDashboard: emptyKpiDashboard, 
+    marketingModel: emptyMarketingModel, 
+    moneyModel: emptyMoneyModel, 
+    moneyModelAnalysis: emptyMoneyModelAnalysis, 
+    moneyModelMechanisms: emptyMoneyModelMechanisms, 
+    operationsPlan: emptyOperationsPlan, 
+    profitPath: emptyProfitPath, 
+    salesFunnel: emptySalesFunnel, 
+    salesSystem: emptySalesSystem, 
+    adPlaybook: emptyAdPlaybook,
   },
   kpiEntries: [],
   weeklyDebriefs: [],

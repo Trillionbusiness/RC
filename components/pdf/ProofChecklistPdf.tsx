@@ -9,12 +9,17 @@ const P: React.FC<{ children: React.ReactNode; className?: string }> = ({ childr
 
 const ProofItem: React.FC<{ better: string, worse: string, description: string }> = ({ better, worse, description }) => (
     <div className="p-4 bg-white rounded-lg border-2 border-gray-200 shadow-md break-inside-avoid">
-        <div className="flex justify-center items-center text-center font-bold text-lg">
-            <span className="w-2/5 p-2 bg-green-100 text-green-800 rounded-l-lg">{better}</span>
-            <span className="text-gray-500 mx-2">{'>'}</span>
-            <span className="w-2/5 p-2 bg-red-100 text-red-800 rounded-r-lg">{worse}</span>
+         <div className="flex items-center">
+            <div className="w-8 h-8 border-4 border-gray-400 rounded-md mr-4 flex-shrink-0"></div>
+            <div>
+                 <div className="flex justify-start items-center text-center font-bold text-lg">
+                    <span className="p-1 bg-green-100 text-green-800 rounded-md">{better}</span>
+                    <span className="text-gray-500 mx-2">{'>'}</span>
+                    <span className="p-1 bg-red-100 text-red-800 rounded-md">{worse}</span>
+                </div>
+            </div>
         </div>
-        <P className="text-sm mt-3 text-center">{description}</P>
+        <P className="text-sm mt-3 pl-12 text-gray-600">{description}</P>
     </div>
 );
 

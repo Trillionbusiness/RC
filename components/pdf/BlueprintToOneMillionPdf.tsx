@@ -1,6 +1,4 @@
-
 import React from 'react';
-import { BusinessData, GeneratedPlaybook } from '../../types';
 
 // --- Reusable PDF Components ---
 const Page: React.FC<{children: React.ReactNode, className?: string}> = ({children, className}) => (
@@ -8,15 +6,15 @@ const Page: React.FC<{children: React.ReactNode, className?: string}> = ({childr
         <div className="relative z-10">
             {children}
         </div>
-        <div className="absolute bottom-6 right-6 text-xs text-gray-400 font-bold">Trillion Business AI Blueprint</div>
+        <div className="absolute bottom-6 right-6 text-xs text-gray-400 font-bold">Trillion Business AI</div>
     </div>
 );
 const Title: React.FC<{ children: React.ReactNode }> = ({ children }) => <h1 className="text-6xl font-black text-gray-900 tracking-tight" style={{ fontFamily: "'Patrick Hand', cursive" }}>{children}</h1>;
 const Subtitle: React.FC<{ children: React.ReactNode }> = ({ children }) => <p className="text-2xl text-gray-600 mt-2">{children}</p>;
-const SectionTitle: React.FC<{ number: string, title: string, subtitle: string }> = ({ number, title, subtitle }) => (
+const SectionTitle: React.FC<{ icon: string, title: string, subtitle: string }> = ({ icon, title, subtitle }) => (
     <header className="mb-8 break-after-avoid">
         <div className="flex items-center">
-            <div className="flex-shrink-0 bg-gray-800 text-white font-black w-20 h-20 rounded-full flex items-center justify-center text-4xl shadow-lg" style={{ fontFamily: "'Patrick Hand', cursive" }}>{number}</div>
+            <div className="flex-shrink-0 bg-gray-800 text-white font-black w-20 h-20 rounded-full flex items-center justify-center text-4xl shadow-lg" style={{ fontFamily: "'Patrick Hand', cursive" }}>{icon}</div>
             <div className="ml-6">
                 <h2 className="text-5xl font-black text-gray-800" style={{ fontFamily: "'Patrick Hand', cursive" }}>{title}</h2>
                 <p className="text-xl text-gray-500">{subtitle}</p>
@@ -24,141 +22,100 @@ const SectionTitle: React.FC<{ number: string, title: string, subtitle: string }
         </div>
     </header>
 );
-const FocusArea: React.FC<{ title: string, icon: string, children: React.ReactNode }> = ({ title, icon, children }) => (
-    <div className="mt-6 p-6 bg-white rounded-lg border-2 border-gray-200 break-inside-avoid shadow-sm">
-        <h3 className="text-2xl font-bold text-gray-700 mb-3 flex items-center" style={{ fontFamily: "'Patrick Hand', cursive" }}>
-            <span className="text-3xl mr-3">{icon}</span>{title}
-        </h3>
-        <div className="space-y-2">{children}</div>
+const FocusBox: React.FC<{ title: string, children: React.ReactNode, className?: string }> = ({ title, children, className }) => (
+    <div className={`mt-6 p-6 rounded-lg border-2 border-dashed break-inside-avoid shadow-sm ${className}`}>
+        <h3 className="text-2xl font-bold text-gray-700 mb-3" style={{ fontFamily: "'Patrick Hand', cursive" }}>{title}</h3>
+        {children}
     </div>
 );
-const Goal: React.FC<{ type: 'Financial' | 'Activity' | 'System' | 'Learning' | 'Marketing' | 'Personal'; children: React.ReactNode }> = ({ type, children }) => {
-    const styles = {
-        Financial: { icon: '💰', color: 'text-green-700', bg: 'bg-green-50' },
-        Activity: { icon: '🏃‍♂️', color: 'text-blue-700', bg: 'bg-blue-50' },
-        System: { icon: '⚙️', color: 'text-purple-700', bg: 'bg-purple-50' },
-        Learning: { icon: '🧠', color: 'text-yellow-700', bg: 'bg-yellow-50' },
-        Marketing: { icon: '📢', color: 'text-pink-700', bg: 'bg-pink-50' },
-        Personal: { icon: '🧘', color: 'text-indigo-700', bg: 'bg-indigo-50' },
-    };
-    const style = styles[type];
-
-    return (
-        <div className={`p-3 rounded-lg flex items-start ${style.bg}`}>
-            <span className="text-2xl mr-3">{style.icon}</span>
-            <div>
-                <p className={`font-bold text-sm uppercase ${style.color}`}>{type} Goal</p>
-                <p className="text-gray-800 font-semibold">{children}</p>
-            </div>
-        </div>
-    );
-};
-const P: React.FC<{ children: React.ReactNode }> = ({ children }) => <p className="text-base text-gray-700 leading-relaxed my-2">{children}</p>;
+const P: React.FC<{ children: React.ReactNode, className?: string }> = ({ children, className }) => <p className={`text-base text-gray-700 leading-relaxed my-2 ${className || ''}`}>{children}</p>;
 const Quote: React.FC<{ children: React.ReactNode }> = ({ children }) => <div className="my-4 p-4 border-l-4 border-gray-300 bg-gray-100 italic text-gray-600">"{children}"</div>;
+const Strong: React.FC<{children: React.ReactNode}> = ({children}) => <strong className="font-semibold text-gray-900">{children}</strong>
 
-
-// Helper to determine goals based on revenue
-const getFinancialGoals = (monthlyRevenue: string) => {
-    const revenue = parseInt(monthlyRevenue) || 0;
-    if (revenue < 5000) {
-        return {
-            q1: "$10,000/mo",
-            q2_3: "$25,000/mo",
-            q4: "$40,000/mo",
-            scalingTrigger: "$20,000/mo"
-        };
-    } else if (revenue < 50000) {
-         return {
-            q1: `$${(revenue * 1.5).toLocaleString()}/mo`,
-            q2_3: `$${(revenue * 2.5).toLocaleString()}/mo`,
-            q4: `$${(revenue * 3.5).toLocaleString()}/mo`,
-            scalingTrigger: `$${(revenue * 2).toLocaleString()}/mo`
-        };
-    } else {
-         return {
-            q1: `$${(revenue * 1.2).toLocaleString()}/mo`,
-            q2_3: `$${(revenue * 1.5).toLocaleString()}/mo`,
-            q4: `$${(revenue * 2).toLocaleString()}/mo`,
-            scalingTrigger: `$${(revenue * 1.4).toLocaleString()}/mo`
-        };
-    }
-};
-
-const BlueprintToOneMillionPdf: React.FC<{ businessData: BusinessData, playbook: GeneratedPlaybook }> = ({ businessData, playbook }) => {
-    const goals = getFinancialGoals(businessData.monthlyRevenue);
-
+const BlueprintToOneMillionPdf: React.FC<{}> = () => {
     return (
       <>
         <Page className="flex flex-col justify-center items-start text-left">
-             <p className="font-semibold text-gray-800 text-lg">Your One-Year Blueprint</p>
+             <p className="font-semibold text-gray-800 text-lg">The Blueprint To</p>
              <div className="flex-grow"></div>
-             <h1 className="text-8xl font-black tracking-tight text-[#147273]" style={{ fontFamily: "'Patrick Hand', cursive" }}>FROM $1</h1>
-             <h2 className="text-7xl font-black tracking-tight text-gray-900" style={{ fontFamily: "'Patrick Hand', cursive" }}>TO $1,000,000</h2>
-             <p className="text-xl text-gray-600 mt-4">A Personalized Roadmap for: <strong className="font-bold">{businessData.businessType}</strong></p>
+             <h1 className="text-8xl font-black tracking-tight text-[#147273]" style={{ fontFamily: "'Patrick Hand', cursive" }}>BECOMING</h1>
+             <h2 className="text-7xl font-black tracking-tight text-gray-900" style={{ fontFamily: "'Patrick Hand', cursive" }}>A MILLIONAIRE</h2>
+             <p className="text-xl text-gray-600 mt-4">The fundamentals of wealth creation, getting your first million, and building an empire that lasts.</p>
              <div className="flex-grow"></div>
              <div className="mt-12 pt-6">
-                <p className="font-semibold text-gray-600">Generated by</p>
-                <p className="font-bold text-2xl text-gray-900">Trillion Business AI</p>
+                <p className="font-semibold text-gray-600">Based on the teachings of</p>
+                <p className="font-bold text-2xl text-gray-900">Alex Hormozi</p>
              </div>
         </Page>
         <Page>
-             <SectionTitle number="Q1" title="Months 1-3: The Foundation" subtitle="Master yourself and your offer. This is the concrete slab everything else is built on." />
-             <FocusArea title="YOU Are The Asset" icon="👤">
-                <P>Your business can only grow as much as you do. This quarter is about forging yourself into the person who can win.</P>
-                <Goal type="Learning">Master the concept of a Grand Slam Offer. Read '$100M Offers' by Alex Hormozi.</Goal>
-                <Goal type="Activity">Become competent at sales. Master the CLOSER framework and conduct your first 20 sales conversations using a script.</Goal>
-                <Goal type="Personal">Execute a "Season of No." Eliminate 3 major time-wasting activities to create 8+ extra hours per week to work ON your business.</Goal>
-             </FocusArea>
-             <FocusArea title="Your Offer is The Weapon" icon="⚔️">
-                 <P>Your offer must be so good, people feel stupid saying no. We will perfect it.</P>
-                 <Quote>You will sell to <strong className="font-semibold">{businessData.targetClient}</strong> by solving their <strong className="font-semibold">{playbook.offer1.stack[0].problem}</strong> with your Grand Slam Offer: <strong className="font-semibold">"{playbook.offer1.name}"</strong>.</Quote>
-                 <Goal type="System">Refine your Grand Slam Offer based on feedback from your first 20 sales calls. Does it truly solve their problem?</Goal>
-             </FocusArea>
-             <FocusArea title="Q1 Mission-Critical Goals" icon="🎯">
-                <Goal type="Financial">Reach {goals.q1} in monthly recurring revenue.</Goal>
-                <Goal type="Activity">Personally execute 100 warm or cold outreach messages to your ideal customer.</Goal>
-             </FocusArea>
+             <SectionTitle icon="1" title="The Foundation" subtitle="Fundamentals of Wealth Creation" />
+             <FocusBox title="Own, Don't Earn" className="border-green-300 bg-green-50">
+                <P>You can earn your way to a million over 10 years, saving every penny. Or you can <Strong>own an asset</Strong> that gets you there much faster. An automated business that makes $250k/year in profit could be worth $1M today.</P>
+                <Quote>The faster way is to own your way there.</Quote>
+            </FocusBox>
+            <FocusBox title="The Power of One: Don't Diversify" className="border-blue-300 bg-blue-50">
+                <P>Diversification is for preserving wealth, not creating it. Go all in on <Strong>one thing</Strong>. Fill one cup until it overflows, then you can fill others. Your 10% attention can't compete against someone's 100%.</P>
+                <Quote>It's not which one will work, it's which one will you work on.</Quote>
+            </FocusBox>
         </Page>
         <Page>
-             <SectionTitle number="Q2-3" title="Months 4-9: The Machine" subtitle="Build a repeatable system for getting customers. This is your money machine." />
-             <FocusArea title="Get Them To Buy (Lead Generation)" icon="📢">
-                <P>Your only focus is mastering ONE lead generation method. Volume negates luck. Become a master of outreach.</P>
-                <Quote>Your primary weapon is: <strong className="font-semibold">{playbook.marketingModel.steps[0].method}</strong>. Your mission is to use the provided template and make 20 attempts every single day.</Quote>
-                <Goal type="Marketing">Generate 50 qualified leads per month using your primary weapon.</Goal>
-             </FocusArea>
-              <FocusArea title="Get Them To Buy MORE (LTV Maximization)" icon="📈">
-                <P>Once you have a steady stream of customers, you can immediately increase your cashflow with a simple upsell.</P>
-                <Goal type="Activity">On every sales call, after the close, offer one simple upsell. This could be more quantity, higher quality, or a cross-sell. (e.g., "Most people also add...")</Goal>
-             </FocusArea>
-              <FocusArea title="Q2 & Q3 Mission-Critical Goals" icon="🎯">
-                <Goal type="Financial">Reach and maintain {goals.q2_3} in monthly revenue.</Goal>
-                <div className="p-4 bg-red-100 border-2 border-dashed border-red-300 text-center">
-                    <p className="font-bold text-red-800">🚨 SCALING TRIGGER 🚨</p>
-                    <p className="text-red-700">Once you have hit <strong className="font-semibold">{goals.scalingTrigger}</strong> for two months in a row and feel overwhelmed, you have EARNED the right to hire.</p>
+             <SectionTitle icon="🧱" title="Foundation Pt. 2: The Long Game" subtitle="Build it right, or don't build it at all." />
+             <P>If I told you to build the tallest tower in 10 seconds, you'd stack boxes vertically. They'd fall over. If I gave you 10 days, you'd build a strong foundation first.</P>
+             <P><Strong>Your business is that tower.</Strong> Rushing for quick sales without a solid product is like building a flimsy tower. It will get stuck and fall.</P>
+             <FocusBox title="The Virtuous Cycle" className="border-purple-300 bg-purple-50">
+                <ol className="list-decimal list-inside space-y-2 font-semibold">
+                    <li>Build an amazing, valuable thing. Make it a work of art.</li>
+                    <li>Let people know about it (marketing & sales).</li>
+                    <li>Get feedback and go back to step 1. <Strong>Make the thing even better.</Strong></li>
+                    <li>Repeat. Forever.</li>
+                </ol>
+                <P className="mt-2">Don't just crank marketing. Crank the quality of your product. A great product markets itself through happy customers. That's a foundation you can build a skyscraper on.</P>
+            </FocusBox>
+        </Page>
+        <Page>
+            <SectionTitle icon="2" title="The Machine" subtitle="Tactics For Your First Million" />
+            <FocusBox title="Find a Hungry Crowd" className="border-yellow-300 bg-yellow-50">
+                <P>It's better to have a mediocre hot dog stand in front of a starving crowd than the world's best hot dog stand in a desert. <Strong>The market you choose is the biggest factor in your success.</Strong></P>
+                 <ul className="list-disc list-inside space-y-1 mt-2 text-sm">
+                    <li><Strong>Pain:</Strong> They must have a desperate need, not just a want.</li>
+                    <li><Strong>Purchasing Power:</Strong> They must have the ability to buy.</li>
+                    <li><Strong>Easy to Target:</Strong> You must be able to find them easily.</li>
+                    <li><Strong>Growing:</Strong> The market should be getting bigger, not smaller.</li>
+                </ul>
+            </FocusBox>
+            <FocusBox title="The Value Equation" className="border-red-300 bg-red-50">
+                <P>Value isn't just about what they get. It's an equation. Maximize the top, minimize the bottom.</P>
+                <div className="text-center my-2 p-2 bg-white rounded-md">
+                    <div className="p-2 bg-green-100 rounded text-green-800 font-bold">(Dream Outcome) x (Perceived Likelihood of Achievement)</div>
+                    <div className="w-full h-1 bg-gray-400 my-1"></div>
+                    <div className="p-2 bg-red-100 rounded text-red-800 font-bold">(Time Delay) x (Effort & Sacrifice)</div>
                 </div>
-             </FocusArea>
+                <P>Your offer is the single biggest lever you have. A great offer makes sales easy. A bad offer makes sales impossible.</P>
+            </FocusBox>
         </Page>
-        <Page>
-             <SectionTitle number="Q4" title="Months 10-12: The Fortress" subtitle="Solidify your success with leverage and learning systems. This makes your business last." />
-             <FocusArea title="Get Help (Leverage)" icon="🤝">
-                <P>You can't do it all. The most valuable skill is getting others to do stuff for you. It's time to buy back your time.</P>
-                <Quote>Your first hire should be a <strong className="font-semibold">{playbook.operationsPlan.proposedRoles[0]?.roleTitle || 'Virtual Assistant'}</strong> to handle <strong className="font-semibold">{playbook.operationsPlan.proposedRoles[0]?.responsibilities[0] || 'administrative tasks'}</strong>.</Quote>
-                <Goal type="System">Use the "Management Diamond": Document your key processes, Demonstrate them, and ensure your new hire can Duplicate the results.</Goal>
-             </FocusArea>
-             <FocusArea title="Get Better & Stick With It (Focus)" icon="🧠">
-                <P>Don't get distracted by the "woman in the red dress." The new opportunity is a trap. The goal is to not interrupt compounding.</P>
-                <Goal type="Learning">Implement a weekly learning loop. Analyze your top 10% and bottom 10% of customers/ads/content. What did the winners have in common? Do more of that.</Goal>
-             </FocusArea>
-             <FocusArea title="Q4 Mission-Critical Goals" icon="🎯">
-                <Goal type="Financial">Stabilize at {goals.q4} in monthly revenue with your new hire integrated.</Goal>
-                <Goal type="System">Successfully delegate 10 hours per week of your lowest-value tasks.</Goal>
-             </FocusArea>
+         <Page>
+            <SectionTitle icon="3" title="Scale & Sustain" subtitle="Get Rich and Stay Rich" />
+            <FocusBox title="People: The Path to Enterprise Value" className="border-indigo-300 bg-indigo-50">
+                <P>A "genius with a thousand hands" makes income. A business that runs without the genius has <Strong>enterprise value</Strong>. You can't sell yourself, but you can sell a system run by great people.</P>
+                <P>You must market to four groups, not just one:</P>
+                 <ul className="list-disc list-inside space-y-1 mt-2 font-semibold">
+                    <li><Strong>Prospects</Strong> to become Customers.</li>
+                    <li><Strong>Customers</Strong> to become Repeat Customers.</li>
+                    <li><Strong>Candidates</Strong> to become Employees.</li>
+                    <li><Strong>Employees</Strong> to become Leaders.</li>
+                </ul>
+            </FocusBox>
+            <FocusBox title="Reputation & Compounding" className="border-pink-300 bg-pink-50">
+                <P>Your reputation is the Goodwill you build by providing more value than you take. Goodwill compounds faster than revenue. Protect it at all costs.</P>
+                <Quote>The money isn't made in the buy or the sell. It's made in the wait.</Quote>
+                <P>Compounding only works if you don't interrupt it. Stick with your one thing. The boring path is what makes you rich.</P>
+            </FocusBox>
         </Page>
-         <Page className="flex flex-col justify-center items-center text-center bg-gray-800 text-white">
-            <h2 className="text-6xl font-black text-white" style={{ fontFamily: "'Patrick Hand', cursive" }}>The Game Never Ends.</h2>
-            <p className="text-2xl mt-4">The goal isn't to hit a number. It's to become the person capable of hitting it.</p>
-            <Quote>"The point of business is to stay in business. The point of marriage is to stay married. The games worth playing are infinite."</Quote>
-            <p className="text-2xl mt-8">Keep playing.</p>
+        <Page className="flex flex-col justify-center items-center text-center bg-gray-800 text-white">
+            <h2 className="text-6xl font-black text-white" style={{ fontFamily: "'Patrick Hand', cursive" }}>The Final Level: Enjoy The Game</h2>
+            <p className="text-2xl mt-4">Work doesn't stop. It just becomes the work you choose. The goal isn't to stop playing; it's to play a game you love.</p>
+            <Quote>"The best games in life are infinite games... The point isn't to get married, the point is to stay married. The point isn't to win at business, the point is to stay in business."</Quote>
+            <p className="text-2xl mt-8">Keep playing. You win as long as you never quit.</p>
         </Page>
       </>
     );

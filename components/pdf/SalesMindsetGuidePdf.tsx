@@ -21,12 +21,12 @@ const SalesMindsetGuidePdf: React.FC = () => {
                 <Subtitle>How to Win Before You Even Pick Up The Phone.</Subtitle>
             </header>
             <main>
-                <SectionTitle>Welcome to the Jungle  jungle</SectionTitle>
+                <SectionTitle>Welcome to the Arena</SectionTitle>
                 <P>This handbook has one purpose: <strong className="font-semibold">To shortcut your success.</strong></P>
                 <P>By the time you finish it, you will know what winning <strong className="font-semibold">really</strong> means. And more than that, how to <strong className="font-semibold">do it</strong>.</P>
                 <Quote author="Alex Hormozi">Volume negates luck.</Quote>
                 
-                <SectionTitle>What is Selling? 🐎</SectionTitle>
+                <SectionTitle>What is Selling?</SectionTitle>
                 <P>If you execute everything in this handbook, you will become an expert at selling. But you cannot get there without first understanding what selling <strong className="font-semibold">is</strong>.</P>
                 <P>A story: An arrogant student tells his professor, "You can lead a horse to water, but you can't make it drink." The professor replies, "You assume the environment doesn't matter. You are wrong." He then lists ways to make the horse drink: salt its feed, remove its water for a while, put water an inch from its mouth...</P>
                 <P>The point is, the situation makes the horse drink, not a conversation with the horse.</P>

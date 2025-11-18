@@ -14,6 +14,8 @@ import SalesFunnel from './SalesFunnel';
 import KpiDashboard from './KpiDashboard';
 import SalesSystem from './SalesSystem';
 import PurchasePlan from './PurchasePlan';
+import MarketIndicatorAnalysis from './MarketIndicatorAnalysis';
+import ProductImprovementPlan from './ProductImprovementPlan';
 
 interface FullPlaybookProps {
     playbook: GeneratedPlaybook;
@@ -120,6 +122,8 @@ const FullPlaybook: React.FC<FullPlaybookProps> = ({
       component: (
         <div className="space-y-8">
           <Step2Diagnosis diagnosis={playbook.diagnosis} />
+          <MarketIndicatorAnalysis analysis={playbook.marketIndicatorAnalysis} />
+          <ProductImprovementPlan plan={playbook.productImprovementPlan} />
           <OperationsPlan operationsPlan={playbook.operationsPlan} />
           <KpiDashboard 
             kpiDashboard={playbook.kpiDashboard}
