@@ -2,64 +2,82 @@
 import React from 'react';
 import { BusinessData, GeneratedPlaybook } from '../../types';
 
-// --- Reusable PDF Components ---
-const Page: React.FC<{children: React.ReactNode, className?: string}> = ({children, className}) => (
-    <div className={`p-16 bg-[#FEFBF6] font-sans text-gray-800 break-after-page relative ${className}`} style={{ fontFamily: 'Inter, sans-serif', width: '800px', minHeight: '1131px', border: '8px solid #3A3A3A' }}>
-        <div className="relative z-10">
+// --- Cashvertising Design System Components ---
+
+const CashPage: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+    <div className="p-12 bg-white font-serif text-[#222222] relative overflow-hidden break-after-page" style={{ width: '800px', minHeight: '1131px', border: '1px solid #e5e5e5' }}>
+        <div className="relative z-10 h-full flex flex-col">
             {children}
         </div>
-        <div className="absolute bottom-6 right-6 text-xs text-gray-400 font-bold">Trillion Business AI Blueprint</div>
+         <div className="absolute bottom-4 right-6 text-[10px] font-sans text-gray-400 tracking-widest uppercase">CONFIDENTIAL BLUEPRINT</div>
     </div>
 );
-const Title: React.FC<{ children: React.ReactNode }> = ({ children }) => <h1 className="text-6xl font-black text-gray-900 tracking-tight" style={{ fontFamily: "'Patrick Hand', cursive" }}>{children}</h1>;
-const Subtitle: React.FC<{ children: React.ReactNode }> = ({ children }) => <p className="text-2xl text-gray-600 mt-2">{children}</p>;
-const SectionTitle: React.FC<{ number: string, title: string, subtitle: string }> = ({ number, title, subtitle }) => (
-    <header className="mb-8 break-after-avoid">
-        <div className="flex items-center">
-            <div className="flex-shrink-0 bg-gray-800 text-white font-black w-20 h-20 rounded-full flex items-center justify-center text-4xl shadow-lg" style={{ fontFamily: "'Patrick Hand', cursive" }}>{number}</div>
-            <div className="ml-6">
-                <h2 className="text-5xl font-black text-gray-800" style={{ fontFamily: "'Patrick Hand', cursive" }}>{title}</h2>
-                <p className="text-xl text-gray-500">{subtitle}</p>
-            </div>
-        </div>
-    </header>
-);
-const FocusArea: React.FC<{ title: string, icon: string, children: React.ReactNode }> = ({ title, icon, children }) => (
-    <div className="mt-6 p-6 bg-white rounded-lg border-2 border-gray-200 break-inside-avoid shadow-sm">
-        <h3 className="text-2xl font-bold text-gray-700 mb-3 flex items-center" style={{ fontFamily: "'Patrick Hand', cursive" }}>
-            <span className="text-3xl mr-3">{icon}</span>{title}
-        </h3>
-        <div className="space-y-2">{children}</div>
-    </div>
-);
-const Goal: React.FC<{ type: 'Financial' | 'Activity' | 'System' | 'Learning' | 'Marketing' | 'Personal'; children: React.ReactNode }> = ({ type, children }) => {
-    const styles = {
-        Financial: { icon: '💰', color: 'text-green-700', bg: 'bg-green-50' },
-        Activity: { icon: '🏃‍♂️', color: 'text-blue-700', bg: 'bg-blue-50' },
-        System: { icon: '⚙️', color: 'text-purple-700', bg: 'bg-purple-50' },
-        Learning: { icon: '🧠', color: 'text-yellow-700', bg: 'bg-yellow-50' },
-        Marketing: { icon: '📢', color: 'text-pink-700', bg: 'bg-pink-50' },
-        Personal: { icon: '🧘', color: 'text-indigo-700', bg: 'bg-indigo-50' },
-    };
-    const style = styles[type];
 
-    return (
-        <div className={`p-3 rounded-lg flex items-start ${style.bg}`}>
-            <span className="text-2xl mr-3">{style.icon}</span>
-            <div>
-                <p className={`font-bold text-sm uppercase ${style.color}`}>{type} Goal</p>
-                <p className="text-gray-800 font-semibold">{children}</p>
-            </div>
+const CashHeadline: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => (
+    <h1 className={`text-6xl font-bold text-black uppercase leading-[0.9] tracking-tight mb-2 ${className}`} style={{ fontFamily: "'Oswald', sans-serif" }}>
+        {children}
+    </h1>
+);
+
+const CashSubhead: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+    <h2 className="text-2xl font-bold text-[#222222] mb-4 border-b-4 border-black pb-2 inline-block" style={{ fontFamily: "'Oswald', sans-serif" }}>
+        {children}
+    </h2>
+);
+
+const CashBody: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => (
+    <p className={`text-[13px] leading-relaxed text-[#333] mb-3 ${className}`} style={{ fontFamily: "'Merriweather', serif" }}>
+        {children}
+    </p>
+);
+
+const Highlight: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+    <span style={{ background: "linear-gradient(120deg, #ffff00 0%, #ffff00 100%)", backgroundRepeat: "no-repeat", backgroundSize: "100% 45%", backgroundPosition: "0 90%", padding: "0 2px" }}>
+        {children}
+    </span>
+);
+
+const HandwrittenNote: React.FC<{ children: React.ReactNode; className?: string; color?: string }> = ({ children, className, color = '#1e3a8a' }) => (
+    <div className={`text-xl transform -rotate-2 ${className}`} style={{ fontFamily: "'Caveat', cursive", color: color }}>
+        {children}
+    </div>
+);
+
+const StatBox: React.FC<{ label: string; value: string; className?: string }> = ({ label, value, className }) => (
+    <div className={`border-2 border-black p-3 text-center ${className}`}>
+        <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">{label}</p>
+        <p className="text-2xl font-black text-black font-sans leading-none mt-1">{value}</p>
+    </div>
+);
+
+const FocusSection: React.FC<{ icon: string; title: string; children: React.ReactNode }> = ({ icon, title, children }) => (
+    <div className="mb-6">
+        <h3 className="flex items-center font-bold font-sans uppercase text-lg mb-2">
+            <span className="text-2xl mr-2">{icon}</span> {title}
+        </h3>
+        <div className="pl-8 border-l-2 border-gray-200 ml-3">
+            {children}
         </div>
-    );
-};
-const P: React.FC<{ children: React.ReactNode }> = ({ children }) => <p className="text-base text-gray-700 leading-relaxed my-2">{children}</p>;
-const Quote: React.FC<{ children: React.ReactNode }> = ({ children }) => <div className="my-4 p-4 border-l-4 border-gray-300 bg-gray-100 italic text-gray-600">"{children}"</div>;
+    </div>
+);
+
+const GoalItem: React.FC<{ type: string; children: React.ReactNode }> = ({ type, children }) => (
+    <div className="mb-3 bg-gray-50 p-2 rounded border-l-4 border-black">
+        <span className="text-[10px] font-bold uppercase bg-black text-white px-1 py-0.5 rounded-sm mr-2">{type}</span>
+        <span className="text-xs font-serif">{children}</span>
+    </div>
+);
 
 
 // Helper to determine goals based on revenue
 const getFinancialGoals = (monthlyRevenue: string) => {
-    const revenue = parseInt(monthlyRevenue) || 0;
+    const numericString = monthlyRevenue.replace(/[^0-9.]/g, '');
+    const revenue = parseFloat(numericString) || 0;
+    
+    const format = (num: number) => {
+        return `$${Math.round(num).toLocaleString()}/mo`;
+    }
+
     if (revenue < 5000) {
         return {
             q1: "$10,000/mo",
@@ -69,17 +87,17 @@ const getFinancialGoals = (monthlyRevenue: string) => {
         };
     } else if (revenue < 50000) {
          return {
-            q1: `$${(revenue * 1.5).toLocaleString()}/mo`,
-            q2_3: `$${(revenue * 2.5).toLocaleString()}/mo`,
-            q4: `$${(revenue * 3.5).toLocaleString()}/mo`,
-            scalingTrigger: `$${(revenue * 2).toLocaleString()}/mo`
+            q1: format(revenue * 1.5),
+            q2_3: format(revenue * 2.5),
+            q4: format(revenue * 3.5),
+            scalingTrigger: format(revenue * 2)
         };
     } else {
          return {
-            q1: `$${(revenue * 1.2).toLocaleString()}/mo`,
-            q2_3: `$${(revenue * 1.5).toLocaleString()}/mo`,
-            q4: `$${(revenue * 2).toLocaleString()}/mo`,
-            scalingTrigger: `$${(revenue * 1.4).toLocaleString()}/mo`
+            q1: format(revenue * 1.2),
+            q2_3: format(revenue * 1.5),
+            q4: format(revenue * 2),
+            scalingTrigger: format(revenue * 1.4)
         };
     }
 };
@@ -89,77 +107,172 @@ const OneYearBlueprintPdf: React.FC<{ businessData: BusinessData, playbook: Gene
 
     return (
       <>
-        <Page className="flex flex-col justify-center items-start text-left">
-             <p className="font-semibold text-gray-800 text-lg">Your One-Year Blueprint</p>
-             <div className="flex-grow"></div>
-             <h1 className="text-8xl font-black tracking-tight text-[#147273]" style={{ fontFamily: "'Patrick Hand', cursive" }}>FROM $1</h1>
-             <h2 className="text-7xl font-black tracking-tight text-gray-900" style={{ fontFamily: "'Patrick Hand', cursive" }}>TO $1,000,000</h2>
-             <p className="text-xl text-gray-600 mt-4">A Personalized Roadmap for: <strong className="font-bold">{businessData.businessType}</strong></p>
-             <div className="flex-grow"></div>
-             <div className="mt-12 pt-6">
-                <p className="font-semibold text-gray-600">Generated by</p>
-                <p className="font-bold text-2xl text-gray-900">Trillion Business AI</p>
-             </div>
-        </Page>
-        <Page>
-             <SectionTitle number="Q1" title="Months 1-3: The Foundation" subtitle="Master yourself and your offer. This is the concrete slab everything else is built on." />
-             <FocusArea title="YOU Are The Asset" icon="👤">
-                <P>Your business can only grow as much as you do. This quarter is about forging yourself into the person who can win.</P>
-                <Goal type="Learning">Master the concept of a Grand Slam Offer. Read '$100M Offers' by Alex Hormozi.</Goal>
-                <Goal type="Activity">Become competent at sales. Master the CLOSER framework and conduct your first 20 sales conversations using a script.</Goal>
-                <Goal type="Personal">Execute a "Season of No." Eliminate 3 major time-wasting activities to create 8+ extra hours per week to work ON your business.</Goal>
-             </FocusArea>
-             <FocusArea title="Your Offer is The Weapon" icon="⚔️">
-                 <P>Your offer must be so good, people feel stupid saying no. We will perfect it.</P>
-                 <Quote>You will sell to <strong className="font-semibold">{businessData.targetClient}</strong> by solving their <strong className="font-semibold">{playbook.offer1.stack[0].problem}</strong> with your Grand Slam Offer: <strong className="font-semibold">"{playbook.offer1.name}"</strong>.</Quote>
-                 <Goal type="System">Refine your Grand Slam Offer based on feedback from your first 20 sales calls. Does it truly solve their problem?</Goal>
-             </FocusArea>
-             <FocusArea title="Q1 Mission-Critical Goals" icon="🎯">
-                <Goal type="Financial">Reach {goals.q1} in monthly recurring revenue.</Goal>
-                <Goal type="Activity">Personally execute 100 warm or cold outreach messages to your ideal customer.</Goal>
-             </FocusArea>
-        </Page>
-        <Page>
-             <SectionTitle number="Q2-3" title="Months 4-9: The Machine" subtitle="Build a repeatable system for getting customers. This is your money machine." />
-             <FocusArea title="Get Them To Buy (Lead Generation)" icon="📢">
-                <P>Your only focus is mastering ONE lead generation method. Volume negates luck. Become a master of outreach.</P>
-                <Quote>Your primary weapon is: <strong className="font-semibold">{playbook.marketingModel.steps[0].method}</strong>. Your mission is to use the provided template and make 20 attempts every single day.</Quote>
-                <Goal type="Marketing">Generate 50 qualified leads per month using your primary weapon.</Goal>
-             </FocusArea>
-              <FocusArea title="Get Them To Buy MORE (LTV Maximization)" icon="📈">
-                <P>Once you have a steady stream of customers, you can immediately increase your cashflow with a simple upsell.</P>
-                <Goal type="Activity">On every sales call, after the close, offer one simple upsell. This could be more quantity, higher quality, or a cross-sell. (e.g., "Most people also add...")</Goal>
-             </FocusArea>
-              <FocusArea title="Q2 & Q3 Mission-Critical Goals" icon="🎯">
-                <Goal type="Financial">Reach and maintain {goals.q2_3} in monthly revenue.</Goal>
-                <div className="p-4 bg-red-100 border-2 border-dashed border-red-300 text-center">
-                    <p className="font-bold text-red-800">🚨 SCALING TRIGGER 🚨</p>
-                    <p className="text-red-700">Once you have hit <strong className="font-semibold">{goals.scalingTrigger}</strong> for two months in a row and feel overwhelmed, you have EARNED the right to hire.</p>
+        {/* COVER PAGE */}
+        <CashPage>
+            <div className="flex flex-col h-full justify-center border-8 border-double border-black p-8 text-center">
+                 <p className="font-serif italic text-gray-500 mb-4">The Official Strategy For:</p>
+                 <h2 className="text-3xl font-bold font-sans uppercase mb-12">{businessData.businessType}</h2>
+                 
+                 <CashHeadline>Zero To</CashHeadline>
+                 <CashHeadline className="text-[#147273]">One Million</CashHeadline>
+                 
+                 <div className="w-24 h-1 bg-yellow-400 mx-auto my-8"></div>
+                 
+                 <p className="text-xl font-serif max-w-lg mx-auto text-gray-700">
+                     A 12-Month Direct Response Execution Plan designed to maximize cash flow and enterprise value.
+                 </p>
+                 
+                 <div className="mt-auto">
+                     <div className="inline-block border-2 border-black p-4 transform -rotate-3">
+                         <p className="text-xs font-bold uppercase tracking-widest">Confidential</p>
+                         <p className="text-xs text-gray-500">{new Date().toLocaleDateString()}</p>
+                     </div>
+                 </div>
+            </div>
+        </CashPage>
+
+        {/* Q1 */}
+        <CashPage>
+            <div className="flex flex-row h-full gap-8">
+                <div className="w-2/3 pr-4 border-r border-gray-200 border-dashed">
+                     <div className="flex items-baseline mb-6">
+                        <h1 className="text-8xl font-bold font-sans text-gray-200 mr-4">Q1</h1>
+                        <div>
+                            <CashSubhead>The Foundation</CashSubhead>
+                            <p className="text-sm font-serif italic text-gray-500">Months 1-3</p>
+                        </div>
+                     </div>
+                     
+                     <CashBody className="text-lg">
+                         <Highlight>You cannot fire a cannon from a canoe.</Highlight> This quarter is about building the concrete slab your business will stand on.
+                     </CashBody>
+
+                     <FocusSection icon="👤" title="YOU Are The Asset">
+                        <CashBody>Your business grows as fast as you do. We need to upgrade your operating system.</CashBody>
+                        <GoalItem type="Learning">Read '$100M Offers' by Alex Hormozi. Memorize the Value Equation.</GoalItem>
+                        <GoalItem type="Personal">Execute a "Season of No." Cut 3 time-wasting habits.</GoalItem>
+                     </FocusSection>
+
+                     <FocusSection icon="⚔️" title="The Weapon (Offer)">
+                        <CashBody>Refine your offer until strangers feel stupid saying no.</CashBody>
+                        <div className="p-4 bg-gray-100 border-l-4 border-[#147273] my-2">
+                            <p className="font-serif italic text-sm">"{playbook.offer1.name}"</p>
+                        </div>
+                        <GoalItem type="System">Conduct 20 sales calls to test and refine this offer.</GoalItem>
+                     </FocusSection>
+
                 </div>
-             </FocusArea>
-        </Page>
-        <Page>
-             <SectionTitle number="Q4" title="Months 10-12: The Fortress" subtitle="Solidify your success with leverage and learning systems. This makes your business last." />
-             <FocusArea title="Get Help (Leverage)" icon="🤝">
-                <P>You can't do it all. The most valuable skill is getting others to do stuff for you. It's time to buy back your time.</P>
-                <Quote>Your first hire should be a <strong className="font-semibold">{playbook.operationsPlan.proposedRoles[0]?.roleTitle || 'Virtual Assistant'}</strong> to handle <strong className="font-semibold">{playbook.operationsPlan.proposedRoles[0]?.responsibilities[0] || 'administrative tasks'}</strong>.</Quote>
-                <Goal type="System">Use the "Management Diamond": Document your key processes, Demonstrate them, and ensure your new hire can Duplicate the results.</Goal>
-             </FocusArea>
-             <FocusArea title="Get Better & Stick With It (Focus)" icon="🧠">
-                <P>Don't get distracted by the "woman in the red dress." The new opportunity is a trap. The goal is to not interrupt compounding.</P>
-                <Goal type="Learning">Implement a weekly learning loop. Analyze your top 10% and bottom 10% of customers/ads/content. What did the winners have in common? Do more of that.</Goal>
-             </FocusArea>
-             <FocusArea title="Q4 Mission-Critical Goals" icon="🎯">
-                <Goal type="Financial">Stabilize at {goals.q4} in monthly revenue with your new hire integrated.</Goal>
-                <Goal type="System">Successfully delegate 10 hours per week of your lowest-value tasks.</Goal>
-             </FocusArea>
-        </Page>
-         <Page className="flex flex-col justify-center items-center text-center bg-gray-800 text-white">
-            <h2 className="text-6xl font-black text-white" style={{ fontFamily: "'Patrick Hand', cursive" }}>The Game Never Ends.</h2>
-            <p className="text-2xl mt-4">The goal isn't to hit a number. It's to become the person capable of hitting it.</p>
-            <Quote>"The point of business is to stay in business. The point of marriage is to stay married. The games worth playing are infinite."</Quote>
-            <p className="text-2xl mt-8">Keep playing.</p>
-        </Page>
+                <div className="w-1/3 pl-2">
+                    <StatBox label="Revenue Target" value={goals.q1} className="bg-green-50 border-green-600 mb-6 text-green-900" />
+                    <StatBox label="Activity Goal" value="100 Outreach/mo" className="mb-6" />
+                    
+                    <HandwrittenNote className="mb-6 text-center text-red-600 transform rotate-2">
+                        Volume Negates Luck. <br/> Do the work.
+                    </HandwrittenNote>
+
+                    <div className="bg-yellow-100 p-4 border border-yellow-400 shadow-md">
+                        <p className="font-bold text-xs uppercase mb-2">⚠️ Warning</p>
+                        <p className="font-serif text-xs">
+                            Do not try to automate yet. You must do things that don't scale to learn what works.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </CashPage>
+
+        {/* Q2-Q3 */}
+        <CashPage>
+             <div className="flex flex-row h-full gap-8">
+                <div className="w-2/3 pr-4 border-r border-gray-200 border-dashed">
+                     <div className="flex items-baseline mb-6">
+                        <h1 className="text-8xl font-bold font-sans text-gray-200 mr-4">Q2-3</h1>
+                        <div>
+                            <CashSubhead>The Machine</CashSubhead>
+                            <p className="text-sm font-serif italic text-gray-500">Months 4-9</p>
+                        </div>
+                     </div>
+
+                     <CashBody className="text-lg">
+                         Now we turn on the faucet. We are building a predictable system for getting customers.
+                     </CashBody>
+
+                     <FocusSection icon="📢" title="Lead Generation">
+                        <CashBody>Focus on ONE channel. Master it. Do not get distracted.</CashBody>
+                        <div className="p-4 bg-blue-50 border-l-4 border-blue-600 my-2">
+                            <p className="font-bold text-xs uppercase text-blue-800">Primary Weapon</p>
+                            <p className="font-serif text-sm text-blue-900">{playbook.marketingModel.steps[0].method}</p>
+                        </div>
+                        <GoalItem type="Marketing">Generate 50 qualified leads/mo consistently.</GoalItem>
+                     </FocusSection>
+
+                     <FocusSection icon="📈" title="Maximize LTV">
+                        <CashBody>Get paid to acquire customers. Increase cash flow immediately.</CashBody>
+                        <GoalItem type="Activity">Add an upsell to every single closed deal.</GoalItem>
+                     </FocusSection>
+
+                </div>
+                <div className="w-1/3 pl-2">
+                     <StatBox label="Revenue Target" value={goals.q2_3} className="bg-green-50 border-green-600 mb-6 text-green-900" />
+                     
+                     <div className="border-2 border-dashed border-red-500 p-4 bg-red-50 mb-6 relative">
+                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-red-500 text-white text-[10px] px-2 py-1 font-bold uppercase">
+                            Scaling Trigger
+                        </div>
+                        <p className="text-center text-2xl font-black text-red-700 font-sans">{goals.scalingTrigger}</p>
+                        <p className="text-center text-[10px] font-serif mt-1">Hit this for 2 months before hiring.</p>
+                     </div>
+
+                     <HandwrittenNote className="text-center text-blue-800">
+                        "You don't need more ideas. You need more volume."
+                    </HandwrittenNote>
+                </div>
+            </div>
+        </CashPage>
+
+        {/* Q4 */}
+        <CashPage>
+             <div className="flex flex-row h-full gap-8">
+                <div className="w-2/3 pr-4 border-r border-gray-200 border-dashed">
+                     <div className="flex items-baseline mb-6">
+                        <h1 className="text-8xl font-bold font-sans text-gray-200 mr-4">Q4</h1>
+                        <div>
+                            <CashSubhead>The Fortress</CashSubhead>
+                            <p className="text-sm font-serif italic text-gray-500">Months 10-12</p>
+                        </div>
+                     </div>
+
+                     <CashBody className="text-lg">
+                         Solidify your gains. Remove yourself from the low-value work. Prepare for scale.
+                     </CashBody>
+
+                     <FocusSection icon="🤝" title="Leverage (Hiring)">
+                        <CashBody>Buy back your time. The goal is not to do more, but to achieve more.</CashBody>
+                         <div className="p-4 bg-yellow-50 border-l-4 border-yellow-400 my-2">
+                            <p className="font-bold text-xs uppercase text-yellow-800">First Hire</p>
+                            <p className="font-serif text-sm text-yellow-900">{playbook.operationsPlan.proposedRoles[0]?.roleTitle || 'Virtual Assistant'}</p>
+                        </div>
+                        <GoalItem type="System">Delegate 10hrs/week of admin work.</GoalItem>
+                     </FocusSection>
+
+                     <FocusSection icon="🧠" title="Focus">
+                        <CashBody>Don't get "shiny object syndrome." The boring work is what makes you rich.</CashBody>
+                        <GoalItem type="Learning">Analyze top 10% of customers. Clone them.</GoalItem>
+                     </FocusSection>
+
+                </div>
+                <div className="w-1/3 pl-2">
+                     <StatBox label="Revenue Target" value={goals.q4} className="bg-green-50 border-green-600 mb-6 text-green-900" />
+                     
+                     <div className="mt-12 text-center">
+                        <div className="w-20 h-20 bg-black rounded-full flex items-center justify-center text-4xl mx-auto mb-4">🏁</div>
+                        <CashHeadline className="text-3xl">Keep Playing</CashHeadline>
+                        <CashBody className="text-center italic">
+                            The goal isn't to win. The goal is to keep playing.
+                        </CashBody>
+                     </div>
+                </div>
+            </div>
+        </CashPage>
       </>
     );
 };

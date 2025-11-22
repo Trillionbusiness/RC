@@ -3,8 +3,8 @@ import React from 'react';
 
 // --- Reusable PDF Components ---
 const Title: React.FC<{ children: React.ReactNode }> = ({ children }) => <h1 className="text-6xl font-black text-gray-900 tracking-tight" style={{ fontFamily: "'Patrick Hand', cursive" }}>{children}</h1>;
-const Subtitle: React.FC<{ children: React.ReactNode }> = ({ children }) => <p className="text-2xl text-gray-600 mt-2">{children}</p>;
-const SectionTitle: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => <h2 className={`text-5xl font-black pb-3 mb-6 mt-10 break-after-avoid ${className}`} style={{ fontFamily: "'Patrick Hand', cursive" }}>{children}</h2>;
+const Subtitle: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => <p className={`text-2xl text-gray-600 mt-2 ${className || ''}`}>{children}</p>;
+const SectionTitle: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => <h2 className={`text-5xl font-black pb-3 mb-6 mt-10 break-after-avoid ${className || ''}`} style={{ fontFamily: "'Patrick Hand', cursive" }}>{children}</h2>;
 const P: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => <p className={`text-base leading-relaxed my-3 ${className || ''}`}>{children}</p>;
 
 const SkillCard: React.FC<{ number: number, title: string, description: string }> = ({ number, title, description }) => (

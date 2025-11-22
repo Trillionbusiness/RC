@@ -191,29 +191,32 @@ const App: React.FC = () => {
         if (!appState.playbook) return;
         setIsGeneratingOfflineApp(true);
         
-        try {
-            const { renderToStaticMarkup } = await import('react-dom/server');
-            const staticHtml = renderToStaticMarkup(<FullPlaybookHtml playbook={appState.playbook} />);
-            
-            const fullHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Trillion Business Plan - Offline Interactive Plan</title><script src="https://cdn.tailwindcss.com"></script><style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');:root {--bg-light: #ffffff; --bg-muted: #f8f9fa; --text-dark: #212121; --text-light: #5f5f5f;--border-color: #dee2e6; --primary-color: #147273; --accent-color: #82D5E3;}body { margin: 0; background-color: var(--bg-muted); color: var(--text-dark); font-family: 'Inter', sans-serif; }html {scroll-behavior: smooth;}.playbook-step-content { transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out; }.strategy-content { transition: max-height 0.3s ease-in-out; }.strategy-toggle-icon { transition: transform 0.3s; } @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .no-print { display: none !important; } .playbook-step-content { max-height: none !important; opacity: 1 !important; } }</style></head><body class="p-4 md:p-8"><div class="max-w-7xl mx-auto">${staticHtml}</div><script>document.addEventListener('DOMContentLoaded', () => {document.querySelectorAll('.playbook-step button').forEach(button => {button.addEventListener('click', () => {const content = button.nextElementSibling; const icon = button.querySelector('.playbook-step-toggle-icon'); if (content.style.maxHeight && content.style.maxHeight !== '0px') {content.style.maxHeight = '0px'; content.style.opacity = '0'; icon.style.transform = '';} else {content.style.maxHeight = content.scrollHeight + 'px'; content.style.opacity = '1'; icon.style.transform = 'rotate(180deg)';}});});document.querySelectorAll('.strategy-accordion button').forEach(button => {button.addEventListener('click', () => {const content = button.nextElementSibling; const icon = button.querySelector('.strategy-toggle-icon'); if (content.style.maxHeight && content.style.maxHeight !== '0px') {content.style.maxHeight = '0px'; icon.style.transform = '';} else {content.style.maxHeight = content.scrollHeight + 'px'; icon.style.transform = 'rotate(180deg)';}});});});<\/script></body></html>`;
+        // Use setTimeout to ensure the UI updates (spinner shows) before the heavy renderToStaticMarkup runs
+        setTimeout(async () => {
+            try {
+                const { renderToStaticMarkup } = await import('react-dom/server');
+                const staticHtml = renderToStaticMarkup(<FullPlaybookHtml playbook={appState.playbook} />);
+                
+                const fullHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Trillion Business Plan - Offline Interactive Plan</title><script src="https://cdn.tailwindcss.com"></script><style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');:root {--bg-light: #ffffff; --bg-muted: #f8f9fa; --text-dark: #000000; --text-light: #4b5563;--border-color: #e5e7eb; --primary-color: #000000; --accent-color: #ceff00;}body { margin: 0; background-color: var(--bg-muted); color: var(--text-dark); font-family: 'Inter', sans-serif; }html {scroll-behavior: smooth;}.playbook-step-content { transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out; }.strategy-content { transition: max-height 0.3s ease-in-out; }.strategy-toggle-icon { transition: transform 0.3s; } @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .no-print { display: none !important; } .playbook-step-content { max-height: none !important; opacity: 1 !important; } }</style></head><body class="p-4 md:p-8"><div class="max-w-7xl mx-auto">${staticHtml}</div><script>document.addEventListener('DOMContentLoaded', () => {document.querySelectorAll('.playbook-step button').forEach(button => {button.addEventListener('click', () => {const content = button.nextElementSibling; const icon = button.querySelector('.playbook-step-toggle-icon'); if (content.style.maxHeight && content.style.maxHeight !== '0px') {content.style.maxHeight = '0px'; content.style.opacity = '0'; icon.style.transform = '';} else {content.style.maxHeight = content.scrollHeight + 'px'; content.style.opacity = '1'; icon.style.transform = 'rotate(180deg)';}});});document.querySelectorAll('.strategy-accordion button').forEach(button => {button.addEventListener('click', () => {const content = button.nextElementSibling; const icon = button.querySelector('.strategy-toggle-icon'); if (content.style.maxHeight && content.style.maxHeight !== '0px') {content.style.maxHeight = '0px'; icon.style.transform = '';} else {content.style.maxHeight = content.scrollHeight + 'px'; icon.style.transform = 'rotate(180deg)';}});});});<\/script></body></html>`;
 
-            const blob = new Blob([fullHtml], { type: 'text/html' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'Trillion_Business_Interactive_Plan.html';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        } catch (e) {
-            console.error("Error generating offline app", e);
-            setError("Could not generate the interactive offline plan.");
-        } finally {
-            setIsGeneratingOfflineApp(false);
-        }
+                const blob = new Blob([fullHtml], { type: 'text/html' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'Trillion_Business_Interactive_Plan.html';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (e) {
+                console.error("Error generating offline app", e);
+                setError("Could not generate the interactive offline plan.");
+            } finally {
+                setIsGeneratingOfflineApp(false);
+            }
+        }, 600); // Increased timeout for UI feedback to render the spinner
     };
 
     const generateSinglePdf = async (element: HTMLElement, fileName: string) => {
-      const canvas = await window.html2canvas(element, { scale: 1.5, useCORS: true, allowTaint: true });
+      const canvas = await window.html2canvas(element, { scale: 1.5, useCORS: true, allowTaint: true, logging: false });
       setPdfProgress(50);
       const imgData = canvas.toDataURL('image/jpeg', 0.9);
       const pdf = new window.jspdf.jsPDF({
@@ -239,7 +242,7 @@ const App: React.FC = () => {
     useEffect(() => {
         if (pdfConfig && pdfSingleRenderRef.current) {
             const generate = async () => {
-                await new Promise(resolve => setTimeout(resolve, 100));
+                await new Promise(resolve => setTimeout(resolve, 1200)); // Increased buffer time for rendering single PDF
                 const element = pdfSingleRenderRef.current?.children[0] as HTMLElement;
                 if (element) {
                     try {
@@ -270,13 +273,16 @@ const App: React.FC = () => {
         if (!appState.playbook || !appState.businessData || isZipping || isGeneratingPdf) return;
         setIsZipping(true);
         setZipProgress(0);
-        setShowAllPdfsForZip(true);
+        // Wrap in setTimeout to allow the UI to update (show 'Zipping Your Files...') before the heavy mount happens
+        setTimeout(() => {
+            setShowAllPdfsForZip(true);
+        }, 600); // Increased timeout for UI feedback
     };
 
     useEffect(() => {
         if (showAllPdfsForZip && pdfZipRenderRef.current) {
             const zipAndDownload = async () => {
-                await new Promise(resolve => setTimeout(resolve, 100)); 
+                await new Promise(resolve => setTimeout(resolve, 3500)); // Wait longer for the massive DOM tree to fully paint
                 const zip = new JSZip();
                 const pdfElements = pdfZipRenderRef.current!.querySelectorAll('[data-pdf-output]');
                 const totalFiles = pdfElements.length;
@@ -285,7 +291,9 @@ const App: React.FC = () => {
                     const element = pdfElements[i] as HTMLElement;
                     const path = element.dataset.pdfPath || `document_${i + 1}.pdf`;
                     try {
-                        const canvas = await window.html2canvas(element, { scale: 1.5, useCORS: true, allowTaint: true });
+                        // Short yield to keep UI responsive during the loop
+                        await new Promise(resolve => setTimeout(resolve, 30));
+                        const canvas = await window.html2canvas(element, { scale: 1.5, useCORS: true, allowTaint: true, logging: false });
                         const imgData = canvas.toDataURL('image/jpeg', 0.9);
                         const pdf = new window.jspdf.jsPDF({
                             orientation: 'p',
@@ -297,7 +305,7 @@ const App: React.FC = () => {
                         zip.file(path, pdfBlob);
                     } catch (e) {
                         console.error("Error generating PDF for path:", path, e);
-                        setError(`PDF generation failed\n${e instanceof Error ? e.message : 'Unknown error'}`);
+                        // Continue zipping other files even if one fails
                     }
                     setZipProgress(((i + 1) / totalFiles) * 95);
                 }
@@ -363,13 +371,17 @@ const App: React.FC = () => {
 
     if (!appState.playbook) {
         return (
-          <div className="min-h-screen py-10 px-4">
+          <div className="min-h-screen py-10 px-4 bg-white">
+             <div className="max-w-4xl mx-auto mb-8 text-center">
+                 <h1 className="text-5xl font-black mb-2 tracking-tight text-black" style={{fontFamily: "'Oswald', sans-serif"}}>Rohit Chavan rcrobust Business planner</h1>
+                 <p className="text-lg text-gray-600">AI-Powered Strategy. Zero Fluff. 100% Action.</p>
+             </div>
             <div className="max-w-4xl mx-auto">
               {isLoading ? 
                 <ProgressBar progress={loadingProgress} loadingText={loadingText} /> :
                 <Step1Form onSubmit={handleFormSubmit} />
               }
-              {error && <div className="mt-4 text-red-500 text-center p-4 bg-red-100 rounded-lg">{error}</div>}
+              {error && <div className="mt-4 text-red-600 font-bold text-center p-4 bg-red-100 rounded-lg border-2 border-red-500">{error}</div>}
             </div>
           </div>
         );
@@ -377,14 +389,13 @@ const App: React.FC = () => {
 
     return (
         <div className="min-h-screen">
-           <header className="bg-white shadow-sm sticky top-0 z-20">
+           <header className="shadow-md sticky top-0 z-20" style={{backgroundColor: 'var(--accent-color)'}}>
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-                  <h1 className="text-2xl font-bold" style={{color: 'var(--primary-color)'}}>Rohit Chavan rcrobust Business planner</h1>
+                  <h1 className="text-2xl font-black tracking-tight text-black" style={{fontFamily: "'Oswald', sans-serif"}}>Rohit Chavan rcrobust Business planner</h1>
                   <div className="flex items-center gap-2 flex-wrap justify-center">
                       <button
                         onClick={handleStartNewPlan}
-                        className="px-4 py-2 bg-gray-200 font-semibold rounded-md hover:bg-gray-300 transition-colors text-sm"
-                        style={{color: 'var(--primary-color)', backgroundColor: 'rgba(20, 114, 115, 0.1)'}}
+                        className="px-4 py-2 bg-black text-white font-bold rounded-md hover:bg-gray-800 transition-colors text-sm border-2 border-black"
                       >
                         Start New Plan
                       </button>
@@ -421,7 +432,7 @@ const App: React.FC = () => {
           </header>
 
           <main className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
-            {error && <div className="mb-4 text-red-500 text-center p-4 bg-red-100 rounded-lg" onClick={() => setError(null)}>{error}</div>}
+            {error && <div className="mb-4 text-red-600 font-bold text-center p-4 bg-red-100 rounded-lg border-2 border-red-500" onClick={() => setError(null)}>{error}</div>}
             <FullPlaybook 
                 playbook={appState.playbook}
                 onDownloadAsset={(asset) => handleDownloadPdf('single-asset', asset)}

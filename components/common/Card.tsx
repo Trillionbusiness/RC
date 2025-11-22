@@ -10,8 +10,8 @@ const Card = forwardRef<HTMLDivElement, CardProps>(({ children, className, ...pr
     <div 
       ref={ref}
       {...props} 
-      className={`bg-white border border-gray-200 rounded-xl shadow-md p-6 md:p-8 ${className || ''}`}
-      style={{backgroundColor: 'var(--bg-light)', borderColor: 'var(--border-color)'}}
+      className={`bg-white border border-gray-200 rounded-xl shadow-sm p-6 md:p-8 ${className || ''}`}
+      style={{backgroundColor: 'white', borderColor: 'var(--border-color)'}}
     >
       {children}
     </div>
@@ -31,7 +31,7 @@ export const StrategyAccordion: React.FC<StrategyAccordionProps> = ({ title, chi
   const isExpanded = isStatic || isOpen;
 
   return (
-    <div className="border border-gray-200 rounded-lg my-4 bg-white" style={{borderColor: 'var(--border-color)', backgroundColor: 'var(--bg-light)'}}>
+    <div className="border border-gray-200 rounded-lg my-4 bg-white" style={{borderColor: 'var(--border-color)', backgroundColor: 'white'}}>
       <button
         onClick={() => !isStatic && setIsOpen(!isOpen)}
         className="w-full flex justify-between items-center p-3 bg-gray-50 hover:bg-gray-100 transition-colors rounded-t-lg disabled:cursor-default"
@@ -57,7 +57,7 @@ export const StrategyAccordion: React.FC<StrategyAccordionProps> = ({ title, chi
         id="strategy-content"
         className={`transition-all duration-300 ease-in-out overflow-hidden strategy-content ${isExpanded ? 'max-h-screen' : 'max-h-0'}`}
       >
-        <div className="p-4 text-sm" style={{backgroundColor: 'var(--bg-light)', color: 'var(--text-light)'}}>
+        <div className="p-4 text-sm" style={{backgroundColor: 'white', color: 'var(--text-light)'}}>
             {children}
         </div>
       </div>

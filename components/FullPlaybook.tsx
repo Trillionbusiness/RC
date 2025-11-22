@@ -39,6 +39,7 @@ interface FullPlaybookProps {
 }
 
 interface PlaybookStepProps {
+    id: string;
     number: number;
     title: string;
     subtitle: string;
@@ -48,16 +49,16 @@ interface PlaybookStepProps {
     isStatic?: boolean;
 }
 
-const PlaybookStep: React.FC<PlaybookStepProps> = ({ number, title, subtitle, children, isOpen, onToggle, isStatic }) => {
+const PlaybookStep: React.FC<PlaybookStepProps> = ({ id, number, title, subtitle, children, isOpen, onToggle, isStatic }) => {
     const headerContent = (
-        <div className="relative pl-12 md:pl-16">
-             <div className="absolute left-0 top-0 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 text-gray-900 font-black text-2xl rounded-full" style={{backgroundColor: 'var(--accent-color)'}}>
+        <div id={id} className="relative pl-12 md:pl-16">
+             <div className="absolute left-0 top-0 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 text-black font-black text-2xl rounded-full border-2 border-black" style={{backgroundColor: 'var(--accent-color)'}}>
                 {number}
             </div>
             <div className="pl-4 flex justify-between items-center">
                 <div>
-                    <h2 className="text-2xl md:text-3xl font-black tracking-tight" style={{color: 'var(--text-dark)'}}>{title}</h2>
-                    <p className="mb-2" style={{color: 'var(--text-light)'}}>{subtitle}</p>
+                    <h2 className="text-2xl md:text-3xl font-black tracking-tight uppercase" style={{color: 'var(--text-dark)', fontFamily: "'Oswald', sans-serif"}}>{title}</h2>
+                    <p className="mb-2 text-gray-600 font-medium">{subtitle}</p>
                 </div>
                 {!isStatic && (
                     <svg
@@ -116,8 +117,9 @@ const FullPlaybook: React.FC<FullPlaybookProps> = ({
   
   const allSteps = [
     { 
+      id: 'step-1-diagnosis',
       number: 1, 
-      title: 'Diagnosis & Roadmap (The GPS)', 
+      title: 'Diagnosis & Roadmap', 
       subtitle: 'Your current location and the path to your destination.', 
       component: (
         <div className="space-y-8">
@@ -137,8 +139,9 @@ const FullPlaybook: React.FC<FullPlaybookProps> = ({
       ) 
     },
     { 
+      id: 'step-2-offers',
       number: 2, 
-      title: 'The Grand Slam Offer (The Foundation)', 
+      title: 'The Grand Slam Offer', 
       subtitle: 'The irresistible deal that makes people feel stupid saying no.', 
       component: (
         <div className="space-y-8">
@@ -148,6 +151,7 @@ const FullPlaybook: React.FC<FullPlaybookProps> = ({
       ) 
     },
     { 
+      id: 'step-3-leads',
       number: 3, 
       title: 'The Leads Engine', 
       subtitle: 'The machine that finds your ideal customers.', 
@@ -160,8 +164,9 @@ const FullPlaybook: React.FC<FullPlaybookProps> = ({
       ) 
     },
     { 
+      id: 'step-4-money',
       number: 4, 
-      title: 'The Money Model (The Fuel System)', 
+      title: 'The Money Model', 
       subtitle: 'The economic engine that funds your growth.', 
       component: (
         <div className="space-y-8">
@@ -175,10 +180,11 @@ const FullPlaybook: React.FC<FullPlaybookProps> = ({
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       {allSteps.map(step => (
         <PlaybookStep 
           key={step.number}
+          id={step.id}
           number={step.number}
           title={step.title}
           subtitle={step.subtitle}

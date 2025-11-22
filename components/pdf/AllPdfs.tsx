@@ -121,7 +121,14 @@ const AllPdfs: React.FC<AllPdfsProps> = ({ playbook, businessData, type, assetBu
         case 'kill-mode-playbook': return <KillModePlaybookPdf />;
         case 'objection-handling-guide': return <ObjectionHandlingCheatsheetPdf />;
         case 'complete-scripts': return <CompleteScriptsPdf />;
-        default: return null;
+        default: return (
+            <div className="p-12 flex items-center justify-center h-full">
+                <div className="text-center p-8 bg-red-50 border-2 border-red-200 rounded-lg">
+                    <p className="text-xl font-bold text-red-800 mb-2">Document Not Found</p>
+                    <p className="text-gray-600">Could not load document type: <span className="font-mono font-bold">{type}</span></p>
+                </div>
+            </div>
+        );
     }
 };
 

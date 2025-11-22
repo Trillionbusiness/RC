@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BusinessData, GeneratedOffer, GeneratedPlaybook, OfferStackItem } from '../../types';
 import AllPdfs from './AllPdfs';
@@ -28,7 +29,7 @@ const PdfPreviewModal: React.FC<PdfPreviewModalProps> = ({ playbook, businessDat
         </div>
         
         <div className="flex-grow overflow-y-auto bg-gray-200 p-8">
-            <div className="mx-auto" style={{width: '800px', transformOrigin: 'top center'}}>
+            <div className="mx-auto flex justify-center min-h-full" style={{width: '800px', transformOrigin: 'top center'}}>
                  <AllPdfs
                     playbook={playbook}
                     businessData={businessData}

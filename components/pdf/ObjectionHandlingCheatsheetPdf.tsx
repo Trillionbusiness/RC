@@ -6,7 +6,7 @@ const Title: React.FC<{ children: React.ReactNode }> = ({ children }) => <h1 cla
 const Subtitle: React.FC<{ children: React.ReactNode }> = ({ children }) => <p className="text-xl text-gray-600 mt-2">{children}</p>;
 const SectionTitle: React.FC<{ children: React.ReactNode }> = ({ children }) => <h2 className="text-3xl font-bold text-gray-800 pb-2 mb-4 mt-6 break-after-avoid" style={{ fontFamily: "'Patrick Hand', cursive" }}>{children}</h2>;
 const P: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => <p className={`text-sm text-gray-700 leading-relaxed my-1 ${className || ''}`}>{children}</p>;
-const Box: React.FC<{ children: React.ReactNode, className?: string }> = ({ children, className }) => <div className={`p-4 rounded-lg my-2 break-inside-avoid ${className}`}>{children}</div>;
+const Box: React.FC<{ children: React.ReactNode, className?: string }> = ({ children, className }) => <div className={`p-4 rounded-lg my-2 break-inside-avoid ${className || ''}`}>{children}</div>;
 
 
 const ObjectionCard: React.FC<{ title: string; objection: string; acknowledge: string; address: string; ask: string; }> = ({ title, objection, acknowledge, address, ask }) => (
@@ -69,35 +69,35 @@ const ObjectionHandlingCheatsheetPdf: React.FC = () => {
                         objection="This isn't a good time."
                         acknowledge='"That makes sense. And..."'
                         address='"...if we structured this so it only took 30 minutes a day? Would that work for you?"'
-                        ask=' "[They agree] Great, let\'s do this."'
+                        ask={`"[They agree] Great, let's do this."`}
                     />
                      <ObjectionCard 
                         title="2. Money"
                         objection="This is just too expensive."
                         acknowledge='"Super reasonable. And..."'
                         address='"...if talking to our team of experts saves you a year of trial and error, would it be worth it?"'
-                        ask=' "[They agree] Perfect, let\'s get started then."'
+                        ask={`"[They agree] Perfect, let's get started then."`}
                     />
                       <ObjectionCard 
                         title="3. Decision-Maker"
                         objection="I have to ask my wife."
-                        acknowledge='"Makes sense. She\'s the boss around here. And..."'
-                        address='"...what if we included her in the onboarding call so she\'s fully informed? Would that address her concerns?"'
-                        ask=' "[They agree] Excellent, let\'s get you all set up."'
+                        acknowledge={`"Makes sense. She's the boss around here. And..."`}
+                        address={`"...what if we included her in the onboarding call so she's fully informed? Would that address her concerns?"`}
+                        ask={`"[They agree] Excellent, let's get you all set up."`}
                     />
                       <ObjectionCard 
                         title="4. Preference"
                         objection="I don't like [specific thing]."
                         acknowledge='"I completely hear you. And..."'
                         address='"...what if we showed you how that [specific thing] is the exact reason our clients get [amazing result]? Would you be open to seeing why it works?"'
-                        ask=' "[They agree] Awesome, let\'s get you going."'
+                        ask={`"[They agree] Awesome, let's get you going."`}
                     />
                      <ObjectionCard 
                         title="5. Stall"
                         objection="I need to think about it."
-                        acknowledge='"Smart point, it\'s a big decision. And..."'
-                        address='"...that\'s probably the best reason for coming out—so we can help you get less busy... hows that sound?"'
-                        ask=' "[They agree] I think that\'s the exact reason you should come. What do you think?"'
+                        acknowledge={`"Smart point, it's a big decision. And..."`}
+                        address={`"...that's probably the best reason for coming out—so we can help you get less busy... hows that sound?"`}
+                        ask={`"[They agree] I think that's the exact reason you should come. What do you think?"`}
                     />
                 </div>
             </main>
