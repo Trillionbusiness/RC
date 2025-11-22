@@ -4,7 +4,7 @@ import {
     GeneratedMarketingModel, GeneratedMoneyModel, GeneratedMoneyModelAnalysis, 
     GeneratedMoneyModelMechanisms, GeneratedOperationsPlan, GeneratedProfitPath, 
     GeneratedSalesFunnel, GeneratedSalesSystem, GeneratedAdPlaybook, 
-    GeneratedProductImprovementPlan 
+    GeneratedProductImprovementPlan, GeneratedMentalToughnessAnalysis
 } from '../types';
 
 const emptyOffer: GeneratedOffer = {
@@ -95,6 +95,14 @@ const emptyProductImprovementPlan: GeneratedProductImprovementPlan = {
   summary: 'Placeholder summary.'
 };
 
+const emptyMentalToughnessAnalysis: GeneratedMentalToughnessAnalysis = {
+    title: "Placeholder Mental Toughness",
+    corePrinciple: "Placeholder principle.",
+    summary: "Placeholder summary.",
+    components: [],
+    scenarios: []
+};
+
 
 const gymPlan: AppState = {
   businessData: {
@@ -141,6 +149,7 @@ const gymPlan: AppState = {
       ],
       pivotSuggestion: "",
     },
+    mentalToughnessAnalysis: emptyMentalToughnessAnalysis,
     productImprovementPlan: emptyProductImprovementPlan,
     offer1: {
       name: "The 6-Week Austin Fitness Transformation Challenge",
@@ -217,6 +226,7 @@ const saasPlan: AppState = {
         ],
         pivotSuggestion: "",
     },
+    mentalToughnessAnalysis: emptyMentalToughnessAnalysis,
     productImprovementPlan: emptyProductImprovementPlan,
      offer1: {
       name: "The Agency OS: Full Suite + White-Glove Onboarding",

@@ -6,7 +6,7 @@ import {
     GeneratedOperationsPlan, GeneratedOffer, GeneratedDownsell, GeneratedProfitPath, 
     GeneratedMarketingModel, GeneratedSalesFunnel, GeneratedKpiDashboard, ChatMessage, 
     GeneratedSalesSystem, KpiEntry, WeeklyDebrief, GeneratedAdPlaybook, GeneratedMarketIndicatorAnalysis,
-    GeneratedProductImprovementPlan
+    GeneratedProductImprovementPlan, GeneratedMentalToughnessAnalysis
 } from '../types';
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
@@ -213,6 +213,42 @@ const productImprovementPlanSchema = {
         summary: { type: Type.STRING, description: "A concluding, motivational summary about focusing on delivering insane value." }
     },
     required: ["title", "corePrinciple", "problemAnalysis", "improvementLevers", "valueStackTransformation", "summary"]
+};
+
+const mentalToughnessAnalysisSchema = {
+    type: Type.OBJECT,
+    properties: {
+        title: { type: Type.STRING, description: "A compelling title, e.g., 'The Founder's Armor'." },
+        corePrinciple: { type: Type.STRING, description: "The core definition: Mental toughness is the likelihood a bad event changes your behavior against your goals." },
+        summary: { type: Type.STRING, description: "A customized analysis of the founder's mental state based on their biggest challenge." },
+        components: {
+            type: Type.ARRAY,
+            description: "Exactly 4 components: Tolerance, Fortitude, Resilience, Adaptability.",
+            items: {
+                type: Type.OBJECT,
+                properties: {
+                    name: { type: Type.STRING, description: "'Tolerance', 'Fortitude', 'Resilience', or 'Adaptability'." },
+                    definition: { type: Type.STRING, description: "The simple Hormozi definition." },
+                    businessContext: { type: Type.STRING, description: "How this specific trait applies to the user's current business challenge." },
+                    actionableStep: { type: Type.STRING, description: "A concrete exercise to improve this trait." }
+                },
+                required: ["name", "definition", "businessContext", "actionableStep"]
+            }
+        },
+        scenarios: {
+            type: Type.ARRAY,
+            description: "3 specific 'Bad Event' scenarios likely to happen in this business type.",
+            items: {
+                type: Type.OBJECT,
+                properties: {
+                    scenario: { type: Type.STRING, description: "A realistic bad event (e.g. 'Top client fires you', 'Ad account banned')." },
+                    mentalProtocol: { type: Type.STRING, description: "The logical script to follow to maintain behavior." }
+                },
+                required: ["scenario", "mentalProtocol"]
+            }
+        }
+    },
+    required: ["title", "corePrinciple", "summary", "components", "scenarios"]
 };
 
 const modelComparisonSchema = {
@@ -639,6 +675,25 @@ export const generateDiagnosis = async (data: BusinessData): Promise<GeneratedDi
 export const generateMarketIndicatorAnalysis = async (data: BusinessData): Promise<GeneratedMarketIndicatorAnalysis> => {
     const prompt = `${createBusinessContextPrompt(data)}\nTASK: Critically analyze the user's business and target market against the '4 Market Indicators' framework. Be brutally honest. For each indicator, provide a score from 1-10 (1=terrible, 10=perfect), a concise analysis justifying the score, and one actionable suggestion for improvement. If the overall market is weak (average score below 6), provide a specific, creative pivot suggestion to a stronger market.`;
     return generate<GeneratedMarketIndicatorAnalysis>(prompt, marketIndicatorAnalysisSchema);
+};
+
+export const generateMentalToughnessAnalysis = async (data: BusinessData): Promise<GeneratedMentalToughnessAnalysis> => {
+    const prompt = `${createBusinessContextPrompt(data)}\n
+    TASK: Perform a Mental Toughness Audit for the founder of this business. 
+    Use the Hormozi Mental Toughness Framework:
+    1. **Tolerance:** The fuse. How much hardship before behavior changes.
+    2. **Fortitude:** The drop. How much behavior changes when the fuse blows.
+    3. **Resilience:** The bounce. How fast they return to baseline.
+    4. **Adaptability:** The new baseline. Do they get better or worse?
+    
+    CONTEXT: The user's biggest challenge is: "${data.biggestChallenge}".
+    
+    REQUIREMENTS:
+    - Analyze how this challenge taxes their mental toughness.
+    - Provide specific actionable steps to improve each of the 4 traits in the context of *this* business.
+    - Generate 3 realistic "Bad Scenarios" for this specific industry (e.g. if gym -> trainer quits; if SaaS -> server crash) and provide a stoic "Mental Protocol" for each.
+    `;
+    return generate<GeneratedMentalToughnessAnalysis>(prompt, mentalToughnessAnalysisSchema);
 };
 
 export const generateProductImprovementPlan = async (data: BusinessData): Promise<GeneratedProductImprovementPlan> => {

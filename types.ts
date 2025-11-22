@@ -282,9 +282,30 @@ export interface GeneratedProductImprovementPlan {
   summary: string;
 }
 
+export interface MentalToughnessComponent {
+  name: 'Tolerance' | 'Fortitude' | 'Resilience' | 'Adaptability';
+  definition: string;
+  businessContext: string; // How this applies to their specific business challenge
+  actionableStep: string; // What to do to improve it
+}
+
+export interface ToughnessScenario {
+  scenario: string; // e.g., "Key employee quits"
+  mentalProtocol: string; // The step-by-step mental response
+}
+
+export interface GeneratedMentalToughnessAnalysis {
+  title: string;
+  corePrinciple: string;
+  summary: string;
+  components: MentalToughnessComponent[];
+  scenarios: ToughnessScenario[];
+}
+
 export interface GeneratedPlaybook {
   diagnosis: GeneratedDiagnosis;
   marketIndicatorAnalysis: GeneratedMarketIndicatorAnalysis;
+  mentalToughnessAnalysis: GeneratedMentalToughnessAnalysis;
   productImprovementPlan: GeneratedProductImprovementPlan;
   moneyModelAnalysis: GeneratedMoneyModelAnalysis;
   moneyModel: GeneratedMoneyModel;

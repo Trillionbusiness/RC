@@ -22,6 +22,7 @@ import ObjectionHandlingCheatsheetPdf from './ObjectionHandlingCheatsheetPdf';
 import CompleteScriptsPdf from './CompleteScriptsPdf';
 import OneYearBlueprintPdf from './OneYearBlueprintPdf';
 import ProductValueBlueprintPdf from './ProductValueBlueprintPdf';
+import MentalToughnessPdf from './MentalToughnessPdf';
 
 interface AllPdfsProps {
     playbook: GeneratedPlaybook;
@@ -42,6 +43,7 @@ const AllPdfs: React.FC<AllPdfsProps> = ({ playbook, businessData, type, assetBu
                 
                 {/* 01 Core Plan */}
                 <div data-pdf-output data-pdf-path="02_Core_Plan/Product_Value_Blueprint.pdf"><ProductValueBlueprintPdf plan={playbook.productImprovementPlan} /></div>
+                <div data-pdf-output data-pdf-path="02_Core_Plan/Mental_Toughness_Audit.pdf"><MentalToughnessPdf analysis={playbook.mentalToughnessAnalysis} /></div>
                 <div data-pdf-output data-pdf-path="02_Core_Plan/Business_Concepts_Guide.pdf"><ConceptsGuidePdf playbook={playbook} businessData={businessData} /></div>
                 <div data-pdf-output data-pdf-path="02_Core_Plan/Business_Scorecard_(KPIs).pdf"><KpiDashboardPdf kpiDashboard={playbook.kpiDashboard} /></div>
                 <div data-pdf-output data-pdf-path="02_Core_Plan/Offer_Presentation_Slides.pdf"><OfferPresentationPdf playbook={playbook} /></div>

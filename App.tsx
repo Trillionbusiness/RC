@@ -8,7 +8,8 @@ import {
     generateOffer2, generateDownsell, generateProfitPath, 
     generateMarketingModel, generateSalesFunnel, generateKpiDashboard,
     generateSalesSystem, generateWeeklyDebrief, generateAdPlaybook,
-    generateMarketIndicatorAnalysis, generateProductImprovementPlan
+    generateMarketIndicatorAnalysis, generateProductImprovementPlan,
+    generateMentalToughnessAnalysis
 } from './services/hormoziAiService';
 import Step1Form from './components/Step1Form';
 import ProgressBar from './components/common/ProgressBar';
@@ -75,7 +76,7 @@ const App: React.FC = () => {
             weeklyDebriefs: [],
         });
     
-        const totalSteps = 16;
+        const totalSteps = 17;
         let completedSteps = 0;
 
         const updateProgress = (taskName: string) => {
@@ -93,6 +94,10 @@ const App: React.FC = () => {
 
           updateProgress('Analyzing your target market...');
           const marketIndicatorAnalysis = await generateMarketIndicatorAnalysis(data);
+          await delay(1500);
+
+          updateProgress('Building your mental armor...');
+          const mentalToughnessAnalysis = await generateMentalToughnessAnalysis(data);
           await delay(1500);
           
           updateProgress('Upgrading your product value...');
@@ -153,6 +158,7 @@ const App: React.FC = () => {
           const newPlaybook = {
             diagnosis,
             marketIndicatorAnalysis,
+            mentalToughnessAnalysis,
             productImprovementPlan,
             moneyModelAnalysis,
             moneyModel,

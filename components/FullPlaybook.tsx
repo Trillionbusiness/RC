@@ -16,6 +16,7 @@ import SalesSystem from './SalesSystem';
 import PurchasePlan from './PurchasePlan';
 import MarketIndicatorAnalysis from './MarketIndicatorAnalysis';
 import ProductImprovementPlan from './ProductImprovementPlan';
+import MentalToughnessAnalysis from './MentalToughnessAnalysis';
 
 interface FullPlaybookProps {
     playbook: GeneratedPlaybook;
@@ -125,6 +126,7 @@ const FullPlaybook: React.FC<FullPlaybookProps> = ({
         <div className="space-y-8">
           <Step2Diagnosis diagnosis={playbook.diagnosis} />
           <MarketIndicatorAnalysis analysis={playbook.marketIndicatorAnalysis} />
+          <MentalToughnessAnalysis analysis={playbook.mentalToughnessAnalysis} />
           <ProductImprovementPlan plan={playbook.productImprovementPlan} />
           <OperationsPlan operationsPlan={playbook.operationsPlan} />
           <KpiDashboard 

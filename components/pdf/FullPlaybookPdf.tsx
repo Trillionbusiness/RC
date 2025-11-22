@@ -25,6 +25,7 @@ import KillModePlaybookPdf from './KillModePlaybookPdf';
 import ObjectionHandlingCheatsheetPdf from './ObjectionHandlingCheatsheetPdf';
 import CompleteScriptsPdf from './CompleteScriptsPdf';
 import ValueStackAssetsPdf from './ValueStackAssetsPdf';
+import MentalToughnessPdf from './MentalToughnessPdf';
 
 // --- Reusable PDF Components ---
 const Page: React.FC<{children: React.ReactNode, className?: string}> = ({children, className}) => (
@@ -124,6 +125,7 @@ const FullPlaybookPdf: React.FC<FullPlaybookPdfProps> = ({ playbook, businessDat
         {/* PART 2: DIAGNOSIS & ROADMAP */}
         <SectionTitlePage number={2} title="Diagnosis & Roadmap" subtitle="Your current location and the path to your destination." />
         <Page><DiagnosisSection diagnosis={playbook.diagnosis} /></Page>
+        <MentalToughnessPdf analysis={playbook.mentalToughnessAnalysis} />
         <KpiDashboardPdf kpiDashboard={playbook.kpiDashboard} />
 
         {/* PART 3: YOUR IRRESISTIBLE OFFERS */}
